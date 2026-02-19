@@ -12,7 +12,7 @@ const pillars = [
   {
     number: '03',
     title: 'Expand Who Belongs',
-    body: 'Maine\'s outdoor visitor base is overwhelmingly white and over 49. We\'re here to change that demographic—not by asking for permission, but by showing up.',
+    body: 'The outdoors is for everyone. We\'re expanding the table—bringing new voices, new energy, and new stories to spaces that have always had room for more.',
   },
   {
     number: '04',

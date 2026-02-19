@@ -12,6 +12,15 @@ export const metadata: Metadata = {
   title: "Camp Monroe — Outdoor Adventures in Maine",
   description:
     "Guided camping trips, retreats, and outdoor experiences in Maine built for Black and brown explorers. Rooted in the legacy of the Cambridge Gun & Rod Club, est. 1893.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Camp Monroe",
     description: "The outdoors has always been ours. We're just reclaiming it.",
