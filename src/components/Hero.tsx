@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
@@ -12,14 +14,19 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 px-6 max-w-4xl mx-auto flex flex-col items-center gap-8">
-        {/* Wordmark */}
-        <div className="flex flex-col items-center gap-1">
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-3">
           <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
-            West Starks, Maine
+            West Gardiner, Maine
           </span>
-          <h1 className="font-display text-6xl md:text-8xl text-cream uppercase tracking-tight leading-none">
-            Camp<br />Monroe
-          </h1>
+          <Image
+            src="/brand/logo-light.png"
+            alt="Camp Monroe"
+            width={420}
+            height={144}
+            className="w-80 md:w-[28rem] lg:w-[34rem] h-auto drop-shadow-lg"
+            priority
+          />
         </div>
 
         {/* Tagline */}

@@ -6,7 +6,7 @@ export const experiences: Experience[] = [
     type: 'Retreat',
     title: 'Cambridge Grounds Retreat',
     subtitle: 'Three days on hallowed ground',
-    location: 'West Starks, Maine',
+    location: 'West Gardiner, Maine',
     region: 'Western Maine',
     dates: 'September 19–21, 2025',
     duration: '3 Days / 2 Nights',
@@ -24,7 +24,7 @@ export const experiences: Experience[] = [
       'https://images.unsplash.com/photo-1571863533956-01c88e79957e?w=1400&q=85',
     ],
     shortDescription:
-      'Our signature retreat on the historic Cambridge Gun & Rod Club property in West Starks, Maine. Wellness, community, and outdoor skill-building on 130-year-old hallowed ground.',
+      'Our signature retreat on the historic Cambridge Gun & Rod Club property in West Gardiner, Maine. Wellness, community, and outdoor skill-building on 130-year-old hallowed ground.',
     longDescription:
       "The Cambridge Gun & Rod Club has stood since 1893—founded by Black Bostonians who refused to be excluded from the wild. W.E.B. Du Bois walked these grounds. Now it's your turn. The Cambridge Grounds Retreat is a three-day immersive experience rooted in rest, reconnection, and reclamation. Small group, intentional programming, exceptional food. You just show up.",
     pullQuote:

@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export default function Footer() {
   return (
     <footer className="bg-forest border-t border-cream/10 px-6 py-14">
@@ -5,9 +7,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-14">
           {/* Brand */}
           <div>
-            <h3 className="font-display text-cream text-2xl uppercase tracking-widest mb-3">
-              Camp Monroe
-            </h3>
+            <Image
+              src="/brand/monogram-light.png"
+              alt="Camp Monroe"
+              width={80}
+              height={80}
+              className="h-16 w-auto mb-4"
+            />
             <p className="text-cream/50 text-sm leading-relaxed max-w-xs">
               Guided outdoor experiences in Maine, rooted in the legacy of Black outdoor culture
               since 1893.
@@ -74,7 +80,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Camp Monroe. All rights reserved.
           </p>
           <p className="text-cream/30 text-xs">
-            Built on the grounds of the Cambridge Gun &amp; Rod Club, West Starks, ME — est. 1893
+            Built on the grounds of the Cambridge Gun &amp; Rod Club, West Gardiner, ME — est. 1893
           </p>
         </div>
       </div>

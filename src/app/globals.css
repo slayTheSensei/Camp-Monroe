@@ -14,6 +14,14 @@
 }
 
 html {
+  /* Do NOT set scroll-behavior: smooth here — it causes jarring animated
+     scroll-to-top on every Next.js page navigation. Instead we scope
+     smooth scrolling only to same-page anchor clicks via JS. */
+  scroll-behavior: auto;
+}
+
+/* Applied by SmoothAnchor component for in-page # links only */
+html.smooth-scroll {
   scroll-behavior: smooth;
 }
 

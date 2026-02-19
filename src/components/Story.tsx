@@ -40,7 +40,7 @@ export default function Story() {
             </p>
             <p className="text-forest/80 text-lg leading-relaxed mb-6">
               Among its early members: <strong className="text-forest">W.E.B. Du Bois</strong>.
-              Located in West Starks, Maine, the club stood as a quiet act of resistance—proof that
+              Located in West Gardiner, Maine, the club stood as a quiet act of resistance—proof that
               Black people have always belonged in nature, have always found joy and restoration in
               the wild.
             </p>
@@ -57,7 +57,7 @@ export default function Story() {
               </div>
               <div>
                 <p className="font-display text-3xl text-forest">ME</p>
-                <p className="text-sm text-forest/60 mt-1">West Starks, Maine</p>
+                <p className="text-sm text-forest/60 mt-1">West Gardiner, Maine</p>
               </div>
               <div>
                 <p className="font-display text-3xl text-forest">∞</p>
