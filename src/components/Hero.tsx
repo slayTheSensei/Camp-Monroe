@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
@@ -14,31 +12,20 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 px-6 max-w-4xl mx-auto flex flex-col items-center gap-8">
-        {/* Logo */}
-        <div className="flex flex-col items-center gap-3">
-          <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
-            West Gardiner, Maine
-          </span>
-          <Image
-            src="/brand/logo-light.png"
-            alt="Camp Monroe"
-            width={420}
-            height={144}
-            className="w-80 md:w-[28rem] lg:w-[34rem] h-auto drop-shadow-lg"
-            priority
-          />
-        </div>
 
-        {/* Tagline */}
-        <p className="text-cream/90 text-xl md:text-2xl font-light max-w-xl leading-relaxed">
-          The outdoors has always been ours.
-          <br />
-          <span className="text-amber font-medium">We&apos;re just reclaiming it.</span>
-        </p>
+        {/* Location label */}
+        <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
+          West Gardiner, Maine
+        </span>
 
-        <p className="text-cream/70 text-base md:text-lg max-w-lg leading-relaxed">
-          Guided camping trips, immersive retreats, and outdoor adventures across Maine—
-          built by and for Black and brown explorers.
+        {/* Headline */}
+        <h1 className="font-display text-[5rem] md:text-[8rem] lg:text-[10rem] text-cream uppercase leading-none tracking-tight drop-shadow-lg">
+          Come<br />Outside.
+        </h1>
+
+        {/* Subline */}
+        <p className="text-cream/75 text-lg md:text-xl max-w-md leading-relaxed text-center">
+          Guided camping, retreats, and outdoor adventures across Maine — built for Black and brown explorers.
         </p>
 
         {/* CTAs */}
