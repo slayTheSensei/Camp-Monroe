@@ -4,7 +4,7 @@ import ExperienceSignup from './ExperienceSignup'
 type Props = { experience: Experience }
 
 export default function BookingCTA({ experience }: Props) {
-  const isCustom = experience.type === 'Private / Group'
+  const isCustom = experience.type === 'Partner-Hosted Retreat'
   const isComingSoon = experience.status === 'coming-soon'
   const isSoldOut = experience.status === 'sold-out'
 
@@ -63,7 +63,7 @@ export default function BookingCTA({ experience }: Props) {
           </p>
           <h2 className="font-display text-2xl md:text-3xl lg:text-4xl text-forest uppercase leading-none">
             {isCustom
-              ? 'Build Your Group Experience'
+              ? 'Host Your Retreat Here'
               : `Join Us · ${experience.dates}`}
           </h2>
           {!isCustom && (
@@ -77,10 +77,10 @@ export default function BookingCTA({ experience }: Props) {
         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
           {isCustom && (
             <a
-              href="mailto:hello@campmonroe.com?subject=Custom Group Experience Inquiry"
+              href="mailto:hello@campmonroe.com?subject=Partner Retreat Inquiry"
               className="bg-forest text-cream font-semibold px-8 py-4 rounded-full tracking-wide hover:bg-forest/80 transition-colors text-center"
             >
-              Inquire Now
+              Start a Conversation
             </a>
           )}
           {!isCustom && !isSoldOut && (

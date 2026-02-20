@@ -6,7 +6,7 @@ import Trips from "@/components/Trips";
 import Waitlist from "@/components/Waitlist";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <Nav />

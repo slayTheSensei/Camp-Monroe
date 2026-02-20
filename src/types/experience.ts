@@ -32,7 +32,7 @@ export type FAQItem = {
 
 export type Experience = {
   slug: string
-  type: 'Weekend Camping' | 'Retreat' | 'Day Trip' | 'Private / Group' | 'Bike Ride'
+  type: 'Weekend Camping' | 'Retreat' | 'Day Trip' | 'Partner-Hosted Retreat' | 'Bike Ride'
   title: string
   subtitle: string
   location: string
@@ -56,5 +56,5 @@ export type Experience = {
   tag?: string
   tagColor?: string
   difficulty?: 'Beginner' | 'Intermediate' | 'Advanced'
-  status: 'available' | 'coming-soon' | 'sold-out'
+  status: 'available' | 'coming-soon' | 'sold-out' | 'draft'
 }

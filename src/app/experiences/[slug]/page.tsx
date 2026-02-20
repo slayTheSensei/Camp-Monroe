@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { experiences, getExperienceBySlug } from '@/data/experiences'
+import { getExperienceBySlug, getAllExperienceSlugs } from '@/lib/data/experiences'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import ExperienceHero from '@/components/experience/ExperienceHero'
@@ -12,17 +12,20 @@ import FAQ from '@/components/experience/FAQ'
 import BookingCTA from '@/components/experience/BookingCTA'
 import type { Metadata } from 'next'
 
+export const revalidate = 60
+
 type Props = { params: Promise<{ slug: string }> }
 
 // Generate static paths for all experiences
 export async function generateStaticParams() {
-  return experiences.map((e) => ({ slug: e.slug }))
+  const slugs = await getAllExperienceSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 // Generate metadata per experience
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const experience = getExperienceBySlug(slug)
+  const experience = await getExperienceBySlug(slug)
   if (!experience) return {}
   return {
     title: `${experience.title} — Camp Monroe`,
@@ -37,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ExperiencePage({ params }: Props) {
   const { slug } = await params
-  const experience = getExperienceBySlug(slug)
+  const experience = await getExperienceBySlug(slug)
 
   if (!experience) notFound()
 

@@ -486,15 +486,15 @@ export const experiences: Experience[] = [
   },
 
   {
-    slug: 'custom-group-experience',
-    type: 'Private / Group',
-    title: 'Custom Group Experience',
-    subtitle: 'Your group. Your schedule. Maine as the backdrop.',
-    location: 'Statewide, Maine',
-    region: 'Maine',
+    slug: 'partner-hosted-retreat',
+    type: 'Partner-Hosted Retreat',
+    title: 'Host Your Retreat at Camp Monroe',
+    subtitle: 'The venue is yours. The land is historic. The logistics are on us.',
+    location: 'West Gardiner, Maine',
+    region: 'Central Maine',
     dates: 'By Request',
-    duration: 'Your Schedule',
-    groupSize: 25,
+    duration: 'Weekend or Multi-Day',
+    groupSize: 40,
     price: 0,
     status: 'available',
     tag: 'Inquire',
@@ -503,36 +503,44 @@ export const experiences: Experience[] = [
     heroImages: [
       'https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=1400&q=85',
       'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1400&q=85',
+      'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=85',
     ],
     shortDescription:
-      'Companies, friend groups, sororities, fraternities—we build tailored outdoor experiences for your people. All skill levels welcome.',
+      'You have a community. We have the land. Camp Monroe is available for partner-hosted retreats — wellness weekends, culinary gatherings, creative residencies, corporate offsites, and more. You bring the vision. We handle everything else.',
     longDescription:
-      'Whether you\'re planning a company retreat, a sorority/fraternity outing, a family reunion, or a milestone celebration—Camp Monroe builds fully custom outdoor experiences for groups of any size. We handle every detail. You show up and enjoy.',
+      "The land has been doing this for 130 years. Camp Monroe sits on the historic grounds of the Cambridge Gun & Rod Club — founded in 1893 by Black Bostonians who built something better than what was being offered. Now that land is available to you.\n\nPartner-hosted retreats are the heart of what Camp Monroe does. We open the grounds to organizations, collectives, and facilitators who want to bring their community somewhere that actually means something. A flat buyout gets you the whole property for a weekend — 20+ acres, proper lodging, a full kitchen, and outdoor space that earns its keep. You bring your host or facilitator. We handle space, lodging, food, and logistics.\n\nThe retreats that thrive here: Rewilding and outdoor skills weekends. Foodways & Fire — culinary and cultural gatherings rooted in diaspora food traditions. Creative in Nature — artist and writer residencies. Corporate offsites built around leadership and real culture. Wellness weekends that actually restore. And Coalition Outdoors — cross-community solidarity retreats for the people doing the work.\n\nWhatever you're building, this land holds it. Let's talk.",
     pullQuote:
-      'The best group trip is one where nobody has to plan anything. That\'s exactly what we offer.',
+      'You bring the vision. We bring 130 years of hallowed ground and everything you need to make it unforgettable.',
     pullQuoteImage:
       'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80',
     itinerary: [],
     included: [
-      { icon: '🎯', label: 'Custom Itinerary', description: 'Fully bespoke programming built around your group\'s interests and goals' },
-      { icon: '🏕️', label: 'Venue & Lodging', description: 'We source and book the right property for your group size and vibe' },
-      { icon: '🍽️', label: 'Catering Options', description: 'From casual cookouts to elevated multi-course meals—your call' },
-      { icon: '🥾', label: 'Activity Curation', description: 'Hiking, paddling, fishing, yoga, storytelling—we build your menu' },
-      { icon: '📋', label: 'Full Logistics', description: 'Transportation, permits, equipment, coordination—all handled' },
+      { icon: '🏕️', label: 'Full Venue Buyout', description: 'Exclusive access to Camp Monroe grounds — 20+ acres, indoor + outdoor space, fire pits, waterfront access' },
+      { icon: '🛏️', label: 'Lodging for Your Group', description: 'Cabin and tent accommodations for up to 40 guests. Options for every style and budget' },
+      { icon: '🍽️', label: 'Catering & Kitchen Access', description: 'From fire-cooked dinners to elevated multi-course meals. Our kitchen crew works around your program' },
+      { icon: '📋', label: 'Full Logistics Support', description: 'Transportation, permits, equipment, vendor coordination — handled. You focus on your people' },
+      { icon: '🧭', label: 'Dedicated Monroe Host', description: 'One point of contact, on-site the whole time. So your organizers can actually enjoy the retreat' },
+      { icon: '🥾', label: 'Optional Programming', description: 'Add guided hikes, outdoor skills workshops, storytelling sessions, or heritage programming — or bring your own' },
     ],
     excluded: [],
     details: [
       {
         category: 'Accommodations',
-        title: 'Your Venue, Our Expertise',
-        description: 'We work with a network of Maine properties—from rustic wilderness camps to upscale lakeside lodges. We\'ll match the right venue to your group\'s size, budget, and vibe.',
+        title: 'Historic Grounds, Full Access',
+        description: 'Camp Monroe gives your group exclusive use of the Cambridge Gun & Rod Club property — the same land W.E.B. Du Bois walked. Cabin lodging, tent platforms, fire pits, and waterfront space. Up to 40 guests, all under one buyout.',
         image: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80',
       },
       {
         category: 'Guide',
-        title: 'Dedicated Group Host',
-        description: 'Every custom experience includes a dedicated Camp Monroe host who manages the experience end-to-end, so group organizers can actually enjoy the trip.',
+        title: 'Your Dedicated Monroe Host',
+        description: 'Every partner retreat includes a dedicated Camp Monroe host who manages the property end-to-end — check-in, catering coordination, activity logistics. Your team leads the programming. We run the operation.',
         image: 'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=800&q=80',
+      },
+      {
+        category: 'Meals',
+        title: 'From Cookouts to Culinary Retreats',
+        description: 'Whether you want casual campfire meals or a fully programmed Foodways & Fire culinary weekend, our kitchen crew works around your vision. Local Maine ingredients, diaspora food traditions, and the kind of food that people talk about after.',
+        image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
       },
     ],
     testimonials: [
@@ -544,16 +552,164 @@ export const experiences: Experience[] = [
     ],
     faqs: [
       {
-        question: 'What is the minimum group size?',
-        answer: 'Custom experiences are available for groups of 8 or more. For smaller groups, check our scheduled public retreats and trips.',
+        question: 'Who is this for?',
+        answer: 'Organizations, collectives, facilitators, and companies who want to bring their community somewhere that means something. We\'ve hosted wellness weekends, culinary retreats, creative residencies, corporate leadership offsites, and solidarity retreats. If you\'re building something real, this land is built for it.',
       },
       {
-        question: 'How far in advance should I book?',
-        answer: 'We recommend reaching out at least 90 days before your desired dates. Peak summer and fall dates fill quickly, especially for larger groups.',
+        question: 'What types of retreats work best here?',
+        answer: 'Rewilding and outdoor skills weekends. Foodways & Fire culinary gatherings rooted in diaspora food traditions. Creative in Nature residencies for artists and writers. Corporate offsites that go beyond trust falls. Wellness weekends with intention. Coalition Outdoors retreats for cross-community solidarity work. If your retreat has a purpose, it fits here.',
       },
       {
-        question: 'How is pricing determined?',
-        answer: 'Custom pricing is based on group size, duration, activity selection, accommodation level, and meal plan. We\'ll provide a detailed proposal within 72 hours of your inquiry.',
+        question: 'How does pricing work?',
+        answer: 'We offer two models: a flat weekend buyout ($7,000–$12,000 depending on season and group size) or per-person pricing ($150–$300/night). Both include lodging, meals, and full logistics support. We\'ll send a detailed proposal within 48 hours of your inquiry.',
+      },
+      {
+        question: 'What does the buyout include?',
+        answer: 'Full exclusive access to Camp Monroe grounds, lodging for your group, all meals, a dedicated Monroe host, kitchen crew, and basic equipment. You bring your host or facilitator and your program. We handle everything else.',
+      },
+      {
+        question: 'Can we bring our own facilitator or host?',
+        answer: 'Absolutely — that\'s the model. You lead your programming. We run the property. Your facilitator focuses on your community; our host focuses on the experience running smoothly.',
+      },
+      {
+        question: 'How far in advance should I reach out?',
+        answer: 'Summer and fall weekends fill fast — 90 days minimum for peak dates. Spring and winter have more flexibility. The sooner you reach out, the more options we have for you.',
+      },
+      {
+        question: 'What is the maximum group size?',
+        answer: 'We comfortably host up to 40 guests for an overnight retreat. For day events or multi-day programs with off-site lodging, we can accommodate larger groups. Let\'s talk.',
+      },
+    ],
+  },
+
+  {
+    slug: 'dawnland',
+    type: 'Weekend Camping',
+    title: 'Dawnland',
+    subtitle: 'The land has always known how to take care of you.',
+    location: 'Katahdin Region, Maine',
+    region: 'Northern Maine',
+    dates: 'Summer 2026 — Interest List Open',
+    duration: '2–3 Days / 2 Nights',
+    groupSize: 15,
+    price: 0,
+    status: 'coming-soon',
+    tag: 'Coming 2026',
+    tagColor: 'bg-amber text-forest',
+    difficulty: 'Beginner',
+    heroImages: [
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1400&q=85',
+      'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1400&q=85',
+      'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1400&q=85',
+    ],
+    shortDescription:
+      'A small-group camping experience on ancestral Wabanaki land near Katahdin, guided by Indigenous educators who have been tending this territory for thousands of years. Coming Summer 2026.',
+    longDescription:
+      "There is no landscape in the northeast quite like the Katahdin region. Ancient forest. Cold rivers. A sky that opens up in a way you don't expect until you're standing in it. The Wabanaki people have known this for thousands of years — they've been reading this land, tending it, and living in relationship with it longer than anyone.\n\nDawnland is Camp Monroe's most intentional experience. A small group — never more than 15 — spending two or three days on Penobscot ancestral land near Katahdin, guided by Indigenous educators and storytellers. No rush. No agenda beyond being present. You'll learn how to read the land the way it wants to be read: through traditional ecological knowledge, shared meals, campfire circles, and the kind of quiet that changes you.\n\nThis is cultural tourism done right. You leave knowing more than when you arrived — about this place, about its people, and about what it means to be a guest on land that has always belonged to someone else. And if that curiosity leads somewhere deeper, that's the point.\n\nWe're building this carefully and in true partnership. Details will open when everything is ready. Get on the interest list now.",
+    pullQuote:
+      'The Wabanaki have been tending this land for thousands of years. We\'re just here to listen.',
+    pullQuoteImage:
+      'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=80',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Arrive. Settle. Listen.',
+        description:
+          'Arrive at base camp in the Katahdin region and meet your Wabanaki guide. A land orientation walk — learning how to see what\'s around you before anything else. Evening welcome fire with a collaborative dinner blending Indigenous and diasporic food traditions.',
+        image: 'https://images.unsplash.com/photo-1445308394109-4ec2920981b1?w=800&q=80',
+        activities: [
+          'Arrival & camp setup',
+          'Land orientation with Wabanaki guide',
+          'Introduction to Penobscot territory and ecology',
+          'Collaborative welcome dinner over the fire',
+          'Evening storytelling circle',
+        ],
+      },
+      {
+        day: 2,
+        title: 'Into the Land',
+        description:
+          'A full day of guided cultural immersion. Morning ecological walk through the forest — traditional plant knowledge, watershed reading, and the Wabanaki relationship to land and water through the seasons. Afternoon optional service project: native planting, trail clearing, or waterway care. Evening reflection circle.',
+        image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
+        activities: [
+          'Guided ecological walk — traditional ecological knowledge (TEK)',
+          'Wabanaki history, ecology, and seasonal relationships',
+          'Optional service project: native planting or trail stewardship',
+          'Camp Monroe–led campfire reflection circle',
+          'Collaborative dinner featuring Indigenous food traditions',
+        ],
+      },
+      {
+        day: 3,
+        title: 'Slow Morning. Carry It With You.',
+        description:
+          'A deliberate, unhurried morning. Final breakfast together, a closing conversation about what you\'re taking home — practically and otherwise. Depart with more than you arrived with.',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+        activities: [
+          'Sunrise on ancestral land',
+          'Final communal breakfast',
+          'Closing circle and debrief',
+          'Departure',
+        ],
+      },
+    ],
+    included: [
+      { icon: '🌲', label: 'Guided Cultural Immersion', description: 'Led by Wabanaki educators, storytellers, and guides — not a performance, a relationship' },
+      { icon: '🍽️', label: 'All Meals', description: 'Collaborative dinners blending Indigenous and diasporic food traditions. Real food around a real fire' },
+      { icon: '⛺', label: 'Camping Gear', description: 'Tents, sleeping bags, pads — all provided. Low-impact camping designed to leave the land better than we found it' },
+      { icon: '🔥', label: 'Campfire Circles', description: 'Every evening ends around the fire with reflection, storytelling, and community' },
+      { icon: '🌿', label: 'Ecological Learning', description: 'Traditional ecological knowledge, plant medicine, watershed reading — how to see land the way it wants to be seen' },
+    ],
+    excluded: [
+      'Travel to the Katahdin region',
+      'Personal travel insurance',
+      'Hiking boots (required — must provide your own)',
+    ],
+    details: [
+      {
+        category: 'Guide',
+        title: 'Wabanaki Educators & Storytellers',
+        description: 'Dawnland is guided by Indigenous educators from the Penobscot Nation — people who have a living relationship with this land and its knowledge systems. This is not interpretation. It\'s direct transmission from people who belong to this place.',
+        image: 'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=800&q=80',
+      },
+      {
+        category: 'Accommodations',
+        title: 'Low-Impact Camping on Ancestral Land',
+        description: 'Small group camping on Penobscot Nation–associated land in the Katahdin region. Campsites are designed to minimize footprint and model regenerative practice. All gear provided. The wilderness is the accommodation.',
+        image: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80',
+      },
+      {
+        category: 'Meals',
+        title: 'Indigenous & Diasporic Food Traditions',
+        description: 'Every meal is a collaboration — Wabanaki food traditions alongside diaspora cooking from Camp Monroe\'s kitchen. Think wild-harvested ingredients, fire-cooked proteins, and recipes that connect you to place and people at the same time.',
+        image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+      },
+    ],
+    testimonials: [],
+    faqs: [
+      {
+        question: 'What is Dawnland?',
+        answer: 'Dawnland is a small-group camping experience on Wabanaki ancestral land near Katahdin, guided by Indigenous educators from the Penobscot Nation. It\'s built around traditional ecological knowledge, cultural storytelling, shared meals, and low-impact land stewardship. It\'s the most intentional thing we offer.',
+      },
+      {
+        question: 'Is there an official partnership with the Penobscot Nation?',
+        answer: 'We are actively building this program in alignment with Wabanaki cultural tourism priorities for 2026. We will open registration only when the partnership is formalized and the program is ready to deliver with integrity. The vision is shared; the details are being built with care. Get on the interest list and we\'ll keep you informed.',
+      },
+      {
+        question: 'How is this different from regular camping?',
+        answer: 'You\'re not just sleeping outside. You\'re on land that has been tended by the same people for thousands of years, guided by educators who have a living relationship with that land and its knowledge systems. Every element — the walks, the meals, the circles — is designed to teach you something real about place, ecology, and belonging.',
+      },
+      {
+        question: 'Who is this experience for?',
+        answer: 'Anyone who wants to go deeper than the average outdoor trip. You don\'t need camping experience or outdoor expertise. You need curiosity, openness, and a willingness to listen. This is for identity-centered travelers, cultural learners, and people who believe tourism can be something more than consumption.',
+      },
+      {
+        question: 'What does "land stewardship" mean in practice?',
+        answer: 'It means showing up to the land as a guest who wants to leave it better. On Day 2, there\'s an optional service project — native plant restoration, trail clearing, or waterway care — guided by Wabanaki educators. Low-impact camping practices are built into every part of the program. You learn by doing.',
+      },
+      {
+        question: 'How do I get notified when registration opens?',
+        answer: 'Join the interest list here. You\'ll be the first to know when dates are confirmed, and the first to access registration when it opens. No commitment required.',
       },
     ],
   },

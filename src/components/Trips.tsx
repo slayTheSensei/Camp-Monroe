@@ -1,7 +1,9 @@
-import { experiences } from '@/data/experiences'
+import { getExperiences } from '@/lib/data/experiences'
 import Link from 'next/link'
 
-export default function Trips() {
+export default async function Trips() {
+  const experiences = await getExperiences()
+
   return (
     <section id="trips" className="bg-cream py-24 md:py-32 px-6">
       <div className="max-w-6xl mx-auto">

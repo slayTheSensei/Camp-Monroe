@@ -7,7 +7,7 @@ type Props = { experience: Experience }
 
 export default function ExperienceHero({ experience }: Props) {
   const [activeImg, setActiveImg] = useState(0)
-  const isCustom = experience.type === 'Private / Group'
+  const isCustom = experience.type === 'Partner-Hosted Retreat'
 
   return (
     <section className="bg-cream pt-20">
