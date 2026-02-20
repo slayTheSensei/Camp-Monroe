@@ -25,32 +25,34 @@ export default function Trips() {
             <Link
               key={trip.slug}
               href={`/experiences/${trip.slug}`}
-              className="group relative overflow-hidden bg-forest rounded-sm cursor-pointer block"
+              className="group bg-forest rounded-sm cursor-pointer block overflow-hidden"
             >
-              {/* Image */}
-              <div
-                className="w-full h-52 md:h-64 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url('${trip.heroImages[0]}')` }}
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-forest/90 via-forest/20 to-transparent" />
+              {/* Image container — relative so tag/arrow badges are scoped to it */}
+              <div className="relative overflow-hidden">
+                <div
+                  className="w-full h-56 md:h-64 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url('${trip.heroImages[0]}')` }}
+                />
+                {/* Subtle gradient over image only */}
+                <div className="absolute inset-0 bg-gradient-to-t from-forest/60 via-transparent to-transparent" />
 
-              {/* Tag */}
-              {trip.tag && (
-                <div className={`absolute top-4 left-4 px-3 py-1 text-xs font-semibold tracking-widest uppercase rounded-full ${trip.tagColor}`}>
-                  {trip.tag}
+                {/* Tag badge */}
+                {trip.tag && (
+                  <div className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold tracking-widest uppercase rounded-full ${trip.tagColor}`}>
+                    {trip.tag}
+                  </div>
+                )}
+
+                {/* Arrow hint */}
+                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-cream/0 border border-cream/0 flex items-center justify-center text-cream/0 group-hover:bg-cream/10 group-hover:border-cream/30 group-hover:text-cream transition-all duration-300">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M2 10L10 2M10 2H4M10 2V8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
-              )}
-
-              {/* Arrow hint on hover */}
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-cream/0 border border-cream/0 flex items-center justify-center text-cream/0 group-hover:bg-cream/10 group-hover:border-cream/30 group-hover:text-cream transition-all duration-300">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M2 10L10 2M10 2H4M10 2V8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
               </div>
 
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+              {/* Content — sits below image, never overlaps */}
+              <div className="p-5 md:p-6">
                 <span className="text-amber text-xs tracking-[0.3em] uppercase">{trip.type}</span>
                 <h3 className="font-display text-cream text-xl md:text-2xl uppercase mt-1 mb-2">{trip.title}</h3>
                 <div className="flex gap-4 text-cream/50 text-xs mb-3">

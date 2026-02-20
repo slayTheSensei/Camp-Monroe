@@ -65,13 +65,23 @@ export default function Waitlist() {
               Get on the list to be first to know when trips drop, retreats open, and Camp Monroe
               is ready to welcome you to Maine.
             </p>
-            {/* Social proof placeholder */}
+            {/* Social proof */}
             <div className="flex items-center gap-4 text-cream/50 text-sm">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full bg-amber/20 border-2 border-forest"
+                {[
+                  { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
+                  { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
+                  { src: 'https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
+                  { src: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
+                ].map(({ src, alt }) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={src}
+                    src={src}
+                    alt={alt}
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 rounded-full border-2 border-forest object-cover"
                   />
                 ))}
               </div>
