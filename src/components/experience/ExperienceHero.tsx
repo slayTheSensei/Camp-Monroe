@@ -146,10 +146,10 @@ export default function ExperienceHero({ experience }: Props) {
               )}
               {experience.status === 'coming-soon' && (
                 <a
-                  href="/#waitlist"
+                  href="#book"
                   className="w-full bg-amber text-forest font-semibold py-4 rounded-full text-center tracking-wide hover:bg-amber/90 transition-colors"
                 >
-                  Join the Waitlist for Early Access
+                  Get Early Access
                 </a>
               )}
               {isCustom && (

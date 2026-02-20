@@ -350,6 +350,155 @@ export const experiences: Experience[] = [
   },
 
   {
+    slug: 'tour-de-boys',
+    type: 'Bike Ride',
+    title: 'Tour de Boys',
+    subtitle: 'Portland to Augusta along the East Coast Greenway',
+    location: 'Portland → Brunswick → Augusta, ME',
+    region: 'Southern & Central Maine',
+    dates: 'June 2026',
+    duration: '3 Days / 2 Nights',
+    groupSize: 20,
+    price: 595,
+    depositAmount: 179,
+    status: 'coming-soon',
+    tag: 'Coming 2026',
+    tagColor: 'bg-amber text-forest',
+    difficulty: 'Intermediate',
+    heroImages: [
+      'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=1400&q=85',
+      'https://images.unsplash.com/photo-1534787238916-9ba6764efd4f?w=1400&q=85',
+      'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1400&q=85',
+    ],
+    shortDescription:
+      'Three days. Sixty miles. Portland to Augusta along the East Coast Greenway — passing within five miles of Camp Monroe\'s home grounds. Named in honor of one of our most legendary members.',
+    longDescription:
+      "The Tour de Boys is our annual tribute ride — named after one of the Cambridge Gun & Rod Club's most storied members and the spirit of brotherhood, adventure, and joy that defined him. The route follows the East Coast Greenway northward from Portland through Brunswick and into Augusta, threading through Maine's most scenic coastal and inland corridors. It passes within five miles of Camp Monroe's home property in West Gardiner — a powerful reminder that these trails and this community have always been connected. No race. No pressure. Just miles, good company, and the kind of joy that only happens when you move through the world with people who see you.",
+    pullQuote:
+      'Some rides are about the finish line. This one is about everything in between.',
+    pullQuoteImage:
+      'https://images.unsplash.com/photo-1534787238916-9ba6764efd4f?w=1600&q=80',
+    itinerary: [
+      {
+        day: 1,
+        title: 'Portland — Set the Pace',
+        description:
+          'Gather in Portland\'s East End, gear check, and a rolling start through the Eastern Prom trail and out along Casco Bay. End the day in Brunswick with a community dinner.',
+        image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=800&q=80',
+        activities: [
+          'Morning gear check & rider briefing',
+          'Rolling start from Portland\'s Eastern Promenade',
+          'Scenic coastal route through Cape Elizabeth corridor',
+          'Overnight in Brunswick — group dinner & storytelling',
+        ],
+      },
+      {
+        day: 2,
+        title: 'Brunswick → West Gardiner — The Homecoming',
+        description:
+          'The heart of the ride. From Brunswick the Greenway carries us inland through Topsham, Richmond, and past the very grounds of Camp Monroe in West Gardiner. A moment to stop, breathe it in, and feel the connection.',
+        image: 'https://images.unsplash.com/photo-1534787238916-9ba6764efd4f?w=800&q=80',
+        activities: [
+          'Morning departure from Brunswick',
+          'Inland route through Topsham & Richmond',
+          'Ceremonial stop at Camp Monroe grounds in West Gardiner',
+          'Campfire lunch on the property',
+          'Evening camp at local partner site',
+        ],
+      },
+      {
+        day: 3,
+        title: 'West Gardiner → Augusta — Finish Line',
+        description:
+          'Final push into Augusta along the Kennebec River. Finish at Capitol Park, celebration lunch, and transportation back to Portland.',
+        image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=85',
+        activities: [
+          'Kennebec River trail into Augusta',
+          'Finish line celebration at Capitol Park',
+          'Group lunch & awards ceremony',
+          'Shuttle return to Portland',
+        ],
+      },
+    ],
+    included: [
+      { icon: '🚴', label: 'Guided Route Support', description: 'Certified ride leaders and sweep riders the full 60-mile route' },
+      { icon: '🚐', label: 'Support Vehicle', description: 'SAG wagon carries gear, handles mechanicals, and supports any riders who need a break' },
+      { icon: '🍽️', label: 'All Meals', description: 'Friday dinner through Sunday lunch — fueling every mile' },
+      { icon: '🏕️', label: 'Two Nights Lodging', description: 'Group accommodations both nights — no solo hotel scramble' },
+      { icon: '🔧', label: 'Mechanic on Call', description: 'Bike mechanic available throughout the ride for any trailside issues' },
+      { icon: '🚌', label: 'Return Shuttle', description: 'Post-ride shuttle from Augusta back to Portland' },
+    ],
+    excluded: [
+      'Your own bicycle (rentals available upon request)',
+      'Helmet (required — must provide your own or rent)',
+      'Personal travel insurance',
+      'Alcoholic beverages',
+      'Bike rental fee if needed (~$45/day)',
+    ],
+    details: [
+      {
+        category: 'Transportation',
+        title: 'The East Coast Greenway',
+        description:
+          'The East Coast Greenway is a 3,000-mile protected trail connecting Maine to Florida. Our route follows the Maine segment northward — largely on dedicated paths and quiet back roads — with minimal road exposure. The trail passes within five miles of the Cambridge Gun & Rod Club property.',
+        image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=800&q=80',
+      },
+      {
+        category: 'Guide',
+        title: 'Ride Leaders & Sweep Team',
+        description:
+          'Every Tour de Boys ride is led by experienced cycling guides who know the Greenway corridor inside and out. We ride together — no one dropped, no one left behind. The sweep rider ensures the whole group finishes.',
+        image: 'https://images.unsplash.com/photo-1516939884455-1445c8652f83?w=800&q=80',
+      },
+      {
+        category: 'Accommodations',
+        title: 'Two Nights, Zero Logistics',
+        description:
+          'We handle both nights of lodging — a group stay in Brunswick after Day 1, and a lakeside camp near West Gardiner on Day 2. All you need to pack is your riding kit and a good attitude.',
+        image: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80',
+      },
+      {
+        category: 'Meals',
+        title: 'Fueled the Right Way',
+        description:
+          'Long days in the saddle demand serious food. Our camp chef and local partners provide high-quality, energizing meals from Day 1 dinner through Day 3 celebration lunch. Dietary needs accommodated.',
+        image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80',
+      },
+    ],
+    testimonials: [],
+    faqs: [
+      {
+        question: 'What fitness level do I need?',
+        answer: 'The Tour de Boys covers approximately 20 miles per day over three days — manageable for recreational cyclists who ride regularly. We aren\'t racing; we\'re riding together. If you can comfortably ride 15–20 miles in a session, you\'re ready. If you\'re on the fence, reach out before signing up.',
+      },
+      {
+        question: 'Do I need my own bike?',
+        answer: 'Yes, you\'ll need a road or hybrid bike suitable for paved trails. If you don\'t have one, we can connect you with a local rental partner in Portland for approximately $45/day. Reach out after signing up and we\'ll coordinate.',
+      },
+      {
+        question: 'Is a helmet required?',
+        answer: 'Yes. A properly fitted helmet is required to participate. No exceptions. If you need help sourcing one, let us know.',
+      },
+      {
+        question: 'What\'s the significance of the name "Tour de Boys"?',
+        answer: 'The ride is named in honor of one of the Cambridge Gun & Rod Club\'s most beloved members — a man whose spirit of adventure, generosity, and joy defined the club\'s culture for decades. This ride is our annual tribute to him and to everyone who came before us on these roads.',
+      },
+      {
+        question: 'What happens if I can\'t finish a day\'s ride?',
+        answer: 'That\'s what the SAG wagon is for. Our support vehicle runs the full route and can pick you up at any point — no questions asked, no judgment. Your safety and enjoyment come first.',
+      },
+      {
+        question: 'Can I join for just one day?',
+        answer: 'The Tour de Boys is designed as a full three-day experience, and we encourage completing the whole route. If your schedule only allows for one or two days, reach out and we\'ll see what we can work out.',
+      },
+      {
+        question: 'What is the cancellation policy?',
+        answer: '90+ days before departure: full refund minus a $50 processing fee. 60–89 days: 75% refund. 31–59 days: 50% refund. Within 30 days: no refund, but your spot may be transferred to another rider.',
+      },
+    ],
+  },
+
+  {
     slug: 'custom-group-experience',
     type: 'Private / Group',
     title: 'Custom Group Experience',

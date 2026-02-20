@@ -32,7 +32,7 @@ export type FAQItem = {
 
 export type Experience = {
   slug: string
-  type: 'Weekend Camping' | 'Retreat' | 'Day Trip' | 'Private / Group'
+  type: 'Weekend Camping' | 'Retreat' | 'Day Trip' | 'Private / Group' | 'Bike Ride'
   title: string
   subtitle: string
   location: string
