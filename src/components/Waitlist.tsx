@@ -57,10 +57,10 @@ export default function Waitlist() {
             <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
               Be First
             </span>
-            <h2 className="font-display text-5xl md:text-6xl text-cream uppercase mt-3 mb-6 leading-none">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream uppercase mt-3 mb-6 leading-none">
               Join the<br />Waitlist
             </h2>
-            <p className="text-cream/70 text-lg leading-relaxed mb-8">
+            <p className="text-cream/70 text-base leading-relaxed mb-8">
               We&apos;re building something intentional—and limited capacity means we fill fast.
               Get on the list to be first to know when trips drop, retreats open, and Camp Monroe
               is ready to welcome you to Maine.
@@ -80,7 +80,7 @@ export default function Waitlist() {
           </div>
 
           {/* Right: Form */}
-          <div className="bg-cream/5 border border-cream/10 rounded-sm p-8">
+          <div className="bg-cream/5 border border-cream/10 rounded-sm p-5 md:p-8">
             {state === 'success' ? (
               <div className="text-center py-8">
                 <div className="text-amber text-5xl mb-4">✓</div>

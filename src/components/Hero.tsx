@@ -19,12 +19,12 @@ export default function Hero() {
         </span>
 
         {/* Headline */}
-        <h1 className="font-display text-[3.5rem] md:text-[5.5rem] lg:text-[7rem] text-cream uppercase leading-none tracking-tight drop-shadow-lg">
+        <h1 className="font-display text-[2.8rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] text-cream uppercase leading-none tracking-tight drop-shadow-lg">
           Come<br />Outside.
         </h1>
 
         {/* Subline */}
-        <p className="text-cream/75 text-lg md:text-xl max-w-md leading-relaxed text-center">
+        <p className="text-cream/75 text-base md:text-xl max-w-md leading-relaxed text-center">
           Guided camping, retreats, and outdoor adventures across Maine — where everyone belongs outside.
         </p>
 

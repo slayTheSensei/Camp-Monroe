@@ -8,13 +8,13 @@ export default function Story() {
         <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">Est. 2024</span>
 
         {/* Headline */}
-        <h2 className="font-display text-5xl md:text-7xl text-forest uppercase mt-3 mb-12 leading-none max-w-3xl">
+        <h2 className="font-display text-4xl md:text-6xl lg:text-7xl text-forest uppercase mt-3 mb-12 leading-none max-w-3xl">
           Rooted in<br />History
         </h2>
 
         {/* Full-width image with callout */}
-        <div className="relative mb-16">
-          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+        <div className="relative mb-20 md:mb-16">
+          <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden">
             <Image
               src="/history.png"
               alt="Cambridge Gun & Rod Club — historic photograph"
@@ -24,9 +24,9 @@ export default function Story() {
             />
           </div>
           {/* Callout badge */}
-          <div className="absolute bottom-0 left-0 translate-y-1/2 ml-6 md:ml-10 bg-forest text-cream px-6 py-4 max-w-xs shadow-lg">
+          <div className="absolute bottom-0 left-0 translate-y-1/2 mx-4 md:ml-10 bg-forest text-cream px-4 md:px-6 py-3 md:py-4 max-w-[calc(100%-2rem)] md:max-w-xs shadow-lg">
             <p className="text-amber text-xs tracking-widest uppercase font-medium mb-1">Founded 1893</p>
-            <p className="text-sm leading-relaxed text-cream/80">
+            <p className="text-xs md:text-sm leading-relaxed text-cream/80">
               The Cambridge Gun &amp; Rod Club — one of the oldest continuously operating Black
               outdoor clubs in America.
             </p>
@@ -56,7 +56,7 @@ export default function Story() {
             </p>
 
             {/* Stat row */}
-            <div className="grid grid-cols-3 gap-6 border-t border-forest/20 pt-8">
+            <div className="grid grid-cols-3 gap-4 border-t border-forest/20 pt-8">
               <div>
                 <p className="font-display text-3xl text-forest">130+</p>
                 <p className="text-sm text-forest/60 mt-1">Years of history</p>

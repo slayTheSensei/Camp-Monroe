@@ -77,7 +77,7 @@ export default function ExperienceHero({ experience }: Props) {
             </span>
 
             {/* Title */}
-            <h1 className="font-display text-4xl md:text-5xl text-forest uppercase leading-none mt-2 mb-1">
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-forest uppercase leading-none mt-2 mb-1">
               {experience.title}
             </h1>
             <p className="text-forest/60 text-base mb-6">{experience.subtitle}</p>
@@ -101,7 +101,7 @@ export default function ExperienceHero({ experience }: Props) {
             {!isCustom ? (
               <div className="mb-6">
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-4xl text-forest">
+                  <span className="font-display text-3xl md:text-4xl text-forest">
                     ${experience.price.toLocaleString()}
                   </span>
                   <span className="text-forest/50 text-sm">per person</span>

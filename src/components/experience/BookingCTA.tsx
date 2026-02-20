@@ -14,7 +14,7 @@ export default function BookingCTA({ experience }: Props) {
           <p className="text-forest/60 text-xs tracking-widest uppercase font-semibold mb-1">
             {isComingSoon ? 'Coming Soon' : isSoldOut ? 'Sold Out' : "Ready When You Are"}
           </p>
-          <h2 className="font-display text-3xl md:text-4xl text-forest uppercase leading-none">
+          <h2 className="font-display text-2xl md:text-3xl lg:text-4xl text-forest uppercase leading-none">
             {isCustom
               ? 'Build Your Group Experience'
               : isComingSoon

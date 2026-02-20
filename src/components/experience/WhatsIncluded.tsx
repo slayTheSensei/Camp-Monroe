@@ -17,7 +17,7 @@ export default function WhatsIncluded({ included, excluded }: Props) {
             <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
               All In
             </span>
-            <h2 className="font-display text-4xl md:text-5xl text-forest uppercase mt-3 mb-10 leading-none">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-forest uppercase mt-3 mb-8 md:mb-10 leading-none">
               What&apos;s<br />Included
             </h2>
             <div className="flex flex-col gap-5">
@@ -44,7 +44,7 @@ export default function WhatsIncluded({ included, excluded }: Props) {
                 <span className="text-forest/40 text-xs tracking-[0.4em] uppercase font-medium">
                   Not Covered
                 </span>
-                <h3 className="font-display text-3xl text-forest uppercase mt-3 mb-8 leading-none">
+                <h3 className="font-display text-2xl md:text-3xl text-forest uppercase mt-3 mb-6 md:mb-8 leading-none">
                   Not<br />Included
                 </h3>
                 <ul className="flex flex-col gap-3 mb-12">
@@ -59,7 +59,7 @@ export default function WhatsIncluded({ included, excluded }: Props) {
             )}
 
             {/* Reassurance note */}
-            <div className="bg-forest p-8">
+            <div className="bg-forest p-5 md:p-8">
               <p className="text-amber text-xs tracking-widest uppercase font-medium mb-3">
                 Our Promise
               </p>

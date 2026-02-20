@@ -11,7 +11,7 @@ export default function Itinerary({ days }: Props) {
         <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
           The Plan
         </span>
-        <h2 className="font-display text-5xl md:text-6xl text-cream uppercase mt-3 mb-14 leading-none">
+        <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream uppercase mt-3 mb-10 md:mb-14 leading-none">
           Your Itinerary
         </h2>
 
@@ -23,14 +23,14 @@ export default function Itinerary({ days }: Props) {
             >
               {/* Day number */}
               <div className="py-8 md:py-10 pr-6 flex items-start">
-                <span className="font-display text-4xl text-amber/30 group-hover:text-amber transition-colors leading-none">
+                <span className="font-display text-3xl md:text-4xl text-amber/30 group-hover:text-amber transition-colors leading-none">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
               </div>
 
               {/* Content */}
               <div className="py-8 md:py-10 md:pr-12">
-                <h3 className="font-display text-cream text-2xl uppercase mb-3 leading-tight">
+                <h3 className="font-display text-cream text-xl md:text-2xl uppercase mb-3 leading-tight">
                   {day.title}
                 </h3>
                 <p className="text-cream/65 text-base leading-relaxed mb-5">

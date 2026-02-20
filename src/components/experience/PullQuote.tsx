@@ -15,8 +15,8 @@ export default function PullQuote({ quote, image }: Props) {
 
       {/* Quote */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="text-amber text-6xl font-display leading-none mb-4 opacity-60">&ldquo;</div>
-        <p className="text-cream text-xl md:text-2xl lg:text-3xl font-light leading-relaxed italic">
+        <div className="text-amber text-4xl md:text-6xl font-display leading-none mb-4 opacity-60">&ldquo;</div>
+        <p className="text-cream text-base md:text-xl lg:text-2xl font-light leading-relaxed italic">
           {quote}
         </p>
       </div>

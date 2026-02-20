@@ -11,7 +11,7 @@ export default function TripDetails({ details }: Props) {
         <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
           The Details
         </span>
-        <h2 className="font-display text-4xl md:text-5xl text-forest uppercase mt-3 mb-14 leading-none">
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-forest uppercase mt-3 mb-10 md:mb-14 leading-none">
           What to Expect
         </h2>
 

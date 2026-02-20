@@ -16,13 +16,13 @@ export default function Testimonials({ testimonials }: Props) {
         <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
           Heard From the Trail
         </span>
-        <h2 className="font-display text-4xl md:text-5xl text-cream uppercase mt-3 mb-14 leading-none">
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-cream uppercase mt-3 mb-10 md:mb-14 leading-none">
           What People Say
         </h2>
 
         {/* Active quote */}
         <div className="min-h-[160px] flex flex-col items-center justify-center mb-10 px-4">
-          <blockquote className="text-cream/85 text-lg md:text-xl italic leading-relaxed max-w-2xl">
+          <blockquote className="text-cream/85 text-base md:text-lg lg:text-xl italic leading-relaxed max-w-2xl">
             &ldquo;{testimonials[active].quote}&rdquo;
           </blockquote>
           <div className="mt-6">

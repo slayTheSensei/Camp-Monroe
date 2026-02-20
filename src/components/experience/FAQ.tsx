@@ -16,7 +16,7 @@ export default function FAQ({ faqs }: Props) {
         <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
           Good Questions
         </span>
-        <h2 className="font-display text-4xl md:text-5xl text-forest uppercase mt-3 mb-12 leading-none">
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-forest uppercase mt-3 mb-10 md:mb-12 leading-none">
           FAQ
         </h2>
 

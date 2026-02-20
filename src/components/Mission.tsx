@@ -30,10 +30,10 @@ export default function Mission() {
 
         {/* Headline */}
         <div className="grid md:grid-cols-2 gap-12 mt-4 mb-16">
-          <h2 className="font-display text-5xl md:text-7xl text-cream uppercase leading-none">
+          <h2 className="font-display text-4xl md:text-6xl lg:text-7xl text-cream uppercase leading-none">
             The<br />Mission
           </h2>
-          <p className="text-cream/70 text-lg leading-relaxed self-end">
+          <p className="text-cream/70 text-base md:text-lg leading-relaxed self-end">
             Maine is stunning. Its forests, lakes, coastlines, and mountains deserve a wider audience.
             Camp Monroe exists to make the outdoors accessible, joyful, and culturally resonant for
             Black and brown explorers—while writing new chapters in a very old story.
@@ -43,11 +43,11 @@ export default function Mission() {
         {/* Pillars grid */}
         <div className="grid sm:grid-cols-2 gap-px bg-cream/10">
           {pillars.map((p) => (
-            <div key={p.number} className="bg-forest p-8 md:p-10 hover:bg-forest-light transition-colors group">
-              <span className="text-amber/50 font-display text-4xl group-hover:text-amber transition-colors">
+            <div key={p.number} className="bg-forest p-6 md:p-10 hover:bg-forest-light transition-colors group">
+              <span className="text-amber/50 font-display text-3xl md:text-4xl group-hover:text-amber transition-colors">
                 {p.number}
               </span>
-              <h3 className="text-cream font-display text-2xl uppercase mt-4 mb-3">{p.title}</h3>
+              <h3 className="text-cream font-display text-xl md:text-2xl uppercase mt-4 mb-3">{p.title}</h3>
               <p className="text-cream/60 text-base leading-relaxed">{p.body}</p>
             </div>
           ))}
@@ -55,7 +55,7 @@ export default function Mission() {
 
         {/* Pull quote */}
         <div className="mt-16 border-l-4 border-amber pl-8 max-w-2xl">
-          <blockquote className="text-cream/80 text-xl md:text-2xl italic leading-relaxed">
+          <blockquote className="text-cream/80 text-lg md:text-2xl italic leading-relaxed">
             &ldquo;People need more time outside. We&apos;re here to make sure that invitation
             reaches everyone.&rdquo;
           </blockquote>

@@ -9,11 +9,11 @@ export default function Trips() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
           <div>
             <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">What We Offer</span>
-            <h2 className="font-display text-5xl md:text-6xl text-forest uppercase mt-2 leading-none">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-forest uppercase mt-2 leading-none">
               The Experiences
             </h2>
           </div>
-          <p className="text-forest/60 text-base max-w-sm leading-relaxed">
+          <p className="text-forest/60 text-sm md:text-base max-w-sm leading-relaxed">
             From day hikes to multi-night retreats, every Camp Monroe experience is curated, guided,
             and built around community.
           </p>
@@ -29,7 +29,7 @@ export default function Trips() {
             >
               {/* Image */}
               <div
-                className="w-full h-64 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-52 md:h-64 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                 style={{ backgroundImage: `url('${trip.heroImages[0]}')` }}
               />
               {/* Overlay */}
@@ -50,9 +50,9 @@ export default function Trips() {
               </div>
 
               {/* Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                 <span className="text-amber text-xs tracking-[0.3em] uppercase">{trip.type}</span>
-                <h3 className="font-display text-cream text-2xl uppercase mt-1 mb-2">{trip.title}</h3>
+                <h3 className="font-display text-cream text-xl md:text-2xl uppercase mt-1 mb-2">{trip.title}</h3>
                 <div className="flex gap-4 text-cream/50 text-xs mb-3">
                   <span>{trip.location}</span>
                   <span>·</span>
