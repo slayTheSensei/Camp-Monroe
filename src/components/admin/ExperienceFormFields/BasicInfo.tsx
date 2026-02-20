@@ -10,6 +10,16 @@ const typeOptions = ['Weekend Camping', 'Retreat', 'Day Trip', 'Partner-Hosted R
 const statusOptions = ['draft', 'available', 'coming-soon', 'sold-out'] as const
 const difficultyOptions = ['Beginner', 'Intermediate', 'Advanced'] as const
 
+const tagColorPresets = [
+  { label: 'Amber', classes: 'bg-amber text-forest' },
+  { label: 'Forest', classes: 'bg-forest text-cream' },
+  { label: 'Cream', classes: 'bg-cream text-forest' },
+  { label: 'Red', classes: 'bg-red-500 text-white' },
+  { label: 'Sky', classes: 'bg-sky-500 text-white' },
+  { label: 'Violet', classes: 'bg-violet-500 text-white' },
+  { label: 'None', classes: '' },
+] as const
+
 function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -18,6 +28,8 @@ function slugify(text: string): string {
 }
 
 export default function BasicInfoFields({ data, update, isNew }: Props) {
+  const selectedPreset = tagColorPresets.find((p) => p.classes === (data.tagColor ?? ''))
+
   return (
     <div className="space-y-5">
       <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Basic Information</h3>
@@ -155,14 +167,29 @@ export default function BasicInfoFields({ data, update, isNew }: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tag Color (Tailwind classes)</label>
-          <input
-            type="text"
-            value={data.tagColor ?? ''}
-            onChange={(e) => update('tagColor', e.target.value || undefined)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
-            placeholder="e.g. bg-amber text-forest"
-          />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Tag Color</label>
+          <div className="flex items-center gap-2 flex-wrap">
+            {tagColorPresets.map((preset) => (
+              <button
+                key={preset.label}
+                type="button"
+                title={preset.label}
+                onClick={() => update('tagColor', preset.classes || undefined)}
+                className={`w-6 h-6 rounded-full border-2 transition-all ${
+                  preset.classes
+                    ? preset.classes.split(' ')[0] // bg-* class for swatch color
+                    : 'bg-white border-gray-300'
+                } ${
+                  (data.tagColor ?? '') === preset.classes
+                    ? 'ring-2 ring-offset-1 ring-gray-600 border-transparent'
+                    : 'border-transparent hover:scale-110'
+                }`}
+              />
+            ))}
+            <span className="text-xs text-gray-500 ml-1">
+              {selectedPreset?.label ?? 'None'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { createBrowserClient } from '@supabase/ssr'
+import DeleteConfirmDialog from './DeleteConfirmDialog'
 
 type WaitlistEntry = {
   id: string
@@ -17,10 +19,18 @@ type Props = {
 
 const PAGE_SIZE = 25
 
-export default function WaitlistTable({ entries }: Props) {
+export default function WaitlistTable({ entries: initialEntries }: Props) {
+  const [entries, setEntries] = useState<WaitlistEntry[]>(initialEntries)
   const [search, setSearch] = useState('')
   const [tripFilter, setTripFilter] = useState('')
   const [page, setPage] = useState(0)
+  const [deleteTarget, setDeleteTarget] = useState<WaitlistEntry | null>(null)
+  const [deleting, setDeleting] = useState(false)
+
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
 
   // Unique trip interests for filter dropdown
   const tripOptions = useMemo(() => {
@@ -62,6 +72,15 @@ export default function WaitlistTable({ entries }: Props) {
     a.download = `waitlist-${new Date().toISOString().slice(0, 10)}.csv`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return
+    setDeleting(true)
+    await supabase.from('waitlist').delete().eq('id', deleteTarget.id)
+    setEntries((prev) => prev.filter((e) => e.id !== deleteTarget.id))
+    setDeleting(false)
+    setDeleteTarget(null)
   }
 
   return (
@@ -109,6 +128,7 @@ export default function WaitlistTable({ entries }: Props) {
                 <th className="px-4 py-3 font-medium">Email</th>
                 <th className="px-4 py-3 font-medium">Trip Interest</th>
                 <th className="px-4 py-3 font-medium">Signup Date</th>
+                <th className="px-4 py-3 font-medium text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -123,6 +143,14 @@ export default function WaitlistTable({ entries }: Props) {
                       day: 'numeric',
                       year: 'numeric',
                     })}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => setDeleteTarget(entry)}
+                      className="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 rounded hover:bg-red-100 transition-colors"
+                    >
+                      ×
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -152,6 +180,17 @@ export default function WaitlistTable({ entries }: Props) {
             Next →
           </button>
         </div>
+      )}
+
+      {/* Delete dialog */}
+      {deleteTarget && (
+        <DeleteConfirmDialog
+          title="Delete Entry"
+          message={`Are you sure you want to delete the waitlist entry for "${deleteTarget.name}" (${deleteTarget.email})? This action cannot be undone.`}
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteTarget(null)}
+          loading={deleting}
+        />
       )}
     </div>
   )

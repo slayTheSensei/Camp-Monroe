@@ -1,178 +1,31 @@
-'use client'
+import { createSupabaseServer } from '@/lib/supabase-server'
+import WaitlistClient from './WaitlistClient'
 
-import { useState } from 'react'
-import { getSupabase } from '@/lib/supabase'
-
-const tripOptions = [
-  { value: 'weekend_camping', label: 'Weekend Camping Trips' },
-  { value: 'retreat', label: 'Camp Retreats' },
-  { value: 'day_trip', label: 'Day Trips & Hikes' },
-  { value: 'private_group', label: 'Private / Group Events' },
-  { value: 'all', label: 'All of the above' },
+const DEFAULT_IMAGES = [
+  'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=64&h=64&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=64&h=64&fit=crop&crop=face',
+  'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=64&h=64&fit=crop&crop=face',
 ]
 
-type FormState = 'idle' | 'loading' | 'success' | 'error'
+export default async function Waitlist() {
+  const supabase = await createSupabaseServer()
+  const { data } = await supabase
+    .from('site_content')
+    .select('key, value')
+    .eq('section', 'waitlist')
 
-export default function Waitlist() {
-  const [form, setForm] = useState({ name: '', email: '', trip_interest: '' })
-  const [state, setState] = useState<FormState>('idle')
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!form.name || !form.email || !form.trip_interest) return
-
-    setState('loading')
-    setErrorMsg('')
-
-    const { error } = await getSupabase().from('waitlist').insert([
-      {
-        name: form.name.trim(),
-        email: form.email.trim().toLowerCase(),
-        trip_interest: form.trip_interest,
-      },
-    ])
-
-    if (error) {
-      if (error.code === '23505') {
-        // Duplicate email
-        setState('error')
-        setErrorMsg("You're already on the list! We'll be in touch soon.")
-      } else {
-        setState('error')
-        setErrorMsg('Something went wrong. Please try again.')
-      }
-    } else {
-      setState('success')
-      setForm({ name: '', email: '', trip_interest: '' })
-    }
+  const rows = data ?? []
+  function c(key: string, fallback: string): string {
+    return rows.find((r) => r.key === key)?.value || fallback
   }
 
-  return (
-    <section id="waitlist" className="bg-forest py-24 md:py-32 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          {/* Left: Copy */}
-          <div>
-            <span className="text-amber text-xs tracking-[0.4em] uppercase font-medium">
-              Be First
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-cream uppercase mt-3 mb-6 leading-none">
-              Join the<br />Waitlist
-            </h2>
-            <p className="text-cream/70 text-base leading-relaxed mb-8">
-              We&apos;re building something intentional—and limited capacity means we fill fast.
-              Get on the list to be first to know when trips drop, retreats open, and Camp Monroe
-              is ready to welcome you to Maine.
-            </p>
-            {/* Social proof */}
-            <div className="flex items-center gap-4 text-cream/50 text-sm">
-              <div className="flex -space-x-2">
-                {[
-                  { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
-                  { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
-                  { src: 'https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
-                  { src: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=64&h=64&fit=crop&crop=face', alt: 'Community member' },
-                ].map(({ src, alt }) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={src}
-                    src={src}
-                    alt={alt}
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 rounded-full border-2 border-forest object-cover"
-                  />
-                ))}
-              </div>
-              <span>Join hundreds of Black &amp; brown outdoor enthusiasts</span>
-            </div>
-          </div>
+  const socialProofImages = [
+    c('social_proof_1', DEFAULT_IMAGES[0]),
+    c('social_proof_2', DEFAULT_IMAGES[1]),
+    c('social_proof_3', DEFAULT_IMAGES[2]),
+    c('social_proof_4', DEFAULT_IMAGES[3]),
+  ]
 
-          {/* Right: Form */}
-          <div className="bg-cream/5 border border-cream/10 rounded-sm p-5 md:p-8">
-            {state === 'success' ? (
-              <div className="text-center py-8">
-                <div className="text-amber text-5xl mb-4">✓</div>
-                <h3 className="font-display text-cream text-3xl uppercase mb-3">
-                  You&apos;re In.
-                </h3>
-                <p className="text-cream/70 text-base leading-relaxed">
-                  Welcome to the Camp Monroe community. We&apos;ll reach out with early access,
-                  trip drops, and everything you need to know before your first adventure.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <div>
-                  <label className="text-cream/60 text-xs tracking-widest uppercase block mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Your name"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full bg-cream/10 border border-cream/20 text-cream placeholder-cream/30 px-4 py-3 rounded-sm text-base focus:outline-none focus:border-amber transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-cream/60 text-xs tracking-widest uppercase block mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="your@email.com"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full bg-cream/10 border border-cream/20 text-cream placeholder-cream/30 px-4 py-3 rounded-sm text-base focus:outline-none focus:border-amber transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-cream/60 text-xs tracking-widest uppercase block mb-2">
-                    I&apos;m Most Interested In
-                  </label>
-                  <select
-                    required
-                    value={form.trip_interest}
-                    onChange={(e) => setForm({ ...form, trip_interest: e.target.value })}
-                    className="w-full bg-cream/10 border border-cream/20 text-cream px-4 py-3 rounded-sm text-base focus:outline-none focus:border-amber transition-colors appearance-none"
-                  >
-                    <option value="" disabled className="text-forest">
-                      Select an experience type
-                    </option>
-                    {tripOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value} className="text-forest">
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {state === 'error' && (
-                  <p className="text-red-400 text-sm">{errorMsg}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={state === 'loading'}
-                  className="bg-amber text-forest font-semibold px-6 py-4 rounded-full text-base tracking-wide hover:bg-amber/90 transition-all hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-                >
-                  {state === 'loading' ? 'Signing you up...' : 'Count Me In'}
-                </button>
-
-                <p className="text-cream/30 text-xs text-center">
-                  No spam. Just camp. Unsubscribe anytime.
-                </p>
-              </form>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
+  return <WaitlistClient socialProofImages={socialProofImages} />
 }

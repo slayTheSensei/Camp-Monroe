@@ -8,6 +8,7 @@ const navItems = [
   { label: 'Dashboard', href: '/admin', icon: DashboardIcon },
   { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
   { label: 'Waitlist', href: '/admin/waitlist', icon: WaitlistIcon },
+  { label: 'Content', href: '/admin/content', icon: ContentIcon },
 ]
 
 type Props = {
@@ -125,6 +126,15 @@ function WaitlistIcon({ active }: { active: boolean }) {
       className={active ? 'text-amber' : 'text-cream/40'}>
       <path d="M12 5a3 3 0 11-6 0 3 3 0 016 0z" />
       <path d="M2 17c0-3.3 2.7-6 6-6h2c3.3 0 6 2.7 6 6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function ContentIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
+      className={active ? 'text-amber' : 'text-cream/40'}>
+      <path d="M3 4h12M3 8h8M3 12h10M3 16h6" strokeLinecap="round" />
     </svg>
   )
 }

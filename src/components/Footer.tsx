@@ -1,6 +1,18 @@
 import Image from 'next/image'
+import { createSupabaseServer } from '@/lib/supabase-server'
 
-export default function Footer() {
+export default async function Footer() {
+  const supabase = await createSupabaseServer()
+  const { data } = await supabase
+    .from('site_content')
+    .select('key, value')
+    .eq('section', 'footer')
+
+  const rows = data ?? []
+  function c(key: string, fallback: string): string {
+    return rows.find((r) => r.key === key)?.value || fallback
+  }
+
   return (
     <footer className="bg-forest border-t border-cream/10 px-6 py-14">
       <div className="max-w-6xl mx-auto">
@@ -8,15 +20,14 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Image
-              src="/brand/monogram-light.png"
+              src={c('monogram_url', '/brand/monogram-light.png')}
               alt="Camp Monroe"
               width={80}
               height={80}
               className="h-16 w-auto mb-4"
             />
             <p className="text-cream/50 text-sm leading-relaxed max-w-xs">
-              Guided outdoor experiences in Maine, rooted in the legacy of Black outdoor culture
-              since 1893.
+              {c('brand_description', 'Guided outdoor experiences in Maine, rooted in the legacy of Black outdoor culture since 1893.')}
             </p>
           </div>
 
@@ -46,13 +57,13 @@ export default function Footer() {
           <div>
             <h4 className="text-amber text-xs tracking-[0.3em] uppercase mb-5">Get in Touch</h4>
             <p className="text-cream/60 text-sm leading-relaxed">
-              Questions, partnerships, or press inquiries—we&apos;d love to hear from you.
+              {c('contact_intro', "Questions, partnerships, or press inquiries—we'd love to hear from you.")}
             </p>
             <a
-              href="mailto:hello@campmonroe.com"
+              href={`mailto:${c('contact_email', 'hello@campmonroe.com')}`}
               className="text-cream text-sm hover:text-amber transition-colors block mt-3"
             >
-              hello@campmonroe.com
+              {c('contact_email', 'hello@campmonroe.com')}
             </a>
 
             {/* Social */}
@@ -80,7 +91,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Camp Monroe. All rights reserved.
           </p>
           <p className="text-cream/30 text-xs">
-            Built on the grounds of the Cambridge Gun &amp; Rod Club, West Gardiner, ME — est. 1893
+            {c('attribution', 'Built on the grounds of the Cambridge Gun & Rod Club, West Gardiner, ME — est. 1893')}
           </p>
         </div>
       </div>

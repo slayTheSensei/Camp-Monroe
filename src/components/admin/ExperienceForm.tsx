@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 import { Experience } from '@/types/experience'
@@ -14,6 +14,7 @@ import ExcludedEditor from './ExperienceFormFields/ExcludedEditor'
 import DetailsEditor from './ExperienceFormFields/DetailsEditor'
 import TestimonialsEditor from './ExperienceFormFields/TestimonialsEditor'
 import FaqEditor from './ExperienceFormFields/FaqEditor'
+import DeleteConfirmDialog from './DeleteConfirmDialog'
 
 export type ExperienceFormData = Experience
 
@@ -23,6 +24,7 @@ const tabs = [
   'Content',
   'Images',
   'Itinerary',
+  'Logistics',
   'Details',
   'Social Proof',
 ] as const
@@ -32,6 +34,7 @@ type Tab = (typeof tabs)[number]
 type Props = {
   initialData?: ExperienceFormData & { id: string }
   isNew?: boolean
+  slug?: string
 }
 
 function createEmptyExperience(): ExperienceFormData {
@@ -65,11 +68,48 @@ function createEmptyExperience(): ExperienceFormData {
   }
 }
 
-export default function ExperienceForm({ initialData, isNew }: Props) {
+function hasContent(tab: Tab, data: ExperienceFormData): boolean {
+  switch (tab) {
+    case 'Basics':
+      return !!data.title
+    case 'Pricing':
+      return data.price > 0
+    case 'Content':
+      return !!data.shortDescription
+    case 'Images':
+      return data.heroImages.length > 0
+    case 'Itinerary':
+      return data.itinerary.length > 0
+    case 'Logistics':
+      return data.included.length > 0 || data.excluded.length > 0
+    case 'Details':
+      return data.details.length > 0
+    case 'Social Proof':
+      return data.testimonials.length > 0 || data.faqs.length > 0
+  }
+}
+
+function formatLastSaved(date: Date): string {
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffSec = Math.floor(diffMs / 1000)
+  const diffMin = Math.floor(diffSec / 60)
+
+  if (diffSec < 10) return 'Saved just now'
+  if (diffSec < 60) return `Saved ${diffSec} sec ago`
+  if (diffMin < 60) return `Saved ${diffMin} min ago`
+  return `Saved at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+}
+
+export default function ExperienceForm({ initialData, isNew, slug }: Props) {
   const [data, setData] = useState<ExperienceFormData>(initialData ?? createEmptyExperience())
   const [activeTab, setActiveTab] = useState<Tab>('Basics')
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [isDirty, setIsDirty] = useState(false)
+  const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const [, setTick] = useState(0)
+  const [showDiscardDialog, setShowDiscardDialog] = useState(false)
   const router = useRouter()
 
   const supabase = createBrowserClient(
@@ -77,9 +117,27 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  function update<K extends keyof ExperienceFormData>(key: K, value: ExperienceFormData[K]) {
+  // Tick every minute so relative time updates
+  useEffect(() => {
+    const interval = setInterval(() => setTick((t) => t + 1), 60000)
+    return () => clearInterval(interval)
+  }, [])
+
+  // Warn on tab close when dirty
+  useEffect(() => {
+    if (!isDirty) return
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [isDirty])
+
+  const update = useCallback(<K extends keyof ExperienceFormData>(key: K, value: ExperienceFormData[K]) => {
     setData((prev) => ({ ...prev, [key]: value }))
-  }
+    setIsDirty(true)
+  }, [])
 
   function showToast(type: 'success' | 'error', message: string) {
     setToast({ type, message })
@@ -123,6 +181,8 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
       const res = await supabase.from('experiences').insert(row).select('id').single()
       error = res.error
       if (!error && res.data) {
+        setIsDirty(false)
+        setLastSaved(new Date())
         router.push(`/admin/experiences/${res.data.id}`)
         router.refresh()
         showToast('success', 'Experience created')
@@ -139,28 +199,49 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
     if (error) {
       showToast('error', error.message)
     } else {
+      setIsDirty(false)
+      setLastSaved(new Date())
       showToast('success', 'Changes saved')
       router.refresh()
     }
   }
 
+  function handleBackToList() {
+    if (isDirty) {
+      setShowDiscardDialog(true)
+    } else {
+      router.push('/admin/experiences')
+    }
+  }
+
+  const activeSlug = slug ?? data.slug
+  const showViewOnSite = !!activeSlug && data.status !== 'draft'
+
   return (
     <div>
       {/* Tab navigation */}
       <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg overflow-x-auto">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
-              activeTab === tab
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
+        {tabs.map((tab) => {
+          const filled = hasContent(tab, data)
+          return (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap flex flex-col items-center gap-0.5 ${
+                activeTab === tab
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              <span>{tab}</span>
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  filled ? 'bg-green-400' : 'bg-gray-300'
+                }`}
+              />
+            </button>
+          )
+        })}
       </div>
 
       {/* Tab content */}
@@ -168,10 +249,12 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
         {activeTab === 'Basics' && <BasicInfoFields data={data} update={update} isNew={!!isNew} />}
         {activeTab === 'Pricing' && <PricingFields data={data} update={update} />}
         {activeTab === 'Content' && <ContentFields data={data} update={update} />}
-        {activeTab === 'Images' && <ImagesFields data={data} update={update} />}
+        {activeTab === 'Images' && <ImagesFields data={data} update={update} slug={activeSlug} />}
         {activeTab === 'Itinerary' && (
+          <ItineraryEditor items={data.itinerary} onChange={(v) => update('itinerary', v)} />
+        )}
+        {activeTab === 'Logistics' && (
           <div className="space-y-6">
-            <ItineraryEditor items={data.itinerary} onChange={(v) => update('itinerary', v)} />
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-3">What&apos;s Included</h3>
               <IncludedEditor items={data.included} onChange={(v) => update('included', v)} />
@@ -193,13 +276,31 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
 
       {/* Save bar */}
       <div className="flex items-center justify-between mt-6 bg-white rounded-lg border border-gray-200 px-6 py-4">
-        <button
-          onClick={() => router.push('/admin/experiences')}
-          className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          ← Back to List
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleBackToList}
+            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            ← Back to List
+          </button>
+          {showViewOnSite && (
+            <a
+              href={`/experiences/${activeSlug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-amber hover:text-amber/80 flex items-center gap-1 transition-colors"
+            >
+              View on site ↗
+            </a>
+          )}
+        </div>
         <div className="flex items-center gap-3">
+          {isDirty && (
+            <span className="text-xs text-amber/70 font-medium">Unsaved changes</span>
+          )}
+          {lastSaved && !isDirty && (
+            <span className="text-xs text-gray-400">{formatLastSaved(lastSaved)}</span>
+          )}
           {toast && (
             <span className={`text-sm ${toast.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
               {toast.message}
@@ -214,6 +315,20 @@ export default function ExperienceForm({ initialData, isNew }: Props) {
           </button>
         </div>
       </div>
+
+      {/* Discard changes dialog */}
+      {showDiscardDialog && (
+        <DeleteConfirmDialog
+          title="Discard changes?"
+          message="You have unsaved changes. Are you sure you want to leave?"
+          onConfirm={() => {
+            setShowDiscardDialog(false)
+            setIsDirty(false)
+            router.push('/admin/experiences')
+          }}
+          onCancel={() => setShowDiscardDialog(false)}
+        />
+      )}
     </div>
   )
 }

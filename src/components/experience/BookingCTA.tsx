@@ -102,9 +102,13 @@ export default function BookingCTA({ experience }: Props) {
             </>
           )}
           {isSoldOut && (
-            <span className="bg-forest/30 text-forest/50 font-semibold px-8 py-4 rounded-full tracking-wide text-center cursor-not-allowed">
-              Sold Out
-            </span>
+            <div className="flex flex-col items-start gap-3 max-w-sm">
+              <div>
+                <p className="text-forest font-semibold text-base">This trip is sold out.</p>
+                <p className="text-forest/70 text-sm mt-1">Join the waitlist and we&apos;ll reach out if a spot opens.</p>
+              </div>
+              <ExperienceSignup experience={experience} />
+            </div>
           )}
         </div>
       </div>

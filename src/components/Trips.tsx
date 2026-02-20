@@ -61,6 +61,8 @@ export default async function Trips() {
                   <span>{trip.location}</span>
                   <span>·</span>
                   <span>{trip.duration}</span>
+                  <span>·</span>
+                  <span>from ${trip.price.toLocaleString()}</span>
                 </div>
                 <p className="text-cream/70 text-sm leading-relaxed">{trip.shortDescription}</p>
               </div>

@@ -21,7 +21,7 @@ export default async function EditExperiencePage({ params }: Props) {
         <StatusBadge status={experience.status} />
       </div>
 
-      <ExperienceForm initialData={experience} />
+      <ExperienceForm initialData={experience} slug={experience.slug} />
     </div>
   )
 }
