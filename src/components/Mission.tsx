@@ -1,23 +1,23 @@
 const pillars = [
   {
     number: '01',
-    title: 'Reclaim the Wild',
-    body: 'Black and brown people have always had a relationship with the natural world. We create space to reconnect—on our terms, in our way.',
+    title: 'The Outdoors Is for Everyone',
+    body: 'Always has been. We exist to make that real — for Black, Latino, Indigenous, and all communities who\'ve been made to feel otherwise. Show up. The door is open.',
   },
   {
     number: '02',
-    title: 'Build the Corridor',
-    body: 'We are actively partnering with Maine tourism to build a Black Tourism Corridor—bringing a new generation of travelers to the state and creating economic opportunity along the way.',
+    title: 'Come for the Weekend. Stay for Life.',
+    body: 'We\'re building a new relationship between communities of color and the state of Maine. Tourism is just the beginning. Every mile ridden and fire gathered around moves us toward a Maine that reflects all of us.',
   },
   {
     number: '03',
-    title: 'Expand Who Belongs',
-    body: 'The outdoors is for everyone. We\'re expanding the table—bringing new voices, new energy, and new stories to spaces that have always had room for more.',
+    title: 'The Legacy Is Real',
+    body: 'W.E.B. Du Bois rode these roads. Major Taylor proved what\'s possible. The Cambridge Gun & Rod Club has stood on this land since 1893. We didn\'t start this — we\'re just the next chapter.',
   },
   {
     number: '04',
     title: 'Community First',
-    body: 'These aren\'t just trips. They\'re gatherings. Every experience is designed around food, culture, restoration, and the deep joy of being outside with your people.',
+    body: 'These aren\'t just trips. They\'re gatherings. Every experience is built around great food, real culture, and the deep joy of being outside with people who get it.',
   },
 ]
 
@@ -34,9 +34,9 @@ export default function Mission() {
             The<br />Mission
           </h2>
           <p className="text-cream/70 text-base md:text-lg leading-relaxed self-end">
-            Maine is stunning. Its forests, lakes, coastlines, and mountains deserve a wider audience.
-            Camp Monroe exists to make the outdoors accessible, joyful, and culturally resonant for
-            Black and brown explorers—while writing new chapters in a very old story.
+            Maine is stunning — its forests, lakes, coastlines, and mountains deserve a wider audience.
+            Camp Monroe exists to make sure that invitation reaches everyone, while honoring 130 years
+            of Black outdoor culture on this land.
           </p>
         </div>
 
@@ -56,8 +56,8 @@ export default function Mission() {
         {/* Pull quote */}
         <div className="mt-16 border-l-4 border-amber pl-8 max-w-2xl">
           <blockquote className="text-cream/80 text-lg md:text-2xl italic leading-relaxed">
-            &ldquo;People need more time outside. We&apos;re here to make sure that invitation
-            reaches everyone.&rdquo;
+            &ldquo;If you weren&apos;t welcome at their table, we built a better one.
+            That&apos;s been true since 1893. It&apos;s still true now.&rdquo;
           </blockquote>
           <cite className="text-amber text-sm tracking-widest uppercase mt-4 block not-italic">
             — Camp Monroe

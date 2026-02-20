@@ -23,8 +23,9 @@ export default function BookingCTA({ experience }: Props) {
                 Get Early<br />Access
               </h2>
               <p className="text-cream/70 text-base leading-relaxed mb-6">
-                {experience.title} is still in the works — but spots will be limited and early registrants
-                get first pick. Drop your name and we&apos;ll reach out the moment the ride opens.
+                {experience.title} is coming in 2026. Spots will be limited.
+                Get your name in now and you&apos;ll be the first to know when registration opens —
+                and the first to ride.
               </p>
               <div className="space-y-3 text-cream/60 text-sm">
                 <div className="flex items-center gap-3">
@@ -33,11 +34,11 @@ export default function BookingCTA({ experience }: Props) {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-amber">✓</span>
-                  <span>Route updates and trip details as they drop</span>
+                  <span>Event updates and route details as they drop</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-amber">✓</span>
-                  <span>No commitment until you&apos;re ready to book</span>
+                  <span>No commitment — just your spot in line</span>
                 </div>
               </div>
             </div>

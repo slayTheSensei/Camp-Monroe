@@ -37,22 +37,24 @@ export default function Story() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start pt-10">
           <div>
             <p className="text-forest/80 text-lg leading-relaxed mb-6">
-              Camp Monroe is built on land with a story. Our home base sits on the grounds of the
-              <strong className="text-forest"> Cambridge Gun &amp; Rod Club</strong>—a historic Black
-              social and sporting club founded in 1893 by a group of Black Bostonians who refused to
-              be excluded from the outdoors.
+              The <strong className="text-forest">Cambridge Gun & Rod Club</strong> was founded in 1893
+              as a coalition of the excluded — Black and Jewish New Englanders who were locked out of
+              mainstream sporting clubs and refused to accept it. They built their own. Among their
+              most prominent members: <strong className="text-forest">W.E.B. Du Bois</strong>.
             </p>
             <p className="text-forest/80 text-lg leading-relaxed">
-              Among its early members: <strong className="text-forest">W.E.B. Du Bois</strong>.
-              Located in West Gardiner, Maine, the club stood as a quiet act of resistance—proof that
-              Black people have always belonged in nature, have always found joy and restoration in
-              the wild.
+              That coalition evolved as times changed. Now, over 130 years later, we find ourselves
+              in a new era — with new communities on the outside of spaces that should belong to
+              everyone. The founding spirit of this club has always been the same: if you're not
+              welcome at the table, build a better one.
             </p>
           </div>
           <div>
             <p className="text-forest/80 text-lg leading-relaxed mb-10">
-              We carry that legacy forward. Every trip we run, every fire we gather around, every
-              trail we hike is a continuation of over 130 years of Black outdoor culture.
+              Camp Monroe carries that legacy forward. We are a home for Black, Latino, Indigenous,
+              and all people who have been told the outdoors wasn't for them. Every trail we hike,
+              every fire we gather around, every mile we ride is a continuation of 130 years of
+              resistance — and joy.
             </p>
 
             {/* Stat row */}
@@ -62,8 +64,8 @@ export default function Story() {
                 <p className="text-sm text-forest/60 mt-1">Years of history</p>
               </div>
               <div>
-                <p className="font-display text-3xl text-forest">ME</p>
-                <p className="text-sm text-forest/60 mt-1">West Gardiner, Maine</p>
+                <p className="font-display text-3xl text-forest">1893</p>
+                <p className="text-sm text-forest/60 mt-1">Founded, West Gardiner ME</p>
               </div>
               <div>
                 <p className="font-display text-3xl text-forest">∞</p>
