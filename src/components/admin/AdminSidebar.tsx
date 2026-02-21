@@ -9,6 +9,7 @@ const navItems = [
   { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
   { label: 'Waitlist', href: '/admin/waitlist', icon: WaitlistIcon },
   { label: 'Content', href: '/admin/content', icon: ContentIcon },
+  { label: 'Users', href: '/admin/users', icon: UsersIcon },
 ]
 
 type Props = {
@@ -144,6 +145,18 @@ function ContentIcon({ active }: { active: boolean }) {
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
       className={active ? 'text-amber' : 'text-cream/40'}>
       <path d="M3 4h12M3 8h8M3 12h10M3 16h6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function UsersIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
+      className={active ? 'text-amber' : 'text-cream/40'}>
+      <path d="M11 5a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path d="M1 17c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5" strokeLinecap="round" />
+      <path d="M14 8a2.5 2.5 0 100-5" strokeLinecap="round" />
+      <path d="M17 17c0-2.5-1.5-4.5-3-5" strokeLinecap="round" />
     </svg>
   )
 }
