@@ -58,7 +58,8 @@ const statusConfig: Record<string, { label: string; selectClass: string }> = {
   },
 }
 
-// SortableRow sub-component
+// --- Desktop: SortableRow (table row) ---
+
 type SortableRowProps = {
   exp: ExperienceRow
   dragDisabled: boolean
@@ -183,6 +184,131 @@ function SortableRow({
   )
 }
 
+// --- Mobile: SortableCard ---
+
+type SortableCardProps = SortableRowProps
+
+function SortableCard({
+  exp,
+  dragDisabled,
+  onStatusChange,
+  statusSaved,
+  onDuplicate,
+  duplicatingId,
+  duplicatedId,
+  onDelete,
+}: SortableCardProps) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: exp.id, disabled: dragDisabled })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  const currentStatus = exp.status ?? 'draft'
+  const cfg = statusConfig[currentStatus] ?? statusConfig.draft
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`bg-white rounded-lg border p-4 ${isDragging ? 'border-amber shadow-md' : 'border-gray-200'}`}
+    >
+      {/* Row 1: drag + title + actions */}
+      <div className="flex items-start gap-2">
+        {!dragDisabled && (
+          <span
+            {...attributes}
+            {...listeners}
+            className="text-gray-300 cursor-grab active:cursor-grabbing select-none text-lg leading-none mt-0.5 touch-none"
+          >
+            ⠿
+          </span>
+        )}
+        <div className="flex-1 min-w-0">
+          <Link href={`/admin/experiences/${exp.id}`} className="font-medium text-gray-900 hover:text-amber transition-colors text-sm">
+            {exp.title}
+          </Link>
+          <p className="text-gray-400 text-xs mt-0.5">/{exp.slug} · {exp.type}</p>
+        </div>
+
+        {/* Action menu toggle */}
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-2 -mr-2 -mt-1 text-gray-400 hover:text-gray-600"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="8" cy="3" r="1.5" />
+              <circle cx="8" cy="8" r="1.5" />
+              <circle cx="8" cy="13" r="1.5" />
+            </svg>
+          </button>
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
+              <div className="absolute right-0 top-full mt-1 z-20 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-36">
+                <Link
+                  href={`/admin/experiences/${exp.id}`}
+                  className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => { onDuplicate(exp); setMenuOpen(false) }}
+                  disabled={duplicatingId === exp.id}
+                  className="block w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                >
+                  {duplicatingId === exp.id ? 'Duplicating...' : duplicatedId === exp.id ? '✓ Duplicated' : 'Duplicate'}
+                </button>
+                <button
+                  onClick={() => { onDelete(exp); setMenuOpen(false) }}
+                  className="block w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                >
+                  Delete
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Row 2: status + price + dates */}
+      <div className="flex items-center gap-3 mt-3 flex-wrap">
+        <div className="flex items-center gap-1.5">
+          <select
+            value={currentStatus}
+            onChange={(e) => onStatusChange(exp.id, e.target.value)}
+            className={`text-xs font-medium rounded-full border px-2 py-0.5 appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-1 ${cfg.selectClass}`}
+          >
+            <option value="draft">Draft</option>
+            <option value="available">Available</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="sold-out">Sold Out</option>
+          </select>
+          {statusSaved[exp.id] && (
+            <span className="text-green-600 text-xs font-medium">✓</span>
+          )}
+        </div>
+        <span className="text-gray-600 text-xs">${exp.price.toLocaleString()}</span>
+        <span className="text-gray-400 text-xs">{exp.dates}</span>
+      </div>
+    </div>
+  )
+}
+
+// --- Main list component ---
+
 export default function ExperienceList({ experiences: initialExperiences }: Props) {
   const [filter, setFilter] = useState('All')
   const [search, setSearch] = useState('')
@@ -304,23 +430,33 @@ export default function ExperienceList({ experiences: initialExperiences }: Prop
 
   const dragDisabled = filter !== 'All'
 
+  const sharedProps = {
+    dragDisabled,
+    onStatusChange: handleStatusChange,
+    statusSaved,
+    onDuplicate: handleDuplicate,
+    duplicatingId,
+    duplicatedId,
+    onDelete: setDeleteTarget,
+  }
+
   return (
     <div>
       {/* Search + filter row */}
-      <div className="flex flex-wrap gap-3 mb-4 items-center">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-4 items-start sm:items-center">
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by title or slug..."
-          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 w-60 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 w-full sm:w-60 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
         />
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg overflow-x-auto max-w-full">
           {statusFilters.map((s) => (
             <button
               key={s}
               onClick={() => handleFilterChange(s)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
                 filter === s
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
@@ -332,53 +468,50 @@ export default function ExperienceList({ experiences: initialExperiences }: Prop
         </div>
       </div>
 
-      {/* Table */}
       {filtered.length === 0 ? (
         <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
           <p className="text-gray-400 text-sm">No experiences match this filter.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100 bg-gray-50/50">
-                <th className="px-2 py-3 w-8" />
-                <th className="px-4 py-3 font-medium">Experience</th>
-                <th className="px-4 py-3 font-medium">Type</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Price</th>
-                <th className="px-4 py-3 font-medium">Dates</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={filtered.map((e) => e.id)}
-                strategy={verticalListSortingStrategy}
-              >
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={filtered.map((e) => e.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {/* Desktop table — hidden on mobile */}
+            <div className="hidden md:block bg-white rounded-lg border border-gray-200 overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100 bg-gray-50/50">
+                    <th className="px-2 py-3 w-8" />
+                    <th className="px-4 py-3 font-medium">Experience</th>
+                    <th className="px-4 py-3 font-medium">Type</th>
+                    <th className="px-4 py-3 font-medium">Status</th>
+                    <th className="px-4 py-3 font-medium">Price</th>
+                    <th className="px-4 py-3 font-medium">Dates</th>
+                    <th className="px-4 py-3 font-medium text-right">Actions</th>
+                  </tr>
+                </thead>
                 <tbody className="divide-y divide-gray-50">
                   {filtered.map((exp) => (
-                    <SortableRow
-                      key={exp.id}
-                      exp={exp}
-                      dragDisabled={dragDisabled}
-                      onStatusChange={handleStatusChange}
-                      statusSaved={statusSaved}
-                      onDuplicate={handleDuplicate}
-                      duplicatingId={duplicatingId}
-                      duplicatedId={duplicatedId}
-                      onDelete={setDeleteTarget}
-                    />
+                    <SortableRow key={exp.id} exp={exp} {...sharedProps} />
                   ))}
                 </tbody>
-              </SortableContext>
-            </DndContext>
-          </table>
-        </div>
+              </table>
+            </div>
+
+            {/* Mobile card list — hidden on desktop */}
+            <div className="md:hidden space-y-3">
+              {filtered.map((exp) => (
+                <SortableCard key={exp.id} exp={exp} {...sharedProps} />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
 
       {/* Delete dialog */}

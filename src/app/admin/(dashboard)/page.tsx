@@ -93,7 +93,7 @@ export default async function AdminDashboard() {
             <p className="text-gray-400 text-sm py-4">No signups yet.</p>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm min-w-[500px]">
                 <thead>
                   <tr className="text-left text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100">
                     <th className="pb-2 font-medium">Name</th>

@@ -175,7 +175,7 @@ export default function BasicInfoFields({ data, update, isNew }: Props) {
                 type="button"
                 title={preset.label}
                 onClick={() => update('tagColor', preset.classes || undefined)}
-                className={`w-6 h-6 rounded-full border-2 transition-all ${
+                className={`w-8 h-8 sm:w-6 sm:h-6 rounded-full border-2 transition-all ${
                   preset.classes
                     ? preset.classes.split(' ')[0] // bg-* class for swatch color
                     : 'bg-white border-gray-300'

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard } from 'lucide-react'
 
 type Props = {
   linkStory: string
@@ -89,10 +88,9 @@ export default function NavClient({ linkStory, linkMission, linkTrips, ctaLabel,
           </a>
           <a
             href="/admin"
-            aria-label="Admin dashboard"
-            className={`opacity-40 hover:opacity-80 transition-opacity ${linkClass}`}
+            className={`text-sm tracking-wide transition-colors ${linkClass}`}
           >
-            <LayoutDashboard size={16} strokeWidth={1.5} />
+            Login
           </a>
         </div>
 
@@ -127,12 +125,10 @@ export default function NavClient({ linkStory, linkMission, linkTrips, ctaLabel,
           </a>
           <a
             href="/admin"
-            aria-label="Admin dashboard"
-            className="flex items-center gap-2 text-cream/50 hover:text-cream/80 transition-colors"
+            className="text-cream text-base tracking-wide"
             onClick={() => setOpen(false)}
           >
-            <LayoutDashboard size={16} strokeWidth={1.5} />
-            <span className="text-sm">Admin</span>
+            Login
           </a>
         </div>
       )}

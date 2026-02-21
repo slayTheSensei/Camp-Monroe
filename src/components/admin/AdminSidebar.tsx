@@ -13,9 +13,10 @@ const navItems = [
 
 type Props = {
   userEmail: string
+  onClose?: () => void
 }
 
-export default function AdminSidebar({ userEmail }: Props) {
+export default function AdminSidebar({ userEmail, onClose }: Props) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -37,12 +38,19 @@ export default function AdminSidebar({ userEmail }: Props) {
 
   return (
     <aside className="w-64 bg-forest text-cream flex flex-col min-h-screen shrink-0">
-      {/* Logo */}
-      <div className="px-6 py-6 border-b border-cream/10">
-        <Link href="/admin" className="block">
+      {/* Logo + mobile close */}
+      <div className="px-6 py-6 border-b border-cream/10 flex items-start justify-between">
+        <Link href="/admin" onClick={onClose} className="block">
           <h1 className="font-display text-xl uppercase italic tracking-wide">Camp Monroe</h1>
           <p className="text-cream/40 text-xs mt-0.5">Admin</p>
         </Link>
+        {onClose && (
+          <button onClick={onClose} className="md:hidden p-1 text-cream/50 hover:text-cream transition-colors -mr-2 -mt-1">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
@@ -53,6 +61,7 @@ export default function AdminSidebar({ userEmail }: Props) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                 active
                   ? 'bg-amber/20 text-amber'

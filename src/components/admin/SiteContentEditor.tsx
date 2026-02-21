@@ -107,24 +107,27 @@ export default function SiteContentEditor({ initialRows }: Props) {
   return (
     <div>
       {/* Section tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
-        {SECTIONS.map((s) => (
-          <button
-            key={s}
-            onClick={() => setActiveSection(s)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              activeSection === s
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-          >
-            {SECTION_LABELS[s]}
-          </button>
-        ))}
+      <div className="relative mb-6">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg overflow-x-auto scrollbar-hide">
+          {SECTIONS.map((s) => (
+            <button
+              key={s}
+              onClick={() => setActiveSection(s)}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
+                activeSection === s
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {SECTION_LABELS[s]}
+            </button>
+          ))}
+        </div>
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-100 to-transparent rounded-r-lg pointer-events-none sm:hidden" />
       </div>
 
       {/* Fields */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-5">
+      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 space-y-5">
         {sectionRows.map((row) => {
           const fieldKey = `${row.section}.${row.key}`
           const currentValue = values[fieldKey] ?? ''
@@ -133,7 +136,7 @@ export default function SiteContentEditor({ initialRows }: Props) {
             return (
               <div key={row.key}>
                 <label className="block text-sm font-medium text-gray-700 mb-2">{row.label}</label>
-                <div className="flex items-start gap-4">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                   {/* Preview thumbnail */}
                   <div className="w-20 h-20 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
                     {currentValue ? (
@@ -150,7 +153,7 @@ export default function SiteContentEditor({ initialRows }: Props) {
                     )}
                   </div>
 
-                  <div className="flex-1 space-y-2">
+                  <div className="w-full sm:flex-1 space-y-2">
                     {/* Action buttons */}
                     <div className="flex gap-2">
                       {/* Hidden file input */}
@@ -168,13 +171,13 @@ export default function SiteContentEditor({ initialRows }: Props) {
                       <button
                         onClick={() => fileInputRefs.current[fieldKey]?.click()}
                         disabled={uploadingField === fieldKey}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50 w-full sm:w-auto"
                       >
                         {uploadingField === fieldKey ? 'Uploading...' : 'Upload'}
                       </button>
                       <button
                         onClick={() => setBrowseField(fieldKey)}
-                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                        className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors w-full sm:w-auto"
                       >
                         Browse Storage
                       </button>

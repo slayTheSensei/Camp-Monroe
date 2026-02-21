@@ -220,32 +220,36 @@ export default function ExperienceForm({ initialData, isNew, slug }: Props) {
   return (
     <div>
       {/* Tab navigation */}
-      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg overflow-x-auto">
-        {tabs.map((tab) => {
-          const filled = hasContent(tab, data)
-          return (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap flex flex-col items-center gap-0.5 ${
-                activeTab === tab
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <span>{tab}</span>
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  filled ? 'bg-green-400' : 'bg-gray-300'
+      <div className="relative mb-6">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg overflow-x-auto scrollbar-hide">
+          {tabs.map((tab) => {
+            const filled = hasContent(tab, data)
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap flex flex-col items-center gap-0.5 ${
+                  activeTab === tab
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
                 }`}
-              />
-            </button>
-          )
-        })}
+              >
+                <span>{tab}</span>
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    filled ? 'bg-green-400' : 'bg-gray-300'
+                  }`}
+                />
+              </button>
+            )
+          })}
+        </div>
+        {/* Scroll fade hint on right edge (mobile) */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-100 to-transparent rounded-r-lg pointer-events-none sm:hidden" />
       </div>
 
       {/* Tab content */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
         {activeTab === 'Basics' && <BasicInfoFields data={data} update={update} isNew={!!isNew} />}
         {activeTab === 'Pricing' && <PricingFields data={data} update={update} />}
         {activeTab === 'Content' && <ContentFields data={data} update={update} />}
@@ -275,7 +279,7 @@ export default function ExperienceForm({ initialData, isNew, slug }: Props) {
       </div>
 
       {/* Save bar */}
-      <div className="flex items-center justify-between mt-6 bg-white rounded-lg border border-gray-200 px-6 py-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-6 bg-white rounded-lg border border-gray-200 px-4 sm:px-6 py-4">
         <div className="flex items-center gap-4">
           <button
             onClick={handleBackToList}
@@ -309,7 +313,7 @@ export default function ExperienceForm({ initialData, isNew, slug }: Props) {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="bg-forest text-cream font-semibold px-6 py-2.5 rounded-md text-sm hover:bg-forest/90 transition-colors disabled:opacity-50"
+            className="bg-forest text-cream font-semibold px-6 py-2.5 rounded-md text-sm hover:bg-forest/90 transition-colors disabled:opacity-50 w-full sm:w-auto"
           >
             {saving ? 'Saving...' : isNew ? 'Create Experience' : 'Save Changes'}
           </button>

@@ -92,17 +92,17 @@ export default function WaitlistTable({ entries: initialEntries }: Props) {
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(0) }}
           placeholder="Search by name or email..."
-          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 w-64 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
         />
         <select
           value={tripFilter}
           onChange={(e) => { setTripFilter(e.target.value); setPage(0) }}
-          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber flex-1 sm:flex-none"
         >
           <option value="">All Experiences</option>
           {tripOptions.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
-        <div className="flex-1" />
+        <div className="hidden sm:block flex-1" />
         <span className="text-xs text-gray-400">
           {filtered.length} of {entries.length} entries
         </span>
@@ -114,49 +114,85 @@ export default function WaitlistTable({ entries: initialEntries }: Props) {
         </button>
       </div>
 
-      {/* Table */}
+      {/* Empty state */}
       {paged.length === 0 ? (
         <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
           <p className="text-gray-400 text-sm">No entries found.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100 bg-gray-50/50">
-                <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Email</th>
-                <th className="px-4 py-3 font-medium">Trip Interest</th>
-                <th className="px-4 py-3 font-medium">Signup Date</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {paged.map((entry) => (
-                <tr key={entry.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-4 py-3 text-gray-900 font-medium">{entry.name}</td>
-                  <td className="px-4 py-3 text-gray-500">{entry.email}</td>
-                  <td className="px-4 py-3 text-gray-500">{entry.trip_interest || '—'}</td>
-                  <td className="px-4 py-3 text-gray-400">
+        <>
+          {/* Desktop table */}
+          <div className="hidden md:block bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-500 text-xs uppercase tracking-wider border-b border-gray-100 bg-gray-50/50">
+                  <th className="px-4 py-3 font-medium">Name</th>
+                  <th className="px-4 py-3 font-medium">Email</th>
+                  <th className="px-4 py-3 font-medium">Trip Interest</th>
+                  <th className="px-4 py-3 font-medium">Signup Date</th>
+                  <th className="px-4 py-3 font-medium text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {paged.map((entry) => (
+                  <tr key={entry.id} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-4 py-3 text-gray-900 font-medium">{entry.name}</td>
+                    <td className="px-4 py-3 text-gray-500">{entry.email}</td>
+                    <td className="px-4 py-3 text-gray-500">{entry.trip_interest || '—'}</td>
+                    <td className="px-4 py-3 text-gray-400">
+                      {new Date(entry.created_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        onClick={() => setDeleteTarget(entry)}
+                        className="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 rounded hover:bg-red-100 transition-colors"
+                      >
+                        ×
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile cards */}
+          <div className="md:hidden space-y-2">
+            {paged.map((entry) => (
+              <div key={entry.id} className="bg-white rounded-lg border border-gray-200 p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{entry.name}</p>
+                    <p className="text-xs text-gray-500 truncate mt-0.5">{entry.email}</p>
+                  </div>
+                  <button
+                    onClick={() => setDeleteTarget(entry)}
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-red-400 hover:text-red-600 shrink-0 -mr-2 -mt-2"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 3l8 8M11 3L3 11" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 mt-2 text-xs text-gray-400">
+                  <span className="text-gray-500">{entry.trip_interest || '—'}</span>
+                  <span>·</span>
+                  <span>
                     {new Date(entry.created_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',
                     })}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => setDeleteTarget(entry)}
-                      className="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 rounded hover:bg-red-100 transition-colors"
-                    >
-                      ×
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Pagination */}

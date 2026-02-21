@@ -29,7 +29,7 @@ export default function ExcludedEditor({ items, onChange }: Props) {
             className="flex-1 px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber focus:border-amber"
             placeholder="e.g. Flights to Maine"
           />
-          <button onClick={() => remove(i)} className="text-red-400 hover:text-red-600 text-sm px-2">
+          <button onClick={() => remove(i)} className="text-red-400 hover:text-red-600 text-sm min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0">
             ×
           </button>
         </div>

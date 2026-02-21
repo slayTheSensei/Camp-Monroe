@@ -142,7 +142,7 @@ export default function ImagesFields({ data, update, slug }: Props) {
           {showAddMenu && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setShowAddMenu(false)} />
-              <div className="absolute right-0 top-full mt-1 z-20 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-52">
+              <div className="absolute right-0 top-full mt-1 z-20 bg-white rounded-lg shadow-lg border border-gray-200 py-1 w-48 max-w-[calc(100vw-2rem)]">
                 <button
                   onClick={() => {
                     setShowAddMenu(false)

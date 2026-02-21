@@ -95,7 +95,7 @@ export default function StorageBrowser({ open, onClose, onSelect }: Props) {
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+      <div className="relative bg-white shadow-xl w-full h-full sm:h-auto sm:max-w-2xl sm:max-h-[80vh] sm:rounded-lg flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
           <div>
@@ -143,7 +143,7 @@ export default function StorageBrowser({ open, onClose, onSelect }: Props) {
               {folders.length > 0 && (
                 <div>
                   <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Folders</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {folders.map((folder) => (
                       <button
                         key={folder.name}
@@ -166,7 +166,7 @@ export default function StorageBrowser({ open, onClose, onSelect }: Props) {
                   <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
                     Images ({images.length})
                   </p>
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {images.map((img) => (
                       <button
                         key={img.name}

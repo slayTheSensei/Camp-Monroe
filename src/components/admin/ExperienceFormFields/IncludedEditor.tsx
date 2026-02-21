@@ -55,7 +55,7 @@ export default function IncludedEditor({ items, onChange }: Props) {
               />
             </div>
           </div>
-          <button onClick={() => remove(i)} className="text-red-400 hover:text-red-600 text-sm px-1 pt-5">
+          <button onClick={() => remove(i)} className="text-red-400 hover:text-red-600 text-sm min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0">
             ×
           </button>
         </div>
