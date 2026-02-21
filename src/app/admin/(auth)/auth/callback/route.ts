@@ -40,7 +40,11 @@ export async function GET(request: Request) {
   if (token_hash && type) {
     const { error } = await supabase.auth.verifyOtp({ token_hash, type })
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      // Invite and recovery flows always go to the set-password page
+      const destination = (type === 'invite' || type === 'recovery')
+        ? '/admin/update-password'
+        : next
+      return NextResponse.redirect(`${origin}${destination}`)
     }
   }
 

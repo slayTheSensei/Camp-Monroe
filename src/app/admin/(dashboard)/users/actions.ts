@@ -34,7 +34,7 @@ export async function inviteAdmin(email: string): Promise<{ error: string | null
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'
 
   const { error } = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${siteUrl}/admin/auth/callback?next=/admin/update-password`,
+    redirectTo: `${siteUrl}/admin/auth/callback`,
   })
 
   return { error: error?.message ?? null }
@@ -45,7 +45,7 @@ export async function resendInvite(email: string): Promise<{ error: string | nul
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'
 
   const { error } = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${siteUrl}/admin/auth/callback?next=/admin/update-password`,
+    redirectTo: `${siteUrl}/admin/auth/callback`,
   })
 
   return { error: error?.message ?? null }
@@ -61,7 +61,7 @@ export async function resetAdminPassword(email: string): Promise<{ error: string
   )
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${siteUrl}/admin/auth/callback?next=/admin/update-password`,
+    redirectTo: `${siteUrl}/admin/auth/callback`,
   })
 
   return { error: error?.message ?? null }
