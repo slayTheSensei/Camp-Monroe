@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Camp Monroe
 
-## Getting Started
+Marketing and booking website for Camp Monroe, built with Next.js 15 and Supabase.
 
-First, run the development server:
+**Live site:** [www.monroemaine.com](https://www.monroemaine.com)
+**Admin dashboard:** [www.monroemaine.com/admin](https://www.monroemaine.com/admin)
+
+---
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Database & Auth:** Supabase (Postgres + Auth)
+- **Storage:** Supabase Storage
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
+
+---
+
+## Local Development
+
+### 1. Install dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Set up environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file in the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+NEXT_PUBLIC_SITE_URL=http://localhost:3001
+```
 
-## Learn More
+- `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` — found in Supabase Dashboard → Project Settings → API
+- `SUPABASE_SERVICE_ROLE_KEY` — found in Supabase Dashboard → Project Settings → API (the long JWT, **never expose this client-side**)
+- `NEXT_PUBLIC_SITE_URL` — set to your production domain in Vercel (e.g. `https://www.monroemaine.com`)
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Run the dev server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev -- --port 3001
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3001](http://localhost:3001) to view the public site.
+Open [http://localhost:3001/admin](http://localhost:3001/admin) to access the admin dashboard.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Admin Dashboard
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Located at `/admin`. Requires an authenticated admin account.
+
+### Logging In
+
+Navigate to `/admin/login` and sign in with your admin email and password.
+
+### Sections
+
+#### Experiences
+Manage camp trip listings shown on the public site.
+
+- **Create / edit** trips — title, slug, description, price, dates, tags, status
+- **Images** — upload hero images and gallery photos to Supabase Storage; drag to reorder
+- **Itinerary** — add day-by-day schedule entries
+- **Included / Excluded** — bullet lists of what's covered
+- **Details** — structured trip info (group size, skill level, etc.)
+- **Testimonials & FAQs** — manage social proof and common questions
+- **Status** — `draft` (hidden from public), `active`, or `sold-out`
+- **Sold-out notify-me** — when a trip is sold-out, visitors can submit their email to be notified
+
+#### Waitlist
+View and manage visitors who have joined the general interest waitlist.
+
+- Search by name or email
+- Filter by trip interest
+- Remove entries
+
+#### Content
+Edit copy and images for public-facing site sections without touching code.
+
+Editable sections: **Nav**, **Hero**, **Mission**, **Story**, **Footer**, **Waitlist**
+
+Each section supports text fields and image fields (upload or browse from Storage).
+
+#### Users
+Manage admin accounts.
+
+- View all admins and their status (Active / Invite Pending)
+- **Invite new admin** — enter an email address; Supabase sends an invite email with a setup link
+- Invited users click the link, land on `/admin/update-password`, set their password, and are redirected to the dashboard
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── admin/
+│   │   ├── (auth)/          # Login, update-password (centered layout)
+│   │   └── (dashboard)/     # All protected admin pages
+│   ├── experiences/[slug]/  # Public trip detail pages
+│   └── page.tsx             # Public home page
+├── components/
+│   ├── admin/               # Admin UI components
+│   └── ...                  # Public site components
+└── lib/
+    ├── data/                # Supabase data-fetching functions
+    ├── supabase-*.ts        # Supabase client helpers
+    └── types.ts             # Shared TypeScript types
+```
+
+---
+
+## Deployment
+
+The site deploys automatically to Vercel on every push to `main`.
+
+### Required Vercel Environment Variables
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server-only) |
+| `NEXT_PUBLIC_SITE_URL` | Production URL — `https://www.monroemaine.com` |
+
+Set these under **Vercel → Project → Settings → Environment Variables**, then redeploy.
