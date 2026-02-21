@@ -61,7 +61,7 @@ export async function getExperienceBySlug(slug: string): Promise<Experience | nu
     .select('*')
     .eq('slug', slug)
     .neq('status', 'draft')
-    .single()
+    .maybeSingle()
 
   if (error || !data) return null
   return mapRow(data)
