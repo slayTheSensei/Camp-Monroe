@@ -1,5 +1,6 @@
 import { listAdmins, AdminUser } from './actions'
 import InviteForm from './InviteForm'
+import UserActionsMenu from './UserActionsMenu'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Never'
@@ -43,6 +44,7 @@ export default async function UsersPage() {
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 font-medium">Last Login</th>
                   <th className="px-4 py-3 font-medium">Invited</th>
+                  <th className="px-4 py-3" />
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -87,6 +89,9 @@ function UserRow({ user }: { user: AdminUser }) {
       <td className="px-4 py-3">{statusBadge(user)}</td>
       <td className="px-4 py-3 text-gray-500">{formatDate(user.last_sign_in_at)}</td>
       <td className="px-4 py-3 text-gray-400">{formatDate(user.created_at)}</td>
+      <td className="px-4 py-3 text-right">
+        <UserActionsMenu user={user} />
+      </td>
     </tr>
   )
 }
@@ -96,7 +101,10 @@ function UserCard({ user }: { user: AdminUser }) {
     <div className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
-        {statusBadge(user)}
+        <div className="flex items-center gap-2 shrink-0">
+          {statusBadge(user)}
+          <UserActionsMenu user={user} />
+        </div>
       </div>
       <div className="flex items-center gap-2 mt-2 text-xs text-gray-400">
         <span>Last login: {formatDate(user.last_sign_in_at)}</span>
