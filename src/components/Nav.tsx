@@ -18,6 +18,8 @@ export default async function Nav() {
       linkStory={c('link_story', 'Our Story')}
       linkMission={c('link_mission', 'Mission')}
       linkTrips={c('link_trips', 'Trips')}
+      linkHostRetreat={c('link_host_retreat', 'Host a Retreat')}
+      linkStayAtCamp={c('link_stay_at_camp', 'Stay at Camp')}
       ctaLabel={c('cta_label', 'Join the List')}
       logoLightUrl={c('logo_light_url', '/brand/logo-light.png')}
       logoDarkUrl={c('logo_dark_url', '/brand/logo-dark.png')}

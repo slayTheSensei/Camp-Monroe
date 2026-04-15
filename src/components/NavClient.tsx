@@ -8,12 +8,14 @@ type Props = {
   linkStory: string
   linkMission: string
   linkTrips: string
+  linkHostRetreat?: string
+  linkStayAtCamp?: string
   ctaLabel: string
   logoLightUrl: string
   logoDarkUrl: string
 }
 
-export default function NavClient({ linkStory, linkMission, linkTrips, ctaLabel, logoLightUrl, logoDarkUrl }: Props) {
+export default function NavClient({ linkStory, linkMission, linkTrips, linkHostRetreat, linkStayAtCamp, ctaLabel, logoLightUrl, logoDarkUrl }: Props) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
@@ -80,6 +82,16 @@ export default function NavClient({ linkStory, linkMission, linkTrips, ctaLabel,
           <a href="/#trips" className={`text-sm tracking-wide transition-colors ${linkClass}`}>
             {linkTrips}
           </a>
+          {linkHostRetreat && (
+            <a href="/host-a-retreat" className={`text-sm tracking-wide transition-colors ${linkClass}`}>
+              {linkHostRetreat}
+            </a>
+          )}
+          {linkStayAtCamp && (
+            <a href="/stay-at-camp" className={`text-sm tracking-wide transition-colors ${linkClass}`}>
+              {linkStayAtCamp}
+            </a>
+          )}
           <a
             href="/#waitlist"
             className="bg-amber px-5 py-2 text-forest text-sm font-semibold tracking-wide rounded-full hover:bg-amber/90 transition-colors"
@@ -116,6 +128,12 @@ export default function NavClient({ linkStory, linkMission, linkTrips, ctaLabel,
           <a href="/#story" className="text-cream text-base tracking-wide" onClick={() => setOpen(false)}>{linkStory}</a>
           <a href="/#mission" className="text-cream text-base tracking-wide" onClick={() => setOpen(false)}>{linkMission}</a>
           <a href="/#trips" className="text-cream text-base tracking-wide" onClick={() => setOpen(false)}>{linkTrips}</a>
+          {linkHostRetreat && (
+            <a href="/host-a-retreat" className="text-cream text-base tracking-wide" onClick={() => setOpen(false)}>{linkHostRetreat}</a>
+          )}
+          {linkStayAtCamp && (
+            <a href="/stay-at-camp" className="text-cream text-base tracking-wide" onClick={() => setOpen(false)}>{linkStayAtCamp}</a>
+          )}
           <a
             href="/#waitlist"
             className="bg-amber text-forest font-semibold px-5 py-3 rounded-full text-center"

@@ -7,6 +7,7 @@ import { createBrowserClient } from '@supabase/ssr'
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: DashboardIcon },
   { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
+  { label: 'Retreats', href: '/admin/retreats', icon: RetreatsIcon },
   { label: 'Waitlist', href: '/admin/waitlist', icon: WaitlistIcon },
   { label: 'Content', href: '/admin/content', icon: ContentIcon },
   { label: 'Users', href: '/admin/users', icon: UsersIcon },
@@ -126,6 +127,17 @@ function ExperiencesIcon({ active }: { active: boolean }) {
       className={active ? 'text-amber' : 'text-cream/40'}>
       <path d="M9 1L1 6l8 5 8-5-8-5z" />
       <path d="M1 12l8 5 8-5" />
+    </svg>
+  )
+}
+
+function RetreatsIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
+      className={active ? 'text-amber' : 'text-cream/40'}>
+      <rect x="2" y="3" width="14" height="13" rx="1.5" />
+      <path d="M2 7h14" strokeLinecap="round" />
+      <path d="M6 1v4M12 1v4" strokeLinecap="round" />
     </svg>
   )
 }
