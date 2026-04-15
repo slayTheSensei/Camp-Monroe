@@ -73,6 +73,19 @@ Manage camp trip listings shown on the public site.
 - **Status** — `draft` (hidden from public), `active`, or `sold-out`
 - **Sold-out notify-me** — when a trip is sold-out, visitors can submit their email to be notified
 
+#### Retreats
+Pre-launch booking pipeline for host retreats and short-term stays (R-001).
+
+- **Inbox** — tabbed inquiry queue (New / Reviewing / Hold / Confirmed / Declined), host/STR filter, search
+- **Inquiry detail** — tabbed editor (Contact / Request / Dates / Triage / Communications) with conflict detection across preferred date ranges and sticky action bar
+- **Place Hold** — 7-day soft hold; auto-sends hold-notice email; `expire-holds` edge function returns expired holds to `reviewing` daily
+- **Confirm Booking** — creates `bookings` row, renders a PDF summary (uploaded to `booking-pdfs` Storage bucket), sends confirmation email with 30-day signed URL, blocks public calendar
+- **Calendar** — month-grid view of open windows (amber), holds (orange), confirmed (green) with navigation
+- **Open Windows editor** — admin-curated date blocks surfaced on the two public pages (`/host-a-retreat`, `/stay-at-camp`)
+- **Communications log** — every email or manual note is recorded against the inquiry
+
+Requires env vars: `RESEND_API_KEY`, `RESEND_FROM_ADDRESS`, `ADMIN_ALERT_RECIPIENTS`. See `.env.example`.
+
 #### Waitlist
 View and manage visitors who have joined the general interest waitlist.
 
