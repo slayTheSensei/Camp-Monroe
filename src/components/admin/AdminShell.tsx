@@ -12,9 +12,9 @@ export default function AdminShell({ userEmail, children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Desktop sidebar — always visible at md+ */}
-      <div className="hidden md:block">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Desktop sidebar — always visible at md+, fixed height */}
+      <div className="hidden md:block shrink-0 h-screen overflow-y-auto">
         <AdminSidebar userEmail={userEmail} />
       </div>
 
@@ -29,9 +29,9 @@ export default function AdminShell({ userEmail, children }: Props) {
       )}
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-screen">
         {/* Mobile top bar */}
-        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-forest text-cream border-b border-cream/10">
+        <div className="md:hidden shrink-0 flex items-center gap-3 px-4 py-3 bg-forest text-cream border-b border-cream/10">
           <button
             onClick={() => setSidebarOpen(true)}
             className="p-1.5 -ml-1.5 rounded-md hover:bg-cream/10 transition-colors"

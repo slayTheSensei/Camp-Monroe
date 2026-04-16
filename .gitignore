@@ -43,3 +43,5 @@ next-env.d.ts
 # Vercel
 .vercel
 .playwright-mcp/
+retreats-*.png
+*.screenshot.png
