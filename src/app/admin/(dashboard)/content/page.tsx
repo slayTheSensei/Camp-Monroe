@@ -1,5 +1,8 @@
 import { createSupabaseServer } from '@/lib/supabase-server'
 import SiteContentEditor from '@/components/admin/SiteContentEditor'
+import PageHeader from '@/components/admin/ui/PageHeader'
+
+export const dynamic = 'force-dynamic'
 
 export default async function ContentPage() {
   const supabase = await createSupabaseServer()
@@ -11,12 +14,12 @@ export default async function ContentPage() {
   const rows = data ?? []
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Site Content</h1>
-        <p className="text-gray-500 text-sm mt-1">Edit the copy displayed on the public website</p>
-      </div>
+    <>
+      <PageHeader
+        title="Site Content"
+        subtitle="Edit the copy displayed on the public website"
+      />
       <SiteContentEditor initialRows={rows} />
-    </div>
+    </>
   )
 }

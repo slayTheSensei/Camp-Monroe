@@ -1,6 +1,10 @@
 import { listAdmins, AdminUser } from './actions'
 import InviteForm from './InviteForm'
 import UserActionsMenu from './UserActionsMenu'
+import PageHeader from '@/components/admin/ui/PageHeader'
+import EmptyState from '@/components/admin/ui/EmptyState'
+
+export const dynamic = 'force-dynamic'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Never'
@@ -19,20 +23,16 @@ export default async function UsersPage() {
   const users = await listAdmins()
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Team Members</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage who has admin access to Camp Monroe</p>
-        </div>
-        <InviteForm />
-      </div>
+    <>
+      <PageHeader
+        title="Team Members"
+        subtitle="Manage who has admin access to Camp Monroe"
+        actions={<InviteForm />}
+      />
 
       {/* User list */}
       {users.length === 0 ? (
-        <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-          <p className="text-gray-400 text-sm">No users found.</p>
-        </div>
+        <EmptyState message="No users found." />
       ) : (
         <>
           {/* Desktop table */}
@@ -63,7 +63,7 @@ export default async function UsersPage() {
           </div>
         </>
       )}
-    </div>
+    </>
   )
 }
 

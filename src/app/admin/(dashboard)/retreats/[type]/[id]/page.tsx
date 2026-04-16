@@ -7,7 +7,7 @@ import {
 } from '@/lib/data/retreats'
 import { detectConflicts } from '@/lib/pipeline/conflicts'
 import InquiryForm from '@/components/admin/retreats/InquiryForm'
-import BackLink from '@/components/admin/retreats/BackLink'
+import PageHeader from '@/components/admin/ui/PageHeader'
 import type { HostInquiry, BuyoutInquiry } from '@/lib/types/retreats'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +27,6 @@ export default async function InquiryDetailPage({ params }: { params: Promise<Pa
   ])
   if (!inquiry) notFound()
 
-  // Single range now — no preference list
   const start =
     type === 'host' ? (inquiry as HostInquiry).startDate : (inquiry as BuyoutInquiry).startDate
   const end =
@@ -35,8 +34,12 @@ export default async function InquiryDetailPage({ params }: { params: Promise<Pa
   const conflicts = await detectConflicts(start, end, { excludeInquiry: { type, id } })
 
   return (
-    <div>
-      <BackLink />
+    <>
+      <PageHeader
+        title={type === 'host' ? 'Host Inquiry' : 'Buyout Inquiry'}
+        subtitle={inquiry.name + ((inquiry as HostInquiry).organization ? ` · ${(inquiry as HostInquiry).organization}` : '')}
+        back={{ href: '/admin/retreats', label: 'Back to Retreats' }}
+      />
       <InquiryForm
         type={type}
         inquiry={inquiry}
@@ -45,6 +48,6 @@ export default async function InquiryDetailPage({ params }: { params: Promise<Pa
         existingBooking={booking}
         admins={admins}
       />
-    </div>
+    </>
   )
 }

@@ -6,7 +6,7 @@ import {
   getBuyoutInquiries,
 } from '@/lib/data/retreats'
 import RetreatsCalendar from '@/components/admin/retreats/RetreatsCalendar'
-import BackLink from '@/components/admin/retreats/BackLink'
+import PageHeader from '@/components/admin/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -37,20 +37,18 @@ export default async function RetreatsCalendarPage() {
   ]
 
   return (
-    <div>
-      <BackLink />
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Retreats Calendar</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          Month view of seasons, blackouts, holds, and confirmed bookings.
-        </p>
-      </div>
+    <>
+      <PageHeader
+        title="Calendar"
+        subtitle="Full month view of seasons, blackouts, holds, and confirmed bookings."
+        back={{ href: '/admin/retreats', label: 'Back to Retreats' }}
+      />
       <RetreatsCalendar
         seasons={seasons}
         blackouts={blackouts}
         bookings={bookings}
         holds={holds}
       />
-    </div>
+    </>
   )
 }

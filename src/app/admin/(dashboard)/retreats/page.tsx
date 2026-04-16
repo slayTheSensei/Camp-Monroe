@@ -11,6 +11,12 @@ import {
 } from '@/lib/data/retreats'
 import InquiryInbox from '@/components/admin/retreats/InquiryInbox'
 import RetreatsCalendar from '@/components/admin/retreats/RetreatsCalendar'
+import PageHeader from '@/components/admin/ui/PageHeader'
+import PageBody from '@/components/admin/ui/PageBody'
+import Section from '@/components/admin/ui/Section'
+import StatCard from '@/components/admin/ui/StatCard'
+import EmptyState from '@/components/admin/ui/EmptyState'
+import { ButtonLink } from '@/components/admin/ui/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,123 +62,79 @@ export default async function RetreatsDashboardPage() {
     })),
   ]
 
-  const stats = [
-    { label: 'New', value: counts.new, tone: 'text-blue-700' },
-    { label: 'On Hold', value: counts.hold, tone: 'text-orange-700' },
-    { label: 'Upcoming Bookings', value: upcomingBookings, tone: 'text-green-700', sub: 'next 90 days' },
-    { label: 'Active Blackouts', value: activeBlackouts, tone: 'text-gray-700' },
-  ]
-
   return (
-    <div className="flex flex-col gap-16 pb-16">
-      {/* Header */}
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Retreats</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Dashboard for inquiries, bookings, seasons, and blackouts.
-          </p>
-        </div>
-        <nav className="flex flex-wrap items-center gap-2 shrink-0">
-          <HeaderLink href="/admin/retreats/calendar">Full Calendar</HeaderLink>
-          <HeaderLink href="/admin/retreats/seasons">Seasons</HeaderLink>
-          <HeaderLink href="/admin/retreats/blackouts">Blackouts</HeaderLink>
-        </nav>
-      </header>
+    <>
+      <PageHeader
+        title="Retreats"
+        subtitle="Dashboard for inquiries, bookings, seasons, and blackouts."
+        actions={
+          <>
+            <ButtonLink href="/admin/retreats/calendar" variant="primary" size="md">
+              Full Calendar
+            </ButtonLink>
+            <ButtonLink href="/admin/retreats/seasons" variant="primary" size="md">
+              Seasons
+            </ButtonLink>
+            <ButtonLink href="/admin/retreats/blackouts" variant="primary" size="md">
+              Blackouts
+            </ButtonLink>
+          </>
+        }
+      />
 
-      {/* Stats */}
-      <Section title="At a glance">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((s) => (
-            <div
-              key={s.label}
-              className="bg-white rounded-lg border border-gray-200 p-5"
+      <PageBody>
+        <Section title="At a glance">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard label="New" value={counts.new} tone="blue" />
+            <StatCard label="On Hold" value={counts.hold} tone="orange" />
+            <StatCard
+              label="Upcoming Bookings"
+              value={upcomingBookings}
+              tone="green"
+              sub="next 90 days"
+            />
+            <StatCard label="Active Blackouts" value={activeBlackouts} tone="gray" />
+          </div>
+        </Section>
+
+        <Section
+          title="Calendar"
+          action={
+            <Link
+              href="/admin/retreats/calendar"
+              className="text-xs text-amber hover:text-amber/80 font-medium transition-colors"
             >
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">
-                {s.label}
-              </p>
-              <p className={`text-3xl font-bold mt-3 ${s.tone}`}>{s.value}</p>
-              {s.sub && <p className="text-xs text-gray-400 mt-1">{s.sub}</p>}
-            </div>
-          ))}
-        </div>
-      </Section>
+              Open full calendar →
+            </Link>
+          }
+        >
+          <RetreatsCalendar
+            seasons={seasons}
+            blackouts={blackouts}
+            bookings={bookings}
+            holds={holds}
+          />
+        </Section>
 
-      {/* Calendar */}
-      <Section
-        title="Calendar"
-        action={
-          <Link
-            href="/admin/retreats/calendar"
-            className="text-xs text-amber hover:text-amber/80 font-medium"
-          >
-            Open full calendar →
-          </Link>
-        }
-      >
-        <RetreatsCalendar
-          seasons={seasons}
-          blackouts={blackouts}
-          bookings={bookings}
-          holds={holds}
-        />
-      </Section>
+        <Section
+          title="Upcoming Blackouts"
+          action={
+            <Link
+              href="/admin/retreats/blackouts"
+              className="text-xs text-amber hover:text-amber/80 font-medium transition-colors"
+            >
+              Manage →
+            </Link>
+          }
+        >
+          <UpcomingBlackouts blackouts={blackouts} />
+        </Section>
 
-      {/* Upcoming blackouts */}
-      <Section
-        title="Upcoming Blackouts"
-        action={
-          <Link
-            href="/admin/retreats/blackouts"
-            className="text-xs text-amber hover:text-amber/80 font-medium"
-          >
-            Manage →
-          </Link>
-        }
-      >
-        <UpcomingBlackouts blackouts={blackouts} />
-      </Section>
-
-      {/* Inbox */}
-      <Section title="Inbox">
-        <InquiryInbox hostInquiries={hostInquiries} buyoutInquiries={buyoutInquiries} />
-      </Section>
-    </div>
-  )
-}
-
-// ============================================================================
-// Local helpers
-// ============================================================================
-
-function Section({
-  title,
-  action,
-  children,
-}: {
-  title: string
-  action?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-        {action}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-function HeaderLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex items-center justify-center h-9 px-4 text-xs font-semibold tracking-wide uppercase bg-forest text-cream rounded-md hover:bg-forest-light transition-colors whitespace-nowrap"
-    >
-      {children}
-    </Link>
+        <Section title="Inbox">
+          <InquiryInbox hostInquiries={hostInquiries} buyoutInquiries={buyoutInquiries} />
+        </Section>
+      </PageBody>
+    </>
   )
 }
 
@@ -181,11 +143,7 @@ function UpcomingBlackouts({ blackouts }: { blackouts: Awaited<ReturnType<typeof
   const upcoming = blackouts.filter((b) => b.endDate >= today).slice(0, 5)
 
   if (upcoming.length === 0) {
-    return (
-      <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
-        <p className="text-sm text-gray-400">No upcoming blackouts.</p>
-      </div>
-    )
+    return <EmptyState message="No upcoming blackouts." />
   }
 
   const categoryLabels: Record<string, string> = {
@@ -200,7 +158,7 @@ function UpcomingBlackouts({ blackouts }: { blackouts: Awaited<ReturnType<typeof
         <Link
           key={b.id}
           href={`/admin/retreats/blackouts/${b.id}`}
-          className="flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 transition-colors"
+          className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-gray-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60 focus-visible:ring-inset"
         >
           <div className="min-w-0">
             <p className="text-sm font-medium text-gray-900 truncate">{b.label}</p>
