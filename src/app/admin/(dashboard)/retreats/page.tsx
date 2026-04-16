@@ -64,7 +64,7 @@ export default async function RetreatsDashboardPage() {
   ]
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="flex flex-col gap-16 pb-16">
       {/* Header */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -155,7 +155,7 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section className="space-y-5">
+    <section className="flex flex-col gap-5">
       <div className="flex items-center justify-between pb-2 border-b border-gray-100">
         <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
         {action}
