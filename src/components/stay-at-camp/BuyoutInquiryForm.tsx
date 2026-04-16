@@ -30,7 +30,11 @@ export default function BuyoutInquiryForm({ selectedRange, onClearRange }: Props
     }
     setState('loading')
     setError('')
+    // Client-generated id so we don't need a SELECT policy on the insert
+    // (RLS allows anon INSERT but not anon SELECT).
+    const id = crypto.randomUUID()
     const row = {
+      id,
       name: name.trim(),
       email: email.trim().toLowerCase(),
       start_date: selectedRange.start,
@@ -40,20 +44,18 @@ export default function BuyoutInquiryForm({ selectedRange, onClearRange }: Props
       affiliation: affiliation || null,
       additional_notes: additionalNotes.trim() || null,
     }
-    const { data, error: insertError } = await getSupabase()
+    const { error: insertError } = await getSupabase()
       .from('buyout_inquiries')
       .insert(row)
-      .select('id')
-      .single()
-    if (insertError || !data) {
+    if (insertError) {
       setState('error')
-      setError(insertError?.message ?? 'Something went wrong. Please try again.')
+      setError(insertError.message ?? 'Something went wrong. Please try again.')
       return
     }
     fetch('/api/retreats/post-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'buyout', id: data.id }),
+      body: JSON.stringify({ type: 'buyout', id }),
     }).catch(() => {})
     setState('success')
   }

@@ -70,7 +70,11 @@ export default function HostInquiryForm({ selectedRange, onClearRange }: Props) 
     }
     setState('loading')
     setError('')
+    // Client-generated id so we don't need a SELECT policy on the insert
+    // (RLS allows anon INSERT but not anon SELECT — see DL-008 note).
+    const id = crypto.randomUUID()
     const row = {
+      id,
       name: name.trim(),
       organization: organization.trim() || null,
       email: email.trim().toLowerCase(),
@@ -83,20 +87,18 @@ export default function HostInquiryForm({ selectedRange, onClearRange }: Props) 
       support_needs: support,
       additional_notes: additionalNotes.trim() || null,
     }
-    const { data, error: insertError } = await getSupabase()
+    const { error: insertError } = await getSupabase()
       .from('host_inquiries')
       .insert(row)
-      .select('id')
-      .single()
-    if (insertError || !data) {
+    if (insertError) {
       setState('error')
-      setError(insertError?.message ?? 'Something went wrong. Please try again.')
+      setError(insertError.message ?? 'Something went wrong. Please try again.')
       return
     }
     fetch('/api/retreats/post-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'host', id: data.id }),
+      body: JSON.stringify({ type: 'host', id }),
     }).catch(() => {})
     setState('success')
   }
