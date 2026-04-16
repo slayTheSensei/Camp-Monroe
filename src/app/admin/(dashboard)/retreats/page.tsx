@@ -169,7 +169,7 @@ function HeaderLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="inline-flex items-center justify-center h-9 px-4 text-xs font-medium text-forest border border-forest/30 rounded-md hover:bg-forest/5 transition-colors whitespace-nowrap"
+      className="inline-flex items-center justify-center h-9 px-4 text-xs font-semibold tracking-wide uppercase bg-forest text-cream rounded-md hover:bg-forest-light transition-colors whitespace-nowrap"
     >
       {children}
     </Link>

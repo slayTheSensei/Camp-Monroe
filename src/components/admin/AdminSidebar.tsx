@@ -41,7 +41,7 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
   return (
     <aside className="w-64 bg-forest text-cream flex flex-col h-full shrink-0">
       {/* Logo + mobile close */}
-      <div className="px-6 py-6 border-b border-cream/10 flex items-start justify-between">
+      <div className="shrink-0 px-6 py-6 border-b border-cream/10 flex items-start justify-between">
         <Link href="/admin" onClick={onClose} className="block">
           <h1 className="font-display text-xl uppercase italic tracking-wide">Camp Monroe</h1>
           <p className="text-cream/40 text-xs mt-0.5">Admin</p>
@@ -55,8 +55,8 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
         )}
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      {/* Navigation (scrolls internally if items overflow) */}
+      <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-1">
         {navItems.map((item) => {
           const active = isActive(item.href)
           return (
@@ -78,7 +78,7 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-4 border-t border-cream/10">
+      <div className="shrink-0 px-4 py-4 border-t border-cream/10">
         <p className="text-cream/40 text-xs truncate mb-2">{userEmail}</p>
         <button
           onClick={handleLogout}
@@ -89,7 +89,7 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
       </div>
 
       {/* View site link */}
-      <div className="px-4 pb-4">
+      <div className="shrink-0 px-4 pb-4">
         <a
           href="/"
           target="_blank"
