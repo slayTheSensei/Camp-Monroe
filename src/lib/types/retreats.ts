@@ -1,13 +1,10 @@
-// R-001 Retreats Pipeline types.
-// Mirrors the data model in supabase/migrations/20260415000001_retreats_pipeline.sql.
+// R-001 v2 Retreats Pipeline types.
+// Mirrors the schema after 20260416000001_retreats_pipeline_v2_simplified_availability.sql.
 
 export type InquiryStatus = 'new' | 'reviewing' | 'hold' | 'confirmed' | 'declined'
-export type InquiryType = 'host' | 'str'
-export type WindowType = 'host' | 'str' | 'both'
+export type InquiryType = 'host' | 'buyout'
 
 export type AudienceType = 'wellness' | 'creative' | 'corporate' | 'cultural' | 'other'
-export type GroupSizeBucket = '8-12' | '12-16' | '16-24'
-export type Flexibility = 'fixed' | 'flexible'
 export type SupportNeed = 'lodging' | 'meals' | 'facilitation' | 'full'
 
 export type PartySize = '1-2' | '3-4' | '5+'
@@ -22,21 +19,40 @@ export type CommunicationKind =
   | 'decline_email'
   | 'manual_note'
 
-export type OpenWindow = {
+export type BlackoutCategory = 'internal_event' | 'member_buyout' | 'other'
+
+// ============================================================================
+// Seasons (admin-curated operating periods)
+// ============================================================================
+
+export type Season = {
   id: string
-  startDate: string // ISO date (YYYY-MM-DD)
-  endDate: string
-  windowType: WindowType
   label: string
-  description: string | null
-  isPublic: boolean
-  sortOrder: number
-  notes: string | null
+  startDate: string
+  endDate: string
+  isActive: boolean
   createdAt: string
   createdBy: string | null
 }
 
-export type DateRange = { start: string; end: string }
+// ============================================================================
+// Blackouts (dates inside a season that are off-limits)
+// ============================================================================
+
+export type Blackout = {
+  id: string
+  startDate: string
+  endDate: string
+  category: BlackoutCategory
+  label: string
+  adminNotes: string | null
+  createdAt: string
+  createdBy: string | null
+}
+
+// ============================================================================
+// Inquiries
+// ============================================================================
 
 export type HostInquiry = {
   id: string
@@ -47,14 +63,9 @@ export type HostInquiry = {
   phone: string | null
   retreatConcept: string
   audienceType: AudienceType | null
-  groupSizeBucket: GroupSizeBucket | null
-  prefStart1: string
-  prefEnd1: string
-  prefStart2: string | null
-  prefEnd2: string | null
-  prefStart3: string | null
-  prefEnd3: string | null
-  flexibility: Flexibility | null
+  groupSize: number | null
+  startDate: string
+  endDate: string
   supportNeeds: SupportNeed[]
   additionalNotes: string | null
   status: InquiryStatus
@@ -62,11 +73,10 @@ export type HostInquiry = {
   assignedOwner: string | null
   adminNotes: string | null
   holdExpiresAt: string | null
-  linkedOpenWindowId: string | null
   createdAt: string
 }
 
-export type StrInquiry = {
+export type BuyoutInquiry = {
   id: string
   submittedAt: string
   name: string
@@ -80,11 +90,18 @@ export type StrInquiry = {
   status: InquiryStatus
   adminNotes: string | null
   holdExpiresAt: string | null
-  linkedOpenWindowId: string | null
   createdAt: string
 }
 
-export type Inquiry = HostInquiry | StrInquiry
+export type Inquiry = HostInquiry | BuyoutInquiry
+
+export function isHostInquiry(i: Inquiry): i is HostInquiry {
+  return 'retreatConcept' in i
+}
+
+// ============================================================================
+// Bookings + communications
+// ============================================================================
 
 export type Booking = {
   id: string
@@ -113,8 +130,20 @@ export type Communication = {
   createdAt: string
 }
 
-export type BookedRange = { startDate: string; endDate: string; inquiryType: InquiryType }
+export type BookedRange = {
+  startDate: string
+  endDate: string
+  inquiryType: InquiryType
+}
 
-export function isHostInquiry(i: Inquiry): i is HostInquiry {
-  return 'retreatConcept' in i
+// ============================================================================
+// Availability (computed — not a DB table)
+// ============================================================================
+
+export type DayAvailability = 'available' | 'unavailable' | 'outside_season' | 'lead_time'
+
+export type PublicBlackout = {
+  startDate: string
+  endDate: string
+  label: string
 }

@@ -22,7 +22,12 @@ const supportOptions: { value: SupportNeed; label: string }[] = [
   { value: 'full', label: 'Full-service package' },
 ]
 
-export default function HostInquiryForm() {
+type Props = {
+  selectedRange: { start: string; end: string; nights: number } | null
+  onClearRange: () => void
+}
+
+export default function HostInquiryForm({ selectedRange, onClearRange }: Props) {
   const [state, setState] = useState<FormState>('idle')
   const [error, setError] = useState('')
 
@@ -33,13 +38,6 @@ export default function HostInquiryForm() {
   const [retreatConcept, setRetreatConcept] = useState('')
   const [audience, setAudience] = useState('')
   const [groupSize, setGroupSize] = useState('')
-  const [prefStart1, setPrefStart1] = useState('')
-  const [prefEnd1, setPrefEnd1] = useState('')
-  const [prefStart2, setPrefStart2] = useState('')
-  const [prefEnd2, setPrefEnd2] = useState('')
-  const [prefStart3, setPrefStart3] = useState('')
-  const [prefEnd3, setPrefEnd3] = useState('')
-  const [flexibility, setFlexibility] = useState('flexible')
   const [support, setSupport] = useState<SupportNeed[]>([])
   const [additionalNotes, setAdditionalNotes] = useState('')
 
@@ -49,6 +47,11 @@ export default function HostInquiryForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!selectedRange) {
+      setError('Please select dates on the calendar above.')
+      setState('error')
+      return
+    }
     setState('loading')
     setError('')
     const row = {
@@ -58,14 +61,9 @@ export default function HostInquiryForm() {
       phone: phone.trim() || null,
       retreat_concept: retreatConcept.trim(),
       audience_type: audience || null,
-      group_size_bucket: groupSize || null,
-      pref_start_1: prefStart1,
-      pref_end_1: prefEnd1,
-      pref_start_2: prefStart2 || null,
-      pref_end_2: prefEnd2 || null,
-      pref_start_3: prefStart3 || null,
-      pref_end_3: prefEnd3 || null,
-      flexibility: flexibility || null,
+      group_size: groupSize ? parseInt(groupSize, 10) : null,
+      start_date: selectedRange.start,
+      end_date: selectedRange.end,
       support_needs: support,
       additional_notes: additionalNotes.trim() || null,
     }
@@ -79,7 +77,6 @@ export default function HostInquiryForm() {
       setError(insertError?.message ?? 'Something went wrong. Please try again.')
       return
     }
-    // Fire post-submit API; don't block the success state on it
     fetch('/api/retreats/post-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -106,7 +103,33 @@ export default function HostInquiryForm() {
       onSubmit={handleSubmit}
       className="bg-cream/5 border border-cream/10 rounded-md p-5 md:p-8 space-y-5"
     >
-      <h3 className="font-display text-cream text-2xl uppercase mb-2">Request dates</h3>
+      <h3 className="font-display text-cream text-2xl uppercase mb-2">Your details</h3>
+
+      {/* Selected range summary */}
+      {selectedRange ? (
+        <div className="flex items-center justify-between bg-amber/10 border border-amber/30 rounded-sm px-4 py-3">
+          <div>
+            <p className="text-cream/50 text-xs tracking-widest uppercase mb-0.5">Selected dates</p>
+            <p className="text-cream text-sm font-medium">
+              {selectedRange.start} → {selectedRange.end} · {selectedRange.nights} night
+              {selectedRange.nights === 1 ? '' : 's'}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClearRange}
+            className="text-xs text-cream/60 hover:text-cream underline"
+          >
+            Change
+          </button>
+        </div>
+      ) : (
+        <div className="bg-cream/5 border border-cream/20 border-dashed rounded-sm px-4 py-3">
+          <p className="text-cream/50 text-sm">
+            Select dates on the calendar above — 3-night minimum, 14-day lead time.
+          </p>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2 gap-4">
         <TextInput label="Your name" value={name} onChange={setName} required />
@@ -133,37 +156,14 @@ export default function HostInquiryForm() {
           onChange={setAudience}
           options={[{ value: '', label: 'Select…' }, ...audienceOptions]}
         />
-        <Select
+        <TextInput
           label="Group size"
+          type="number"
           value={groupSize}
           onChange={setGroupSize}
-          options={[
-            { value: '', label: 'Select…' },
-            { value: '8-12', label: '8 – 12' },
-            { value: '12-16', label: '12 – 16' },
-            { value: '16-24', label: '16 – 24' },
-          ]}
+          placeholder="e.g. 12"
         />
       </div>
-
-      <div>
-        <p className="text-cream/60 text-xs tracking-widest uppercase mb-2">Preferred dates</p>
-        <div className="space-y-2">
-          <DatePair label="First choice" start={prefStart1} end={prefEnd1} onStart={setPrefStart1} onEnd={setPrefEnd1} required />
-          <DatePair label="Second choice (optional)" start={prefStart2} end={prefEnd2} onStart={setPrefStart2} onEnd={setPrefEnd2} />
-          <DatePair label="Third choice (optional)" start={prefStart3} end={prefEnd3} onStart={setPrefStart3} onEnd={setPrefEnd3} />
-        </div>
-      </div>
-
-      <Select
-        label="Flexibility"
-        value={flexibility}
-        onChange={setFlexibility}
-        options={[
-          { value: 'flexible', label: 'Flexible — other dates welcome' },
-          { value: 'fixed', label: 'Fixed — only these dates work' },
-        ]}
-      />
 
       <div>
         <p className="text-cream/60 text-xs tracking-widest uppercase mb-2">Support needs</p>
@@ -199,7 +199,7 @@ export default function HostInquiryForm() {
 
       <button
         type="submit"
-        disabled={state === 'loading' || !name || !email || !retreatConcept || !prefStart1 || !prefEnd1}
+        disabled={state === 'loading' || !name || !email || !retreatConcept || !selectedRange}
         className="bg-amber text-forest font-semibold px-6 py-4 rounded-full text-base tracking-wide hover:bg-amber/90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {state === 'loading' ? 'Submitting...' : 'Send inquiry'}
@@ -223,12 +223,14 @@ function TextInput({
   onChange,
   type = 'text',
   required,
+  placeholder,
 }: {
   label: string
   value: string
   onChange: (v: string) => void
   type?: string
   required?: boolean
+  placeholder?: string
 }) {
   return (
     <div>
@@ -238,6 +240,7 @@ function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
+        placeholder={placeholder}
         className={inputClass}
       />
     </div>
@@ -299,44 +302,6 @@ function Select({
           </option>
         ))}
       </select>
-    </div>
-  )
-}
-
-function DatePair({
-  label,
-  start,
-  end,
-  onStart,
-  onEnd,
-  required,
-}: {
-  label: string
-  start: string
-  end: string
-  onStart: (v: string) => void
-  onEnd: (v: string) => void
-  required?: boolean
-}) {
-  return (
-    <div>
-      <p className="text-cream/40 text-xs mb-1">{label}</p>
-      <div className="grid grid-cols-2 gap-2">
-        <input
-          type="date"
-          value={start}
-          onChange={(e) => onStart(e.target.value)}
-          required={required}
-          className={inputClass}
-        />
-        <input
-          type="date"
-          value={end}
-          onChange={(e) => onEnd(e.target.value)}
-          required={required}
-          className={inputClass}
-        />
-      </div>
     </div>
   )
 }

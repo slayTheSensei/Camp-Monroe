@@ -7,7 +7,7 @@ import HoldEmail from './templates/HoldEmail'
 import ConfirmationEmail from './templates/ConfirmationEmail'
 import DeclineEmail from './templates/DeclineEmail'
 import AdminAlertEmail from './templates/AdminAlertEmail'
-import type { HostInquiry, StrInquiry, Booking, CommunicationKind, InquiryType } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry, Booking, CommunicationKind, InquiryType } from '@/lib/types/retreats'
 
 type SendResult = { messageId?: string; error?: string }
 
@@ -32,7 +32,7 @@ async function logCommunication(
   })
 }
 
-function bestName(inquiry: HostInquiry | StrInquiry) {
+function bestName(inquiry: HostInquiry | BuyoutInquiry) {
   return inquiry.name.split(/[\s,]/)[0] || inquiry.name
 }
 
@@ -40,7 +40,7 @@ function bestName(inquiry: HostInquiry | StrInquiry) {
 // Acknowledgment (sent on inquiry submit)
 // ============================================================================
 
-export async function sendAck(type: InquiryType, inquiry: HostInquiry | StrInquiry): Promise<SendResult> {
+export async function sendAck(type: InquiryType, inquiry: HostInquiry | BuyoutInquiry): Promise<SendResult> {
   try {
     const el = createElement(AcknowledgmentEmail, {
       recipientName: bestName(inquiry),
@@ -50,7 +50,7 @@ export async function sendAck(type: InquiryType, inquiry: HostInquiry | StrInqui
     const subject =
       type === 'host'
         ? 'We received your retreat inquiry — Camp Monroe'
-        : 'Thanks for your stay request — Camp Monroe'
+        : 'Thanks for your camp buyout request — Camp Monroe'
     const { data, error } = await getResend().emails.send({
       from: getFromAddress(),
       to: inquiry.email,
@@ -71,15 +71,15 @@ export async function sendAck(type: InquiryType, inquiry: HostInquiry | StrInqui
 
 export async function sendAdminAlert(
   type: InquiryType,
-  inquiry: HostInquiry | StrInquiry
+  inquiry: HostInquiry | BuyoutInquiry
 ): Promise<SendResult> {
   const recipients = getAdminRecipients()
   if (recipients.length === 0) return { error: 'No admin recipients configured' }
   try {
     const summary =
       type === 'host'
-        ? `Preferred dates: ${(inquiry as HostInquiry).prefStart1} – ${(inquiry as HostInquiry).prefEnd1}. Concept: ${(inquiry as HostInquiry).retreatConcept.slice(0, 140)}`
-        : `Requested ${(inquiry as StrInquiry).startDate} – ${(inquiry as StrInquiry).endDate}, party ${(inquiry as StrInquiry).partySize ?? '?'}.`
+        ? `Requested dates: ${(inquiry as HostInquiry).startDate} – ${(inquiry as HostInquiry).endDate}. Concept: ${(inquiry as HostInquiry).retreatConcept.slice(0, 140)}`
+        : `Requested ${(inquiry as BuyoutInquiry).startDate} – ${(inquiry as BuyoutInquiry).endDate}, party ${(inquiry as BuyoutInquiry).partySize ?? '?'}.`
     const adminUrl = `${getSiteUrl()}/admin/retreats/${type}/${inquiry.id}`
     const el = createElement(AdminAlertEmail, {
       inquiryKind: type,
@@ -93,7 +93,7 @@ export async function sendAdminAlert(
     const subject =
       type === 'host'
         ? `[Retreats] New host inquiry — ${(inquiry as HostInquiry).organization || inquiry.name}`
-        : `[Retreats] New STR request — ${inquiry.name}`
+        : `[Retreats] New buyout request — ${inquiry.name}`
     const { data, error } = await getResend().emails.send({
       from: getFromAddress(),
       to: recipients,
@@ -113,7 +113,7 @@ export async function sendAdminAlert(
 
 export async function sendHoldNotice(
   type: InquiryType,
-  inquiry: HostInquiry | StrInquiry,
+  inquiry: HostInquiry | BuyoutInquiry,
   startDate: string,
   endDate: string,
   holdExpiresAt: string,
@@ -148,7 +148,7 @@ export async function sendHoldNotice(
 
 export async function sendConfirmation(
   type: InquiryType,
-  inquiry: HostInquiry | StrInquiry,
+  inquiry: HostInquiry | BuyoutInquiry,
   booking: Booking,
   pdfUrl: string | null,
   sentBy: string | null
@@ -185,7 +185,7 @@ export async function sendConfirmation(
 
 export async function sendDecline(
   type: InquiryType,
-  inquiry: HostInquiry | StrInquiry,
+  inquiry: HostInquiry | BuyoutInquiry,
   reason: string,
   sentBy: string | null
 ): Promise<SendResult> {
@@ -216,7 +216,7 @@ export async function sendDecline(
 
 export async function sendManualEmail(
   type: InquiryType,
-  inquiry: HostInquiry | StrInquiry,
+  inquiry: HostInquiry | BuyoutInquiry,
   kind: CommunicationKind,
   subject: string,
   bodyText: string,

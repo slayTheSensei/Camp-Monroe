@@ -2,13 +2,13 @@ import { renderToBuffer } from '@react-pdf/renderer'
 import { createElement } from 'react'
 import { createSupabaseAdmin } from '@/lib/supabase-admin'
 import BookingSummary from './BookingSummary'
-import type { Booking, HostInquiry, StrInquiry, InquiryType } from '@/lib/types/retreats'
+import type { Booking, HostInquiry, BuyoutInquiry, InquiryType } from '@/lib/types/retreats'
 
 const BUCKET = 'booking-pdfs'
 
 export async function generateBookingPDF(
   booking: Booking,
-  inquiry: HostInquiry | StrInquiry,
+  inquiry: HostInquiry | BuyoutInquiry,
   type: InquiryType
 ): Promise<Buffer> {
   const el = createElement(BookingSummary, { booking, inquiry, type })

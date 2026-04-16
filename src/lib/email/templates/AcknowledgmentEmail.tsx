@@ -11,14 +11,14 @@ import {
 
 type Props = {
   recipientName: string
-  inquiryKind: 'host' | 'str'
+  inquiryKind: 'host' | 'buyout'
 }
 
 export default function AcknowledgmentEmail({ recipientName, inquiryKind }: Props) {
   const subject =
     inquiryKind === 'host'
       ? 'We received your retreat inquiry'
-      : 'Thanks for your stay request'
+      : 'Thanks for your camp buyout request'
 
   return (
     <Html>
@@ -42,8 +42,9 @@ export default function AcknowledgmentEmail({ recipientName, inquiryKind }: Prop
           ) : (
             <>
               <Text style={text}>
-                Thanks for your stay request. We review every request in order and will confirm
-                your dates or offer alternatives within 48 hours.
+                Thanks for your request to stay at Camp Monroe. A stay with us is a private
+                whole-property buyout — we review every request personally and will confirm your
+                dates or offer alternatives within 48 hours.
               </Text>
             </>
           )}

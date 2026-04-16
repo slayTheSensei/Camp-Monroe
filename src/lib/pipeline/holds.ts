@@ -10,13 +10,13 @@ export function computeHoldExpiry(days: number = 7): string {
 }
 
 /**
- * Moves any inquiry (host or str) in `hold` status whose hold_expires_at
+ * Moves any inquiry (host or buyout) in `hold` status whose hold_expires_at
  * has passed back to `reviewing`, and clears hold_expires_at.
  *
  * Returns the count that were expired for each type.
  * Invoked by the scheduled edge function `expire-holds`.
  */
-export async function expireStaleHolds(): Promise<{ host: number; str: number }> {
+export async function expireStaleHolds(): Promise<{ host: number; buyout: number }> {
   const supabase = createSupabaseAdmin()
   const now = new Date().toISOString()
 
@@ -27,8 +27,8 @@ export async function expireStaleHolds(): Promise<{ host: number; str: number }>
     .lt('hold_expires_at', now)
     .select('id')
 
-  const str = await supabase
-    .from('str_inquiries')
+  const buyout = await supabase
+    .from('buyout_inquiries')
     .update({ status: 'reviewing', hold_expires_at: null })
     .eq('status', 'hold')
     .lt('hold_expires_at', now)
@@ -36,7 +36,7 @@ export async function expireStaleHolds(): Promise<{ host: number; str: number }>
 
   return {
     host: host.data?.length ?? 0,
-    str: str.data?.length ?? 0,
+    buyout: buyout.data?.length ?? 0,
   }
 }
 

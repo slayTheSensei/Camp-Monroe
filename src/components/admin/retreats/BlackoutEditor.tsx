@@ -2,42 +2,36 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import type { OpenWindow, WindowType } from '@/lib/types/retreats'
+import type { Blackout, BlackoutCategory } from '@/lib/types/retreats'
 import {
-  createOpenWindow,
-  updateOpenWindow,
-  deleteOpenWindow,
-  type OpenWindowInput,
+  createBlackout,
+  updateBlackout,
+  deleteBlackout,
+  type BlackoutInput,
 } from '@/app/admin/(dashboard)/retreats/actions'
 
 type Props = {
-  initial?: OpenWindow
+  initial?: Blackout
   isNew?: boolean
 }
 
-export default function OpenWindowEditor({ initial, isNew }: Props) {
+export default function BlackoutEditor({ initial, isNew }: Props) {
   const router = useRouter()
   const [startDate, setStartDate] = useState(initial?.startDate ?? '')
   const [endDate, setEndDate] = useState(initial?.endDate ?? '')
-  const [windowType, setWindowType] = useState<WindowType>(initial?.windowType ?? 'host')
+  const [category, setCategory] = useState<BlackoutCategory>(initial?.category ?? 'internal_event')
   const [label, setLabel] = useState(initial?.label ?? '')
-  const [description, setDescription] = useState(initial?.description ?? '')
-  const [isPublic, setIsPublic] = useState(initial?.isPublic ?? true)
-  const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0)
-  const [notes, setNotes] = useState(initial?.notes ?? '')
+  const [adminNotes, setAdminNotes] = useState(initial?.adminNotes ?? '')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
-  function payload(): OpenWindowInput {
+  function payload(): BlackoutInput {
     return {
       startDate,
       endDate,
-      windowType,
+      category,
       label,
-      description: description || null,
-      isPublic,
-      sortOrder,
-      notes: notes || null,
+      adminNotes: adminNotes || null,
     }
   }
 
@@ -45,20 +39,20 @@ export default function OpenWindowEditor({ initial, isNew }: Props) {
     setError(null)
     startTransition(async () => {
       const res = isNew
-        ? await createOpenWindow(payload())
-        : await updateOpenWindow(initial!.id, payload())
+        ? await createBlackout(payload())
+        : await updateBlackout(initial!.id, payload())
       if (res.error) setError(res.error)
-      else router.push('/admin/retreats/open-windows')
+      else router.push('/admin/retreats/blackouts')
     })
   }
 
   function handleDelete() {
     if (!initial) return
-    if (!confirm('Delete this open window? This cannot be undone.')) return
+    if (!confirm('Delete this blackout? The blocked dates will become available on the public calendar.')) return
     startTransition(async () => {
-      const res = await deleteOpenWindow(initial.id)
+      const res = await deleteBlackout(initial.id)
       if (res.error) setError(res.error)
-      else router.push('/admin/retreats/open-windows')
+      else router.push('/admin/retreats/blackouts')
     })
   }
 
@@ -83,15 +77,15 @@ export default function OpenWindowEditor({ initial, isNew }: Props) {
         </Field>
       </div>
 
-      <Field label="Window type">
+      <Field label="Category">
         <select
-          value={windowType}
-          onChange={(e) => setWindowType(e.target.value as WindowType)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value as BlackoutCategory)}
           className={inputClass}
         >
-          <option value="host">Host (retreats)</option>
-          <option value="str">STR (short-term rental)</option>
-          <option value="both">Both</option>
+          <option value="internal_event">Internal event</option>
+          <option value="member_buyout">Member buyout (CGRC)</option>
+          <option value="other">Other</option>
         </select>
       </Field>
 
@@ -100,46 +94,16 @@ export default function OpenWindowEditor({ initial, isNew }: Props) {
           type="text"
           value={label}
           onChange={(e) => setLabel(e.target.value)}
-          placeholder="e.g. Early September Weekend"
+          placeholder="e.g. Johnson family buyout"
           className={inputClass}
         />
       </Field>
 
-      <Field label="Description (public)">
+      <Field label="Admin notes (internal only)">
         <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={adminNotes}
+          onChange={(e) => setAdminNotes(e.target.value)}
           rows={3}
-          className={inputClass}
-        />
-      </Field>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Sort order">
-          <input
-            type="number"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(parseInt(e.target.value || '0', 10))}
-            className={inputClass}
-          />
-        </Field>
-        <Field label="Public">
-          <label className="flex items-center gap-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              checked={isPublic}
-              onChange={(e) => setIsPublic(e.target.checked)}
-            />
-            Visible on public pages
-          </label>
-        </Field>
-      </div>
-
-      <Field label="Admin notes">
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          rows={2}
           className={inputClass}
         />
       </Field>
@@ -160,7 +124,7 @@ export default function OpenWindowEditor({ initial, isNew }: Props) {
         </div>
         <div className="flex gap-2">
           <button
-            onClick={() => router.push('/admin/retreats/open-windows')}
+            onClick={() => router.push('/admin/retreats/blackouts')}
             className="px-3 py-2 text-xs font-medium text-gray-700 border border-gray-300 rounded-md"
           >
             Cancel
@@ -170,7 +134,7 @@ export default function OpenWindowEditor({ initial, isNew }: Props) {
             disabled={isPending || !startDate || !endDate || !label}
             className="bg-forest text-cream font-semibold px-5 py-2 rounded-md text-sm hover:bg-forest/90 disabled:opacity-50"
           >
-            {isPending ? 'Saving...' : isNew ? 'Create window' : 'Save changes'}
+            {isPending ? 'Saving...' : isNew ? 'Create blackout' : 'Save changes'}
           </button>
         </div>
       </div>

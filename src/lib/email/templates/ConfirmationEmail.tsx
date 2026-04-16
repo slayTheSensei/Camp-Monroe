@@ -7,7 +7,7 @@ type Props = {
   groupSize?: number | null
   pdfUrl?: string | null
   bookingId: string
-  inquiryKind: 'host' | 'str'
+  inquiryKind: 'host' | 'buyout'
 }
 
 export default function ConfirmationEmail({

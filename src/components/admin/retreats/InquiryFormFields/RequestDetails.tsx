@@ -1,10 +1,10 @@
 'use client'
 
-import type { HostInquiry, StrInquiry } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry } from '@/lib/types/retreats'
 
 type Props = {
-  inquiry: HostInquiry | StrInquiry
-  type: 'host' | 'str'
+  inquiry: HostInquiry | BuyoutInquiry
+  type: 'host' | 'buyout'
 }
 
 export default function RequestDetails({ inquiry, type }: Props) {
@@ -15,9 +15,8 @@ export default function RequestDetails({ inquiry, type }: Props) {
         <Field label="Retreat concept" multiline value={h.retreatConcept} />
         <div className="grid grid-cols-2 gap-4">
           <Field label="Audience" value={h.audienceType ?? '—'} />
-          <Field label="Group size" value={h.groupSizeBucket ?? '—'} />
+          <Field label="Group size" value={h.groupSize?.toString() ?? '—'} />
         </div>
-        <Field label="Flexibility" value={h.flexibility ?? '—'} />
         {h.supportNeeds.length > 0 && (
           <Field label="Support needs" value={h.supportNeeds.join(', ')} />
         )}
@@ -25,15 +24,15 @@ export default function RequestDetails({ inquiry, type }: Props) {
       </div>
     )
   }
-  const s = inquiry as StrInquiry
+  const b = inquiry as BuyoutInquiry
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Party size" value={s.partySize ?? '—'} />
-        <Field label="Purpose" value={s.purposeOfStay ?? '—'} />
+        <Field label="Party size" value={b.partySize ?? '—'} />
+        <Field label="Purpose" value={b.purposeOfStay ?? '—'} />
       </div>
-      <Field label="Affiliation" value={s.affiliation ?? '—'} />
-      {s.additionalNotes && <Field label="Additional notes" multiline value={s.additionalNotes} />}
+      <Field label="Affiliation" value={b.affiliation ?? '—'} />
+      {b.additionalNotes && <Field label="Additional notes" multiline value={b.additionalNotes} />}
     </div>
   )
 }

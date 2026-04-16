@@ -2,8 +2,10 @@ import { createSupabaseServer } from '@/lib/supabase-server'
 import { createClient } from '@supabase/supabase-js'
 import type {
   HostInquiry,
-  StrInquiry,
-  OpenWindow,
+  BuyoutInquiry,
+  Season,
+  Blackout,
+  PublicBlackout,
   Booking,
   Communication,
   InquiryType,
@@ -14,20 +16,29 @@ import type {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // ============================================================================
-// mapRow helpers (snake_case -> camelCase)
+// mapRow helpers
 // ============================================================================
 
-function mapOpenWindow(row: any): OpenWindow {
+function mapSeason(row: any): Season {
+  return {
+    id: row.id,
+    label: row.label,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    isActive: row.is_active,
+    createdAt: row.created_at,
+    createdBy: row.created_by ?? null,
+  }
+}
+
+function mapBlackout(row: any): Blackout {
   return {
     id: row.id,
     startDate: row.start_date,
     endDate: row.end_date,
-    windowType: row.window_type,
+    category: row.category,
     label: row.label,
-    description: row.description ?? null,
-    isPublic: row.is_public,
-    sortOrder: row.sort_order,
-    notes: row.notes ?? null,
+    adminNotes: row.admin_notes ?? null,
     createdAt: row.created_at,
     createdBy: row.created_by ?? null,
   }
@@ -43,14 +54,9 @@ function mapHostInquiry(row: any): HostInquiry {
     phone: row.phone ?? null,
     retreatConcept: row.retreat_concept,
     audienceType: row.audience_type ?? null,
-    groupSizeBucket: row.group_size_bucket ?? null,
-    prefStart1: row.pref_start_1,
-    prefEnd1: row.pref_end_1,
-    prefStart2: row.pref_start_2 ?? null,
-    prefEnd2: row.pref_end_2 ?? null,
-    prefStart3: row.pref_start_3 ?? null,
-    prefEnd3: row.pref_end_3 ?? null,
-    flexibility: row.flexibility ?? null,
+    groupSize: row.group_size ?? null,
+    startDate: row.start_date,
+    endDate: row.end_date,
     supportNeeds: row.support_needs ?? [],
     additionalNotes: row.additional_notes ?? null,
     status: row.status,
@@ -58,12 +64,11 @@ function mapHostInquiry(row: any): HostInquiry {
     assignedOwner: row.assigned_owner ?? null,
     adminNotes: row.admin_notes ?? null,
     holdExpiresAt: row.hold_expires_at ?? null,
-    linkedOpenWindowId: row.linked_open_window_id ?? null,
     createdAt: row.created_at,
   }
 }
 
-function mapStrInquiry(row: any): StrInquiry {
+function mapBuyoutInquiry(row: any): BuyoutInquiry {
   return {
     id: row.id,
     submittedAt: row.submitted_at,
@@ -78,7 +83,6 @@ function mapStrInquiry(row: any): StrInquiry {
     status: row.status,
     adminNotes: row.admin_notes ?? null,
     holdExpiresAt: row.hold_expires_at ?? null,
-    linkedOpenWindowId: row.linked_open_window_id ?? null,
     createdAt: row.created_at,
   }
 }
@@ -115,7 +119,7 @@ function mapCommunication(row: any): Communication {
 }
 
 // ============================================================================
-// Public anon client (for generateStaticParams / public pages that don't need cookies)
+// Public anon client (no cookies, build-safe)
 // ============================================================================
 
 function anonClient() {
@@ -126,47 +130,87 @@ function anonClient() {
 }
 
 // ============================================================================
-// Open Windows
+// Seasons
 // ============================================================================
 
-export async function getOpenWindows(): Promise<OpenWindow[]> {
+export async function getSeasons(): Promise<Season[]> {
   const supabase = await createSupabaseServer()
   const { data, error } = await supabase
-    .from('open_windows')
+    .from('seasons')
     .select('*')
-    .order('sort_order', { ascending: true })
     .order('start_date', { ascending: true })
   if (error) {
-    console.error('getOpenWindows:', error)
+    console.error('getSeasons:', error)
     return []
   }
-  return (data ?? []).map(mapOpenWindow)
+  return (data ?? []).map(mapSeason)
 }
 
-export async function getOpenWindowById(id: string): Promise<OpenWindow | null> {
+export async function getSeasonById(id: string): Promise<Season | null> {
   const supabase = await createSupabaseServer()
-  const { data, error } = await supabase.from('open_windows').select('*').eq('id', id).maybeSingle()
+  const { data, error } = await supabase.from('seasons').select('*').eq('id', id).maybeSingle()
   if (error || !data) return null
-  return mapOpenWindow(data)
+  return mapSeason(data)
 }
 
-/** Public-page query: only public windows, filtered by type. Uses anon client so it works without cookies. */
-export async function getPublicOpenWindows(kind: 'host' | 'str'): Promise<OpenWindow[]> {
+/** Public: active seasons only. */
+export async function getActiveSeasons(): Promise<Season[]> {
   const supabase = anonClient()
-  // Include both matching type AND 'both'
   const { data, error } = await supabase
-    .from('open_windows')
+    .from('seasons')
     .select('*')
-    .eq('is_public', true)
-    .in('window_type', [kind, 'both'])
-    .gte('end_date', new Date().toISOString().slice(0, 10))
-    .order('sort_order', { ascending: true })
+    .eq('is_active', true)
     .order('start_date', { ascending: true })
   if (error) {
-    console.error('getPublicOpenWindows:', error)
+    console.error('getActiveSeasons:', error)
     return []
   }
-  return (data ?? []).map(mapOpenWindow)
+  return (data ?? []).map(mapSeason)
+}
+
+// ============================================================================
+// Blackouts
+// ============================================================================
+
+export async function getBlackouts(): Promise<Blackout[]> {
+  const supabase = await createSupabaseServer()
+  const { data, error } = await supabase
+    .from('blackouts')
+    .select('*')
+    .order('start_date', { ascending: true })
+  if (error) {
+    console.error('getBlackouts:', error)
+    return []
+  }
+  return (data ?? []).map(mapBlackout)
+}
+
+export async function getBlackoutById(id: string): Promise<Blackout | null> {
+  const supabase = await createSupabaseServer()
+  const { data, error } = await supabase.from('blackouts').select('*').eq('id', id).maybeSingle()
+  if (error || !data) return null
+  return mapBlackout(data)
+}
+
+/** Public: expose only dates + label (no admin_notes, no category detail). */
+export async function getPublicBlackouts(
+  fromDate?: string,
+  toDate?: string
+): Promise<PublicBlackout[]> {
+  const supabase = anonClient()
+  let q = supabase.from('blackouts').select('start_date, end_date, label')
+  if (fromDate) q = q.gte('end_date', fromDate)
+  if (toDate) q = q.lte('start_date', toDate)
+  const { data, error } = await q.order('start_date', { ascending: true })
+  if (error) {
+    console.error('getPublicBlackouts:', error)
+    return []
+  }
+  return (data ?? []).map((r: any) => ({
+    startDate: r.start_date,
+    endDate: r.end_date,
+    label: r.label,
+  }))
 }
 
 // ============================================================================
@@ -200,16 +244,18 @@ export async function getHostInquiries(filters: InquiryFilters = {}): Promise<Ho
   return rows
 }
 
-export async function getStrInquiries(filters: InquiryFilters = {}): Promise<StrInquiry[]> {
+export async function getBuyoutInquiries(
+  filters: InquiryFilters = {}
+): Promise<BuyoutInquiry[]> {
   const supabase = await createSupabaseServer()
-  let q = supabase.from('str_inquiries').select('*').order('submitted_at', { ascending: false })
+  let q = supabase.from('buyout_inquiries').select('*').order('submitted_at', { ascending: false })
   if (filters.status && filters.status !== 'all') q = q.eq('status', filters.status)
   const { data, error } = await q
   if (error) {
-    console.error('getStrInquiries:', error)
+    console.error('getBuyoutInquiries:', error)
     return []
   }
-  let rows = (data ?? []).map(mapStrInquiry)
+  let rows = (data ?? []).map(mapBuyoutInquiry)
   if (filters.search) {
     const s = filters.search.toLowerCase()
     rows = rows.filter(
@@ -226,22 +272,22 @@ export async function getHostInquiry(id: string): Promise<HostInquiry | null> {
   return mapHostInquiry(data)
 }
 
-export async function getStrInquiry(id: string): Promise<StrInquiry | null> {
+export async function getBuyoutInquiry(id: string): Promise<BuyoutInquiry | null> {
   const supabase = await createSupabaseServer()
-  const { data, error } = await supabase.from('str_inquiries').select('*').eq('id', id).maybeSingle()
+  const { data, error } = await supabase.from('buyout_inquiries').select('*').eq('id', id).maybeSingle()
   if (error || !data) return null
-  return mapStrInquiry(data)
+  return mapBuyoutInquiry(data)
 }
 
 export async function getInquiry(type: InquiryType, id: string) {
-  return type === 'host' ? getHostInquiry(id) : getStrInquiry(id)
+  return type === 'host' ? getHostInquiry(id) : getBuyoutInquiry(id)
 }
 
 export async function getInquiryCounts(): Promise<Record<InquiryStatus, number>> {
   const supabase = await createSupabaseServer()
-  const [host, str] = await Promise.all([
+  const [host, buyout] = await Promise.all([
     supabase.from('host_inquiries').select('status'),
-    supabase.from('str_inquiries').select('status'),
+    supabase.from('buyout_inquiries').select('status'),
   ])
   const counts: Record<InquiryStatus, number> = {
     new: 0,
@@ -251,7 +297,7 @@ export async function getInquiryCounts(): Promise<Record<InquiryStatus, number>>
     declined: 0,
   }
   for (const row of host.data ?? []) counts[row.status as InquiryStatus]++
-  for (const row of str.data ?? []) counts[row.status as InquiryStatus]++
+  for (const row of buyout.data ?? []) counts[row.status as InquiryStatus]++
   return counts
 }
 
@@ -287,7 +333,7 @@ export async function getBookingForInquiry(
   return mapBooking(data)
 }
 
-/** Publicly-safe booked-range query: selects only start_date + end_date + inquiry_type. */
+/** Public: only start_date/end_date/inquiry_type, never admin-visible columns. */
 export async function getBookedRanges(fromDate?: string, toDate?: string): Promise<BookedRange[]> {
   const supabase = anonClient()
   let q = supabase.from('bookings').select('start_date, end_date, inquiry_type')
@@ -328,11 +374,10 @@ export async function getCommunications(
 }
 
 // ============================================================================
-// Admin user directory (for assigned_owner dropdown)
+// Admin user directory
 // ============================================================================
 
 export async function getAdminUserOptions(): Promise<{ id: string; email: string }[]> {
-  // Reads from a SECURITY DEFINER-safe pattern: use service role if available, else skip.
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return []
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -344,11 +389,12 @@ export async function getAdminUserOptions(): Promise<{ id: string; email: string
   return data.users.map((u) => ({ id: u.id, email: u.email ?? '' }))
 }
 
-// Exported for reuse by server actions
+// Exported mappers for action layer use
 export const _mappers = {
-  mapOpenWindow,
+  mapSeason,
+  mapBlackout,
   mapHostInquiry,
-  mapStrInquiry,
+  mapBuyoutInquiry,
   mapBooking,
   mapCommunication,
 }

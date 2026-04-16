@@ -1,13 +1,13 @@
 import Link from 'next/link'
-import { getHostInquiries, getStrInquiries } from '@/lib/data/retreats'
+import { getHostInquiries, getBuyoutInquiries } from '@/lib/data/retreats'
 import InquiryInbox from '@/components/admin/retreats/InquiryInbox'
 
 export const dynamic = 'force-dynamic'
 
 export default async function RetreatsInboxPage() {
-  const [hostInquiries, strInquiries] = await Promise.all([
+  const [hostInquiries, buyoutInquiries] = await Promise.all([
     getHostInquiries(),
-    getStrInquiries(),
+    getBuyoutInquiries(),
   ])
 
   return (
@@ -16,7 +16,7 @@ export default async function RetreatsInboxPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Retreats</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Host and STR inquiry pipeline.
+            Retreat and buyout inquiry pipeline.
           </p>
         </div>
         <div className="flex gap-2">
@@ -27,15 +27,21 @@ export default async function RetreatsInboxPage() {
             Calendar
           </Link>
           <Link
-            href="/admin/retreats/open-windows"
+            href="/admin/retreats/seasons"
             className="px-3 py-2 text-xs font-medium text-forest border border-forest/30 rounded-md hover:bg-forest/5 transition-colors"
           >
-            Open Windows
+            Seasons
+          </Link>
+          <Link
+            href="/admin/retreats/blackouts"
+            className="px-3 py-2 text-xs font-medium text-forest border border-forest/30 rounded-md hover:bg-forest/5 transition-colors"
+          >
+            Blackouts
           </Link>
         </div>
       </div>
 
-      <InquiryInbox hostInquiries={hostInquiries} strInquiries={strInquiries} />
+      <InquiryInbox hostInquiries={hostInquiries} buyoutInquiries={buyoutInquiries} />
     </div>
   )
 }

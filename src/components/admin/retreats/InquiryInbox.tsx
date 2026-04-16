@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import type { HostInquiry, StrInquiry, InquiryStatus } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry, InquiryStatus } from '@/lib/types/retreats'
 import StatusPill from './StatusPill'
 import InquiryTabs from './InquiryTabs'
 
 type Row = {
   id: string
-  kind: 'host' | 'str'
+  kind: 'host' | 'buyout'
   submittedAt: string
   name: string
   organization: string | null
@@ -22,12 +22,12 @@ type Row = {
 
 type Props = {
   hostInquiries: HostInquiry[]
-  strInquiries: StrInquiry[]
+  buyoutInquiries: BuyoutInquiry[]
 }
 
-export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
+export default function InquiryInbox({ hostInquiries, buyoutInquiries }: Props) {
   const [status, setStatus] = useState<InquiryStatus | 'all'>('all')
-  const [kindFilter, setKindFilter] = useState<'all' | 'host' | 'str'>('all')
+  const [kindFilter, setKindFilter] = useState<'all' | 'host' | 'buyout'>('all')
   const [search, setSearch] = useState('')
 
   const allRows: Row[] = useMemo(() => {
@@ -38,29 +38,29 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
       name: h.name,
       organization: h.organization,
       email: h.email,
-      startDate: h.prefStart1,
-      endDate: h.prefEnd1,
-      groupOrParty: h.groupSizeBucket ?? '—',
+      startDate: h.startDate,
+      endDate: h.endDate,
+      groupOrParty: h.groupSize?.toString() ?? '—',
       status: h.status,
       priority: h.priorityScore,
     }))
-    const strRows: Row[] = strInquiries.map((s) => ({
-      id: s.id,
-      kind: 'str',
-      submittedAt: s.submittedAt,
-      name: s.name,
+    const buyoutRows: Row[] = buyoutInquiries.map((b) => ({
+      id: b.id,
+      kind: 'buyout',
+      submittedAt: b.submittedAt,
+      name: b.name,
       organization: null,
-      email: s.email,
-      startDate: s.startDate,
-      endDate: s.endDate,
-      groupOrParty: s.partySize ?? '—',
-      status: s.status,
+      email: b.email,
+      startDate: b.startDate,
+      endDate: b.endDate,
+      groupOrParty: b.partySize ?? '—',
+      status: b.status,
       priority: null,
     }))
-    return [...hostRows, ...strRows].sort(
+    return [...hostRows, ...buyoutRows].sort(
       (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
     )
-  }, [hostInquiries, strInquiries])
+  }, [hostInquiries, buyoutInquiries])
 
   const counts = useMemo(() => {
     const c: Record<InquiryStatus, number> & { all: number } = {
@@ -95,10 +95,9 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
     <div>
       <InquiryTabs active={status} counts={counts} onChange={setStatus} />
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-3 mt-4 mb-4 items-center">
         <div className="flex gap-1 bg-gray-50 border border-gray-200 rounded-md p-1">
-          {(['all', 'host', 'str'] as const).map((k) => (
+          {(['all', 'host', 'buyout'] as const).map((k) => (
             <button
               key={k}
               onClick={() => setKindFilter(k)}
@@ -106,7 +105,7 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
                 kindFilter === k ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'
               }`}
             >
-              {k === 'all' ? 'All' : k === 'host' ? 'Host' : 'STR'}
+              {k === 'all' ? 'All' : k === 'host' ? 'Host' : 'Buyout'}
             </button>
           ))}
         </div>
@@ -128,7 +127,6 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
         </div>
       ) : (
         <>
-          {/* Desktop */}
           <div className="hidden md:block bg-white rounded-lg border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
               <thead>
@@ -136,7 +134,7 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
                   <th className="px-4 py-3 font-medium">Submitted</th>
                   <th className="px-4 py-3 font-medium">Name / Org</th>
                   <th className="px-4 py-3 font-medium">Type</th>
-                  <th className="px-4 py-3 font-medium">Preferred</th>
+                  <th className="px-4 py-3 font-medium">Requested</th>
                   <th className="px-4 py-3 font-medium">Group</th>
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 font-medium">Priority</th>
@@ -165,7 +163,7 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
                             : 'bg-forest/10 text-forest border-forest/20'
                         }`}
                       >
-                        {r.kind === 'host' ? 'Host' : 'STR'}
+                        {r.kind === 'host' ? 'Host' : 'Buyout'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
@@ -184,7 +182,6 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
             </table>
           </div>
 
-          {/* Mobile */}
           <div className="md:hidden space-y-2">
             {filtered.map((r) => (
               <Link
@@ -201,7 +198,7 @@ export default function InquiryInbox({ hostInquiries, strInquiries }: Props) {
                 </div>
                 <div className="flex items-center gap-2 text-xs text-gray-400">
                   <span className={r.kind === 'host' ? 'text-amber' : 'text-forest'}>
-                    {r.kind === 'host' ? 'Host' : 'STR'}
+                    {r.kind === 'host' ? 'Host' : 'Buyout'}
                   </span>
                   <span>·</span>
                   <span>{r.startDate} → {r.endDate}</span>

@@ -1,7 +1,7 @@
 import { Body, Container, Head, Heading, Html, Link, Preview, Section, Text } from '@react-email/components'
 
 type Props = {
-  inquiryKind: 'host' | 'str'
+  inquiryKind: 'host' | 'buyout'
   name: string
   organization?: string | null
   email: string
@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function AdminAlertEmail({ inquiryKind, name, organization, email, summary, adminUrl }: Props) {
-  const heading = inquiryKind === 'host' ? 'New retreat inquiry' : 'New stay request'
+  const heading = inquiryKind === 'host' ? 'New retreat inquiry' : 'New camp buyout request'
   return (
     <Html>
       <Head />

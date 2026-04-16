@@ -51,16 +51,16 @@ Deno.serve(async (_req: Request) => {
     .lt('hold_expires_at', nowIso)
     .select('id, name, organization, email')
 
-  const str = await supabase
-    .from('str_inquiries')
+  const buyout = await supabase
+    .from('buyout_inquiries')
     .update({ status: 'reviewing', hold_expires_at: null })
     .eq('status', 'hold')
     .lt('hold_expires_at', nowIso)
     .select('id, name, email')
 
   const expiredHost = host.data?.length ?? 0
-  const expiredStr = str.data?.length ?? 0
-  const total = expiredHost + expiredStr
+  const expiredBuyout = buyout.data?.length ?? 0
+  const total = expiredHost + expiredBuyout
 
   if (total > 0 && ADMIN_ALERTS.length > 0 && RESEND_API_KEY) {
     try {
@@ -68,8 +68,8 @@ Deno.serve(async (_req: Request) => {
       for (const h of host.data ?? []) {
         lines.push(`- Host: ${h.organization || h.name} (${h.email})`)
       }
-      for (const s of str.data ?? []) {
-        lines.push(`- STR: ${s.name} (${s.email})`)
+      for (const b of buyout.data ?? []) {
+        lines.push(`- Buyout: ${b.name} (${b.email})`)
       }
       const html = `<p>${total} hold${total === 1 ? '' : 's'} expired and moved back to <em>reviewing</em>:</p><ul>${lines.map((l) => `<li>${l}</li>`).join('')}</ul>`
       await fetch('https://api.resend.com/emails', {
@@ -91,7 +91,7 @@ Deno.serve(async (_req: Request) => {
   }
 
   return new Response(
-    JSON.stringify({ expiredCount: total, host: expiredHost, str: expiredStr }),
+    JSON.stringify({ expiredCount: total, host: expiredHost, buyout: expiredBuyout }),
     { headers: { 'Content-Type': 'application/json' } }
   )
 })

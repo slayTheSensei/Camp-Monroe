@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
-import { getPublicOpenWindows, getBookedRanges } from '@/lib/data/retreats'
+import { getActiveSeasons, getPublicBlackouts, getBookedRanges } from '@/lib/data/retreats'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import HostRetreatHero from '@/components/host-retreat/HostRetreatHero'
 import CapacityAndSupport from '@/components/host-retreat/CapacityAndSupport'
-import OpenWindowsList from '@/components/host-retreat/OpenWindowsList'
-import HostInquiryForm from '@/components/host-retreat/HostInquiryForm'
+import HostRetreatBookingSection from '@/components/host-retreat/HostRetreatBookingSection'
 
 export const metadata: Metadata = {
   title: 'Host a Retreat — Camp Monroe',
@@ -16,8 +15,9 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function HostARetreatPage() {
-  const [windows, bookedRanges] = await Promise.all([
-    getPublicOpenWindows('host'),
+  const [seasons, blackouts, bookedRanges] = await Promise.all([
+    getActiveSeasons(),
+    getPublicBlackouts(),
     getBookedRanges(),
   ])
 
@@ -29,21 +29,23 @@ export default async function HostARetreatPage() {
 
       <section className="bg-forest text-cream py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-12">
+          <div className="mb-8">
             <p className="text-amber text-xs tracking-[0.4em] uppercase font-medium mb-3">
-              Current windows
+              Check availability
             </p>
-            <h2 className="font-display text-3xl md:text-4xl uppercase mb-6">
-              Open for host requests
+            <h2 className="font-display text-3xl md:text-4xl uppercase mb-4">
+              Pick your dates
             </h2>
-            <p className="text-cream/70 text-base leading-relaxed max-w-2xl mb-8">
-              These are the date blocks currently open for retreat inquiries. Pick one,
-              propose another — the form below takes up to three preferences.
+            <p className="text-cream/70 text-base leading-relaxed max-w-2xl">
+              Grayed-out dates are outside our season or already taken. Select an available start date, then an end date — 3-night minimum, 14 days lead time.
             </p>
-            <OpenWindowsList windows={windows} bookedRanges={bookedRanges} kind="host" />
           </div>
 
-          <HostInquiryForm />
+          <HostRetreatBookingSection
+            seasons={seasons}
+            blackouts={blackouts}
+            bookedRanges={bookedRanges}
+          />
         </div>
       </section>
 

@@ -1,10 +1,10 @@
 'use client'
 
-import type { HostInquiry, StrInquiry } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry } from '@/lib/types/retreats'
 
 type Props = {
-  inquiry: HostInquiry | StrInquiry
-  type: 'host' | 'str'
+  inquiry: HostInquiry | BuyoutInquiry
+  type: 'host' | 'buyout'
 }
 
 function CopyButton({ value }: { value: string }) {

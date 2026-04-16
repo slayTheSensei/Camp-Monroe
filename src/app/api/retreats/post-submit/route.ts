@@ -1,21 +1,19 @@
 import { NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase-admin'
 import { sendAck, sendAdminAlert } from '@/lib/email/send'
-import type { HostInquiry, StrInquiry, InquiryType } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry, InquiryType } from '@/lib/types/retreats'
 
-// NOTE: this route runs with the service role key. It is intentionally
-// idempotent-ish (safe to hit twice; worst case you send a duplicate email
-// within ~a minute). The client fires this after insert so emails never
-// depend on client trust.
+// NOTE: runs with service role. Client fires after insert so emails never
+// depend on client trust. Idempotent-ish (safe to hit twice).
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { type: InquiryType; id: string }
-    if (!body.id || (body.type !== 'host' && body.type !== 'str')) {
+    if (!body.id || (body.type !== 'host' && body.type !== 'buyout')) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
     }
     const supabase = createSupabaseAdmin()
-    const table = body.type === 'host' ? 'host_inquiries' : 'str_inquiries'
+    const table = body.type === 'host' ? 'host_inquiries' : 'buyout_inquiries'
     const { data: row, error } = await supabase
       .from(table)
       .select('*')
@@ -27,9 +25,8 @@ export async function POST(request: Request) {
 
     const inquiry = (body.type === 'host'
       ? mapHost(row)
-      : mapStr(row)) as HostInquiry | StrInquiry
+      : mapBuyout(row)) as HostInquiry | BuyoutInquiry
 
-    // Fan out: acknowledgment + admin alert. Errors surface but don't block each other.
     const results = await Promise.allSettled([
       sendAck(body.type, inquiry),
       sendAdminAlert(body.type, inquiry),
@@ -59,14 +56,9 @@ function mapHost(row: any): HostInquiry {
     phone: row.phone ?? null,
     retreatConcept: row.retreat_concept,
     audienceType: row.audience_type ?? null,
-    groupSizeBucket: row.group_size_bucket ?? null,
-    prefStart1: row.pref_start_1,
-    prefEnd1: row.pref_end_1,
-    prefStart2: row.pref_start_2 ?? null,
-    prefEnd2: row.pref_end_2 ?? null,
-    prefStart3: row.pref_start_3 ?? null,
-    prefEnd3: row.pref_end_3 ?? null,
-    flexibility: row.flexibility ?? null,
+    groupSize: row.group_size ?? null,
+    startDate: row.start_date,
+    endDate: row.end_date,
     supportNeeds: row.support_needs ?? [],
     additionalNotes: row.additional_notes ?? null,
     status: row.status,
@@ -74,12 +66,11 @@ function mapHost(row: any): HostInquiry {
     assignedOwner: row.assigned_owner ?? null,
     adminNotes: row.admin_notes ?? null,
     holdExpiresAt: row.hold_expires_at ?? null,
-    linkedOpenWindowId: row.linked_open_window_id ?? null,
     createdAt: row.created_at,
   }
 }
 
-function mapStr(row: any): StrInquiry {
+function mapBuyout(row: any): BuyoutInquiry {
   return {
     id: row.id,
     submittedAt: row.submitted_at,
@@ -94,7 +85,6 @@ function mapStr(row: any): StrInquiry {
     status: row.status,
     adminNotes: row.admin_notes ?? null,
     holdExpiresAt: row.hold_expires_at ?? null,
-    linkedOpenWindowId: row.linked_open_window_id ?? null,
     createdAt: row.created_at,
   }
 }

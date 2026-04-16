@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import type {
   HostInquiry,
-  StrInquiry,
+  BuyoutInquiry,
   Communication,
   InquiryType,
   Booking,
@@ -14,7 +14,7 @@ import { formatHoldRelative } from '@/lib/pipeline/holds'
 import StatusPill from './StatusPill'
 import ContactInfo from './InquiryFormFields/ContactInfo'
 import RequestDetails from './InquiryFormFields/RequestDetails'
-import DatePreferences from './InquiryFormFields/DatePreferences'
+import DateRange from './InquiryFormFields/DateRange'
 import TriagePanel from './InquiryFormFields/TriagePanel'
 import CommunicationsLog from './InquiryFormFields/CommunicationsLog'
 import {
@@ -31,8 +31,8 @@ type Tab = (typeof tabs)[number]
 
 type Props = {
   type: InquiryType
-  inquiry: HostInquiry | StrInquiry
-  conflictsByRange: Conflict[][]
+  inquiry: HostInquiry | BuyoutInquiry
+  conflicts: Conflict[]
   communications: Communication[]
   existingBooking: Booking | null
   admins: { id: string; email: string }[]
@@ -41,7 +41,7 @@ type Props = {
 export default function InquiryForm({
   type,
   inquiry,
-  conflictsByRange,
+  conflicts,
   communications,
   existingBooking,
   admins,
@@ -56,14 +56,9 @@ export default function InquiryForm({
     "Thanks again for reaching out. We're not able to accommodate this request, but appreciate you considering Camp Monroe."
   )
 
-  const startDefault =
-    type === 'host' ? (inquiry as HostInquiry).prefStart1 : (inquiry as StrInquiry).startDate
-  const endDefault =
-    type === 'host' ? (inquiry as HostInquiry).prefEnd1 : (inquiry as StrInquiry).endDate
-  const groupDefault =
-    type === 'host'
-      ? parseInt((inquiry as HostInquiry).groupSizeBucket?.split('-')[1] ?? '12', 10) || null
-      : null
+  const startDefault = inquiry.startDate
+  const endDefault = inquiry.endDate
+  const groupDefault = type === 'host' ? (inquiry as HostInquiry).groupSize ?? null : null
 
   const [confirmStart, setConfirmStart] = useState(startDefault)
   const [confirmEnd, setConfirmEnd] = useState(endDefault)
@@ -142,11 +137,7 @@ export default function InquiryForm({
         {tab === 'Contact' && <ContactInfo inquiry={inquiry} type={type} />}
         {tab === 'Request' && <RequestDetails inquiry={inquiry} type={type} />}
         {tab === 'Dates' && (
-          <DatePreferences
-            inquiry={inquiry}
-            type={type}
-            conflictsByRange={conflictsByRange}
-          />
+          <DateRange inquiry={inquiry} conflicts={conflicts} />
         )}
         {tab === 'Triage' && <TriagePanel inquiry={inquiry} type={type} admins={admins} />}
         {tab === 'Communications' && (

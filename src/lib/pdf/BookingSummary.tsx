@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
-import type { Booking, HostInquiry, StrInquiry, InquiryType } from '@/lib/types/retreats'
+import type { Booking, HostInquiry, BuyoutInquiry, InquiryType } from '@/lib/types/retreats'
 
 const styles = StyleSheet.create({
   page: { padding: 48, fontFamily: 'Helvetica', fontSize: 11, color: '#1a2e1a', backgroundColor: '#f5f0e8' },
@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
 
 type Props = {
   booking: Booking
-  inquiry: HostInquiry | StrInquiry
+  inquiry: HostInquiry | BuyoutInquiry
   type: InquiryType
 }
 
 export default function BookingSummary({ booking, inquiry, type }: Props) {
   const isHost = type === 'host'
   const host = isHost ? (inquiry as HostInquiry) : null
-  const str = !isHost ? (inquiry as StrInquiry) : null
+  const buyout = !isHost ? (inquiry as BuyoutInquiry) : null
 
   return (
     <Document>
@@ -32,7 +32,7 @@ export default function BookingSummary({ booking, inquiry, type }: Props) {
         <View style={styles.header}>
           <Text style={styles.heading}>Camp Monroe</Text>
           <Text style={styles.subheading}>
-            {isHost ? 'Retreat Booking Confirmation' : 'Stay Confirmation'} · #{booking.id.slice(0, 8)}
+            {isHost ? 'Retreat Booking Confirmation' : 'Camp Buyout Confirmation'} · #{booking.id.slice(0, 8)}
           </Text>
         </View>
 
@@ -85,17 +85,17 @@ export default function BookingSummary({ booking, inquiry, type }: Props) {
           </>
         ) : null}
 
-        {str ? (
+        {buyout ? (
           <>
             <View style={styles.divider} />
             <View style={styles.row}>
               <View style={styles.col}>
                 <Text style={styles.label}>Party size</Text>
-                <Text style={styles.value}>{str.partySize ?? '—'}</Text>
+                <Text style={styles.value}>{buyout.partySize ?? '—'}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.label}>Purpose</Text>
-                <Text style={styles.value}>{str.purposeOfStay ?? '—'}</Text>
+                <Text style={styles.value}>{buyout.purposeOfStay ?? '—'}</Text>
               </View>
             </View>
           </>

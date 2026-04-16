@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import type { HostInquiry, StrInquiry, InquiryStatus } from '@/lib/types/retreats'
+import type { HostInquiry, BuyoutInquiry, InquiryStatus } from '@/lib/types/retreats'
 import { updateInquiryField } from '@/app/admin/(dashboard)/retreats/actions'
 
 type Props = {
-  inquiry: HostInquiry | StrInquiry
-  type: 'host' | 'str'
+  inquiry: HostInquiry | BuyoutInquiry
+  type: 'host' | 'buyout'
   admins: { id: string; email: string }[]
 }
 

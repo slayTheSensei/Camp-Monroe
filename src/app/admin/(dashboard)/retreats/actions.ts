@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createSupabaseServer } from '@/lib/supabase-server'
 import { createSupabaseAdmin } from '@/lib/supabase-admin'
 import { computeHoldExpiry } from '@/lib/pipeline/holds'
+import { detectConflicts } from '@/lib/pipeline/conflicts'
 import {
   sendHoldNotice,
   sendConfirmation,
@@ -18,6 +19,7 @@ import type {
   InquiryStatus,
   CommunicationKind,
   Booking,
+  BlackoutCategory,
 } from '@/lib/types/retreats'
 
 async function requireAuthUser() {
@@ -30,10 +32,10 @@ async function requireAuthUser() {
 }
 
 function tableFor(type: InquiryType) {
-  return type === 'host' ? 'host_inquiries' : 'str_inquiries'
+  return type === 'host' ? 'host_inquiries' : 'buyout_inquiries'
 }
 
-/** Allowlist of safe fields per inquiry type. Gates arbitrary column updates. */
+/** Allowlist of safe fields per inquiry type. */
 const ALLOWED_FIELDS: Record<InquiryType, string[]> = {
   host: [
     'status',
@@ -41,14 +43,8 @@ const ALLOWED_FIELDS: Record<InquiryType, string[]> = {
     'assigned_owner',
     'admin_notes',
     'hold_expires_at',
-    'linked_open_window_id',
   ],
-  str: [
-    'status',
-    'admin_notes',
-    'hold_expires_at',
-    'linked_open_window_id',
-  ],
+  buyout: ['status', 'admin_notes', 'hold_expires_at'],
 }
 
 export async function updateInquiryField(
@@ -93,21 +89,14 @@ export async function placeHold(
       .eq('id', id)
     if (error) return { error: error.message }
 
-    // Resolve the dates we're holding for the email body
-    const startDate =
-      type === 'host'
-        ? // @ts-expect-error: union narrows at runtime
-          inquiry.prefStart1
-        : // @ts-expect-error: union narrows at runtime
-          inquiry.startDate
-    const endDate =
-      type === 'host'
-        ? // @ts-expect-error: union narrows at runtime
-          inquiry.prefEnd1
-        : // @ts-expect-error: union narrows at runtime
-          inquiry.endDate
-
-    await sendHoldNotice(type, inquiry, startDate, endDate, holdExpiresAt, user.id)
+    await sendHoldNotice(
+      type,
+      inquiry,
+      inquiry.startDate,
+      inquiry.endDate,
+      holdExpiresAt,
+      user.id
+    )
     revalidatePath(`/admin/retreats/${type}/${id}`)
     revalidatePath('/admin/retreats')
     return { holdExpiresAt }
@@ -144,11 +133,23 @@ export async function confirmBooking(
   type: InquiryType,
   id: string,
   payload: ConfirmBookingPayload
-): Promise<{ error?: string; bookingId?: string }> {
+): Promise<{ error?: string; bookingId?: string; conflicts?: string[] }> {
   try {
     const user = await requireAuthUser()
     const inquiry = await getInquiry(type, id)
     if (!inquiry) return { error: 'Inquiry not found' }
+
+    // Hard-block on any conflict (DL-007 — no overlap allowed)
+    const conflicts = await detectConflicts(payload.startDate, payload.endDate, {
+      excludeInquiry: { type, id },
+    })
+    if (conflicts.length > 0) {
+      return {
+        error: 'Cannot confirm — conflicts exist on these dates',
+        conflicts: conflicts.map((c) => c.label),
+      }
+    }
+
     const admin = createSupabaseAdmin()
 
     // 1. Insert booking
@@ -175,7 +176,7 @@ export async function confirmBooking(
       .update({ status: 'confirmed', hold_expires_at: null })
       .eq('id', id)
 
-    // 3. Generate + upload PDF; non-fatal if it fails
+    // 3. PDF (non-fatal)
     let pdfUrl: string | null = null
     try {
       const buf = await generateBookingPDF(booking, inquiry, type)
@@ -187,12 +188,14 @@ export async function confirmBooking(
       console.error('PDF generation/upload failed (non-fatal):', e)
     }
 
-    // 4. Send confirmation email + insert communications row (email helper logs it)
+    // 4. Confirmation email + communications row
     await sendConfirmation(type, inquiry, booking, pdfUrl, user.id)
 
     revalidatePath(`/admin/retreats/${type}/${id}`)
     revalidatePath('/admin/retreats')
     revalidatePath('/admin/retreats/calendar')
+    revalidatePath('/host-a-retreat')
+    revalidatePath('/stay-at-camp')
     return { bookingId: booking.id }
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'confirm failed' }
@@ -252,13 +255,12 @@ export async function cancelBooking(
       .delete()
       .eq('inquiry_type', type)
       .eq('inquiry_id', inquiryId)
-    await admin
-      .from(tableFor(type))
-      .update({ status: 'reviewing' })
-      .eq('id', inquiryId)
+    await admin.from(tableFor(type)).update({ status: 'reviewing' }).eq('id', inquiryId)
     revalidatePath(`/admin/retreats/${type}/${inquiryId}`)
     revalidatePath('/admin/retreats')
     revalidatePath('/admin/retreats/calendar')
+    revalidatePath('/host-a-retreat')
+    revalidatePath('/stay-at-camp')
     return {}
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'cancel failed' }
@@ -290,41 +292,33 @@ export async function sendCommunication(
 }
 
 // ============================================================================
-// Open Windows CRUD
+// Seasons CRUD
 // ============================================================================
 
-export type OpenWindowInput = {
+export type SeasonInput = {
+  label: string
   startDate: string
   endDate: string
-  windowType: 'host' | 'str' | 'both'
-  label: string
-  description?: string | null
-  isPublic: boolean
-  sortOrder: number
-  notes?: string | null
+  isActive: boolean
 }
 
-export async function createOpenWindow(input: OpenWindowInput): Promise<{ error?: string; id?: string }> {
+export async function createSeason(input: SeasonInput): Promise<{ error?: string; id?: string }> {
   try {
     const user = await requireAuthUser()
     const admin = createSupabaseAdmin()
     const { data, error } = await admin
-      .from('open_windows')
+      .from('seasons')
       .insert({
+        label: input.label,
         start_date: input.startDate,
         end_date: input.endDate,
-        window_type: input.windowType,
-        label: input.label,
-        description: input.description ?? null,
-        is_public: input.isPublic,
-        sort_order: input.sortOrder,
-        notes: input.notes ?? null,
+        is_active: input.isActive,
         created_by: user.id,
       })
       .select('id')
       .single()
     if (error || !data) return { error: error?.message ?? 'Insert failed' }
-    revalidatePath('/admin/retreats/open-windows')
+    revalidatePath('/admin/retreats/seasons')
     revalidatePath('/host-a-retreat')
     revalidatePath('/stay-at-camp')
     return { id: data.id }
@@ -333,27 +327,22 @@ export async function createOpenWindow(input: OpenWindowInput): Promise<{ error?
   }
 }
 
-export async function updateOpenWindow(
+export async function updateSeason(
   id: string,
-  input: Partial<OpenWindowInput>
+  input: Partial<SeasonInput>
 ): Promise<{ error?: string }> {
   try {
     await requireAuthUser()
     const admin = createSupabaseAdmin()
     const row: Record<string, unknown> = {}
+    if (input.label !== undefined) row.label = input.label
     if (input.startDate !== undefined) row.start_date = input.startDate
     if (input.endDate !== undefined) row.end_date = input.endDate
-    if (input.windowType !== undefined) row.window_type = input.windowType
-    if (input.label !== undefined) row.label = input.label
-    if (input.description !== undefined) row.description = input.description
-    if (input.isPublic !== undefined) row.is_public = input.isPublic
-    if (input.sortOrder !== undefined) row.sort_order = input.sortOrder
-    if (input.notes !== undefined) row.notes = input.notes
-
-    const { error } = await admin.from('open_windows').update(row).eq('id', id)
+    if (input.isActive !== undefined) row.is_active = input.isActive
+    const { error } = await admin.from('seasons').update(row).eq('id', id)
     if (error) return { error: error.message }
-    revalidatePath('/admin/retreats/open-windows')
-    revalidatePath(`/admin/retreats/open-windows/${id}`)
+    revalidatePath('/admin/retreats/seasons')
+    revalidatePath(`/admin/retreats/seasons/${id}`)
     revalidatePath('/host-a-retreat')
     revalidatePath('/stay-at-camp')
     return {}
@@ -362,13 +351,13 @@ export async function updateOpenWindow(
   }
 }
 
-export async function deleteOpenWindow(id: string): Promise<{ error?: string }> {
+export async function deleteSeason(id: string): Promise<{ error?: string }> {
   try {
     await requireAuthUser()
     const admin = createSupabaseAdmin()
-    const { error } = await admin.from('open_windows').delete().eq('id', id)
+    const { error } = await admin.from('seasons').delete().eq('id', id)
     if (error) return { error: error.message }
-    revalidatePath('/admin/retreats/open-windows')
+    revalidatePath('/admin/retreats/seasons')
     revalidatePath('/host-a-retreat')
     revalidatePath('/stay-at-camp')
     return {}
@@ -377,7 +366,89 @@ export async function deleteOpenWindow(id: string): Promise<{ error?: string }> 
   }
 }
 
-// Convenience: pure status changes via allowlist
+// ============================================================================
+// Blackouts CRUD
+// ============================================================================
+
+export type BlackoutInput = {
+  startDate: string
+  endDate: string
+  category: BlackoutCategory
+  label: string
+  adminNotes?: string | null
+}
+
+export async function createBlackout(
+  input: BlackoutInput
+): Promise<{ error?: string; id?: string }> {
+  try {
+    const user = await requireAuthUser()
+    const admin = createSupabaseAdmin()
+    const { data, error } = await admin
+      .from('blackouts')
+      .insert({
+        start_date: input.startDate,
+        end_date: input.endDate,
+        category: input.category,
+        label: input.label,
+        admin_notes: input.adminNotes ?? null,
+        created_by: user.id,
+      })
+      .select('id')
+      .single()
+    if (error || !data) return { error: error?.message ?? 'Insert failed' }
+    revalidatePath('/admin/retreats/blackouts')
+    revalidatePath('/admin/retreats/calendar')
+    revalidatePath('/host-a-retreat')
+    revalidatePath('/stay-at-camp')
+    return { id: data.id }
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'create failed' }
+  }
+}
+
+export async function updateBlackout(
+  id: string,
+  input: Partial<BlackoutInput>
+): Promise<{ error?: string }> {
+  try {
+    await requireAuthUser()
+    const admin = createSupabaseAdmin()
+    const row: Record<string, unknown> = {}
+    if (input.startDate !== undefined) row.start_date = input.startDate
+    if (input.endDate !== undefined) row.end_date = input.endDate
+    if (input.category !== undefined) row.category = input.category
+    if (input.label !== undefined) row.label = input.label
+    if (input.adminNotes !== undefined) row.admin_notes = input.adminNotes
+    const { error } = await admin.from('blackouts').update(row).eq('id', id)
+    if (error) return { error: error.message }
+    revalidatePath('/admin/retreats/blackouts')
+    revalidatePath(`/admin/retreats/blackouts/${id}`)
+    revalidatePath('/admin/retreats/calendar')
+    revalidatePath('/host-a-retreat')
+    revalidatePath('/stay-at-camp')
+    return {}
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'update failed' }
+  }
+}
+
+export async function deleteBlackout(id: string): Promise<{ error?: string }> {
+  try {
+    await requireAuthUser()
+    const admin = createSupabaseAdmin()
+    const { error } = await admin.from('blackouts').delete().eq('id', id)
+    if (error) return { error: error.message }
+    revalidatePath('/admin/retreats/blackouts')
+    revalidatePath('/admin/retreats/calendar')
+    revalidatePath('/host-a-retreat')
+    revalidatePath('/stay-at-camp')
+    return {}
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : 'delete failed' }
+  }
+}
+
 export async function setStatus(
   type: InquiryType,
   id: string,
