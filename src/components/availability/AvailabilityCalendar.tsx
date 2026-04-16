@@ -186,13 +186,35 @@ export default function AvailabilityCalendar({
 }
 
 const calendarStyles = `
-  .cm-calendar .rdp-root { --rdp-accent-color: #d4a843; --rdp-accent-background-color: #d4a843; color: #f5f0e8; background: transparent; }
-  .cm-calendar .rdp-months, .cm-calendar .rdp-month, .cm-calendar .rdp-month_grid, .cm-calendar .rdp-table, .cm-calendar .rdp-week, .cm-calendar .rdp-row { background: transparent; }
-  .cm-calendar .rdp-month_caption { color: #f5f0e8; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; padding: 0.5rem 0; background: transparent; }
-  .cm-calendar .rdp-weekday { color: rgba(245, 240, 232, 0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 0.5rem 0; background: transparent; }
+  /* Kill every default background react-day-picker v9 might paint on cells */
+  .cm-calendar .rdp-root {
+    --rdp-accent-color: #d4a843;
+    --rdp-accent-background-color: transparent;
+    --rdp-range_start-color: #1a2e1a;
+    --rdp-range_end-color: #1a2e1a;
+    --rdp-range_middle-color: #1a2e1a;
+    --rdp-range_start-background: transparent;
+    --rdp-range_end-background: transparent;
+    --rdp-range_middle-background-color: transparent;
+    --rdp-selected-border: none;
+    --rdp-today-color: inherit;
+    --rdp-day-height: 2.25rem;
+    --rdp-day-width: 2.25rem;
+    color: #f5f0e8;
+    background: transparent;
+  }
+  .cm-calendar .rdp-months, .cm-calendar .rdp-month, .cm-calendar .rdp-month_grid,
+  .cm-calendar .rdp-table, .cm-calendar .rdp-week, .cm-calendar .rdp-row,
+  .cm-calendar .rdp-day,
+  .cm-calendar .rdp-selected, .cm-calendar .rdp-range_start,
+  .cm-calendar .rdp-range_end, .cm-calendar .rdp-range_middle {
+    background: transparent !important;
+  }
+  .cm-calendar .rdp-month_caption { color: #f5f0e8; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; padding: 0.5rem 0; }
+  .cm-calendar .rdp-weekday { color: rgba(245, 240, 232, 0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 0.5rem 0; }
 
-  /* Each cell: transparent, small padding so pills don't touch */
-  .cm-calendar .rdp-day { padding: 2px; background: transparent; }
+  /* Cell spacing so pills don't touch */
+  .cm-calendar .rdp-day { padding: 2px; }
   .cm-calendar .rdp-day_button {
     color: #f5f0e8;
     background: transparent;
@@ -206,14 +228,26 @@ const calendarStyles = `
   }
   .cm-calendar .rdp-day_button:hover:not([disabled]) { background: rgba(212, 168, 67, 0.25); }
 
-  /* Range endpoints: solid amber, dark forest text */
-  .cm-calendar .rdp-selected .rdp-day_button { background: #d4a843; color: #1a2e1a; font-weight: 700; border-color: #d4a843; }
-  /* Range middle: lighter amber, still dark text */
-  .cm-calendar .rdp-range_middle .rdp-day_button { background: rgba(212, 168, 67, 0.65); color: #1a2e1a; font-weight: 600; border-color: transparent; }
+  /* Range endpoints: solid amber pill */
+  .cm-calendar .rdp-selected .rdp-day_button,
+  .cm-calendar .rdp-range_start .rdp-day_button,
+  .cm-calendar .rdp-range_end .rdp-day_button {
+    background: #d4a843 !important;
+    color: #1a2e1a !important;
+    font-weight: 700;
+    border-color: #d4a843;
+  }
+  /* Range middle: lighter amber pill */
+  .cm-calendar .rdp-range_middle .rdp-day_button {
+    background: rgba(212, 168, 67, 0.65) !important;
+    color: #1a2e1a !important;
+    font-weight: 600;
+    border-color: transparent;
+  }
 
-  .cm-calendar .rdp-disabled .rdp-day_button { background: transparent; color: rgba(245, 240, 232, 0.25); text-decoration: line-through; cursor: not-allowed; border-color: transparent; }
-  .cm-calendar .rdp-disabled .rdp-day_button:hover { background: transparent; }
-  .cm-calendar .cm-outside-season .rdp-day_button { background: transparent; color: rgba(245, 240, 232, 0.15); border-color: transparent; }
+  .cm-calendar .rdp-disabled .rdp-day_button { background: transparent !important; color: rgba(245, 240, 232, 0.25); text-decoration: line-through; cursor: not-allowed; border-color: transparent; }
+  .cm-calendar .rdp-disabled .rdp-day_button:hover { background: transparent !important; }
+  .cm-calendar .cm-outside-season .rdp-day_button { background: transparent !important; color: rgba(245, 240, 232, 0.15); border-color: transparent; }
   .cm-calendar .rdp-chevron { fill: #f5f0e8; }
   .cm-calendar .rdp-button_previous, .cm-calendar .rdp-button_next { background: transparent; color: #f5f0e8; }
   .cm-calendar .rdp-button_previous:hover,
