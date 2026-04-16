@@ -54,3 +54,14 @@ select option {
   background-color: #f5f0e8;
   color: #1a2e1a;
 }
+
+/* Admin help / docs — syntax highlighting (highlight.js github-dark-dimmed subset) */
+.admin-guide .hljs { color: #e6edf3; background: transparent; }
+.admin-guide .hljs-comment, .admin-guide .hljs-quote { color: #8b949e; font-style: italic; }
+.admin-guide .hljs-keyword, .admin-guide .hljs-selector-tag, .admin-guide .hljs-literal,
+.admin-guide .hljs-built_in, .admin-guide .hljs-doctag { color: #ff7b72; }
+.admin-guide .hljs-string, .admin-guide .hljs-regexp, .admin-guide .hljs-attr { color: #a5d6ff; }
+.admin-guide .hljs-title, .admin-guide .hljs-section, .admin-guide .hljs-name { color: #d2a8ff; }
+.admin-guide .hljs-number, .admin-guide .hljs-symbol, .admin-guide .hljs-bullet { color: #79c0ff; }
+.admin-guide .hljs-variable, .admin-guide .hljs-template-variable, .admin-guide .hljs-type { color: #ffa657; }
+.admin-guide .hljs-params, .admin-guide .hljs-meta { color: #ffa657; }

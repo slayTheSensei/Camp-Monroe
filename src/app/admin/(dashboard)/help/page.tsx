@@ -1,9 +1,6 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import Link from 'next/link'
 import PageHeader from '@/components/admin/ui/PageHeader'
-import MarkdownBody from '@/components/admin/help/MarkdownBody'
-import TableOfContents from '@/components/admin/help/TableOfContents'
-import { extractToc } from '@/components/admin/help/extractToc'
+import { loadDocsTree } from '@/lib/docs'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,35 +8,39 @@ export const metadata = {
   title: 'Admin Guide — Camp Monroe',
 }
 
-export default async function HelpPage() {
-  const filePath = path.join(process.cwd(), 'docs/ADMIN-GUIDE.md')
-  const raw = await fs.readFile(filePath, 'utf-8')
-
-  // Strip the first h1 (the guide starts with "# Camp Monroe Admin — Team Onboarding Guide")
-  // — we already show the page title via PageHeader.
-  const { title, body } = splitFirstHeading(raw)
-  const toc = extractToc(body)
-
+export default async function HelpLandingPage() {
+  const groups = await loadDocsTree()
   return (
     <>
       <PageHeader
-        title={title ?? 'Admin Guide'}
-        subtitle="Team onboarding reference — everything you need to operate the admin."
+        title="Admin Guide"
+        subtitle="Operating manual for the Camp Monroe admin. Browse by category or search in the sidebar."
       />
-      <div className="flex flex-col-reverse lg:flex-row gap-10 items-start">
-        <TableOfContents nodes={toc} />
-        <div className="flex-1 min-w-0">
-          <MarkdownBody content={body} />
-        </div>
+      <div className="space-y-10">
+        {groups.map((group) => (
+          <section key={group.category}>
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-500 mb-4">
+              {group.category}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {group.articles.map((a) => (
+                <Link
+                  key={a.path}
+                  href={`/admin/help/${a.path}`}
+                  className="group block rounded-lg border border-gray-200 bg-white p-5 transition-colors hover:border-amber/50"
+                >
+                  <p className="text-base font-semibold text-gray-900 group-hover:text-amber">
+                    {a.title}
+                  </p>
+                  {a.summary && (
+                    <p className="mt-1 text-sm text-gray-600 leading-relaxed">{a.summary}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </>
   )
-}
-
-function splitFirstHeading(md: string): { title: string | null; body: string } {
-  const m = md.match(/^#\s+(.+?)\s*$/m)
-  if (!m) return { title: null, body: md }
-  const idx = md.indexOf(m[0])
-  const body = (md.slice(0, idx) + md.slice(idx + m[0].length)).trimStart()
-  return { title: m[1], body }
 }
