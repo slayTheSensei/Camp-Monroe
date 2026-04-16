@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getActiveSeasons, getPublicBlackouts, getBookedRanges } from '@/lib/data/retreats'
+import { getActiveSeasons, getPublicBlackouts, getBookedRanges, getHeldRanges } from '@/lib/data/retreats'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import StayHero from '@/components/stay-at-camp/StayHero'
@@ -14,11 +14,15 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function StayAtCampPage() {
-  const [seasons, blackouts, bookedRanges] = await Promise.all([
+  const [seasons, blackouts, bookedRanges, heldRanges] = await Promise.all([
     getActiveSeasons(),
     getPublicBlackouts(),
     getBookedRanges(),
+    getHeldRanges(),
   ])
+  // Merge held dates into the "unavailable" set. Privacy preserved —
+  // heldRanges only contains start/end dates, no PII.
+  const unavailableRanges = [...bookedRanges, ...heldRanges]
 
   return (
     <main className="bg-forest text-cream min-h-screen">
@@ -42,7 +46,7 @@ export default async function StayAtCampPage() {
           <BuyoutBookingSection
             seasons={seasons}
             blackouts={blackouts}
-            bookedRanges={bookedRanges}
+            bookedRanges={unavailableRanges}
           />
         </div>
       </section>

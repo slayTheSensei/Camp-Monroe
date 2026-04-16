@@ -333,6 +333,26 @@ export async function getBookingForInquiry(
   return mapBooking(data)
 }
 
+/**
+ * Publicly-safe held-range query. Calls the SECURITY DEFINER function
+ * public.get_held_ranges() which exposes only start_date, end_date,
+ * inquiry_type — never PII. Used by the public calendar so prospects
+ * don't submit inquiries on dates already being finalized.
+ */
+export async function getHeldRanges(): Promise<BookedRange[]> {
+  const supabase = anonClient()
+  const { data, error } = await supabase.rpc('get_held_ranges')
+  if (error) {
+    console.error('getHeldRanges:', error)
+    return []
+  }
+  return ((data ?? []) as any[]).map((r) => ({
+    startDate: r.start_date,
+    endDate: r.end_date,
+    inquiryType: r.inquiry_type,
+  }))
+}
+
 /** Public: only start_date/end_date/inquiry_type, never admin-visible columns. */
 export async function getBookedRanges(fromDate?: string, toDate?: string): Promise<BookedRange[]> {
   const supabase = anonClient()

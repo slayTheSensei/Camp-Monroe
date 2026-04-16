@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getActiveSeasons, getPublicBlackouts, getBookedRanges } from '@/lib/data/retreats'
+import { getActiveSeasons, getPublicBlackouts, getBookedRanges, getHeldRanges } from '@/lib/data/retreats'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import HostRetreatHero from '@/components/host-retreat/HostRetreatHero'
@@ -15,11 +15,15 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function HostARetreatPage() {
-  const [seasons, blackouts, bookedRanges] = await Promise.all([
+  const [seasons, blackouts, bookedRanges, heldRanges] = await Promise.all([
     getActiveSeasons(),
     getPublicBlackouts(),
     getBookedRanges(),
+    getHeldRanges(),
   ])
+  // Merge held dates into the "unavailable" set the calendar renders.
+  // Privacy preserved — heldRanges only contains start/end dates.
+  const unavailableRanges = [...bookedRanges, ...heldRanges]
 
   return (
     <main className="bg-forest text-cream min-h-screen">
@@ -44,7 +48,7 @@ export default async function HostARetreatPage() {
           <HostRetreatBookingSection
             seasons={seasons}
             blackouts={blackouts}
-            bookedRanges={bookedRanges}
+            bookedRanges={unavailableRanges}
           />
         </div>
       </section>
