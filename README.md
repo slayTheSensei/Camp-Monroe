@@ -55,6 +55,8 @@ Open [http://localhost:3001/admin](http://localhost:3001/admin) to access the ad
 
 Located at `/admin`. Requires an authenticated admin account.
 
+**Team onboarding guide:** [`docs/ADMIN-GUIDE.md`](docs/ADMIN-GUIDE.md) — a task-oriented walkthrough of every admin section (retreats triage, seasons, blackouts, experiences, content, users, waitlist) for non-technical team members.
+
 ### Logging In
 
 Navigate to `/admin/login` and sign in with your admin email and password.
