@@ -53,7 +53,7 @@ export default function InquiryInbox({ hostInquiries, buyoutInquiries }: Props) 
       email: b.email,
       startDate: b.startDate,
       endDate: b.endDate,
-      groupOrParty: b.partySize ?? '—',
+      groupOrParty: b.partySize != null ? String(b.partySize) : '—',
       status: b.status,
       priority: null,
     }))

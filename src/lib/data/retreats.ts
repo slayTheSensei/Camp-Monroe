@@ -373,6 +373,32 @@ export async function getCommunications(
   return (data ?? []).map(mapCommunication)
 }
 
+/** Count of confirmed bookings starting between now and `daysAhead`. */
+export async function getUpcomingBookingsCount(daysAhead: number = 90): Promise<number> {
+  const supabase = await createSupabaseServer()
+  const today = new Date().toISOString().slice(0, 10)
+  const horizon = new Date()
+  horizon.setDate(horizon.getDate() + daysAhead)
+  const horizonIso = horizon.toISOString().slice(0, 10)
+  const { count } = await supabase
+    .from('bookings')
+    .select('*', { count: 'exact', head: true })
+    .gte('start_date', today)
+    .lte('start_date', horizonIso)
+  return count ?? 0
+}
+
+/** Count of active blackouts (overlapping today or in the future). */
+export async function getActiveBlackoutsCount(): Promise<number> {
+  const supabase = await createSupabaseServer()
+  const today = new Date().toISOString().slice(0, 10)
+  const { count } = await supabase
+    .from('blackouts')
+    .select('*', { count: 'exact', head: true })
+    .gte('end_date', today)
+  return count ?? 0
+}
+
 // ============================================================================
 // Admin user directory
 // ============================================================================

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getSeasons } from '@/lib/data/retreats'
 import SeasonList from '@/components/admin/retreats/SeasonList'
+import BackLink from '@/components/admin/retreats/BackLink'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,6 +9,7 @@ export default async function SeasonsPage() {
   const seasons = await getSeasons()
   return (
     <div>
+      <BackLink />
       <div className="mb-6 flex items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Seasons</h1>

@@ -39,7 +39,7 @@ export default function BuyoutInquiryForm({ selectedRange, onClearRange }: Props
       email: email.trim().toLowerCase(),
       start_date: selectedRange.start,
       end_date: selectedRange.end,
-      party_size: partySize || null,
+      party_size: partySize ? parseInt(partySize, 10) : null,
       purpose_of_stay: purpose || null,
       affiliation: affiliation || null,
       additional_notes: additionalNotes.trim() || null,
@@ -111,16 +111,12 @@ export default function BuyoutInquiryForm({ selectedRange, onClearRange }: Props
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <Select
+        <TextInput
           label="Party size"
+          type="number"
           value={partySize}
           onChange={setPartySize}
-          options={[
-            { value: '', label: 'Select…' },
-            { value: '1-2', label: '1 – 2 people' },
-            { value: '3-4', label: '3 – 4 people' },
-            { value: '5+', label: '5 or more' },
-          ]}
+          placeholder="e.g. 12"
         />
         <Select
           label="Purpose of stay"
@@ -180,12 +176,14 @@ function TextInput({
   onChange,
   type = 'text',
   required,
+  placeholder,
 }: {
   label: string
   value: string
   onChange: (v: string) => void
   type?: string
   required?: boolean
+  placeholder?: string
 }) {
   return (
     <div>
@@ -195,6 +193,8 @@ function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
+        placeholder={placeholder}
+        min={type === 'number' ? 1 : undefined}
         className={inputClass}
       />
     </div>

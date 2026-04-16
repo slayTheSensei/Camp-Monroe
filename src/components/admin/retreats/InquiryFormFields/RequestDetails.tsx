@@ -28,7 +28,7 @@ export default function RequestDetails({ inquiry, type }: Props) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Party size" value={b.partySize ?? '—'} />
+        <Field label="Party size" value={b.partySize != null ? String(b.partySize) : '—'} />
         <Field label="Purpose" value={b.purposeOfStay ?? '—'} />
       </div>
       <Field label="Affiliation" value={b.affiliation ?? '—'} />

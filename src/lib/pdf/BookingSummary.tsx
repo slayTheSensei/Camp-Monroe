@@ -91,7 +91,7 @@ export default function BookingSummary({ booking, inquiry, type }: Props) {
             <View style={styles.row}>
               <View style={styles.col}>
                 <Text style={styles.label}>Party size</Text>
-                <Text style={styles.value}>{buyout.partySize ?? '—'}</Text>
+                <Text style={styles.value}>{buyout.partySize != null ? String(buyout.partySize) : '—'}</Text>
               </View>
               <View style={styles.col}>
                 <Text style={styles.label}>Purpose</Text>

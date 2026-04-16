@@ -7,6 +7,7 @@ import {
 } from '@/lib/data/retreats'
 import { detectConflicts } from '@/lib/pipeline/conflicts'
 import InquiryForm from '@/components/admin/retreats/InquiryForm'
+import BackLink from '@/components/admin/retreats/BackLink'
 import type { HostInquiry, BuyoutInquiry } from '@/lib/types/retreats'
 
 export const dynamic = 'force-dynamic'
@@ -34,13 +35,16 @@ export default async function InquiryDetailPage({ params }: { params: Promise<Pa
   const conflicts = await detectConflicts(start, end, { excludeInquiry: { type, id } })
 
   return (
-    <InquiryForm
-      type={type}
-      inquiry={inquiry}
-      conflicts={conflicts}
-      communications={communications}
-      existingBooking={booking}
-      admins={admins}
-    />
+    <div>
+      <BackLink />
+      <InquiryForm
+        type={type}
+        inquiry={inquiry}
+        conflicts={conflicts}
+        communications={communications}
+        existingBooking={booking}
+        admins={admins}
+      />
+    </div>
   )
 }

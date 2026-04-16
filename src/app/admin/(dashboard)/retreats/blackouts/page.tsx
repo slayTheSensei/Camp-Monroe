@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getBlackouts } from '@/lib/data/retreats'
 import BlackoutList from '@/components/admin/retreats/BlackoutList'
+import BackLink from '@/components/admin/retreats/BackLink'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,6 +9,7 @@ export default async function BlackoutsPage() {
   const blackouts = await getBlackouts()
   return (
     <div>
+      <BackLink />
       <div className="mb-6 flex items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Blackouts</h1>

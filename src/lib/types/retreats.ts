@@ -7,7 +7,6 @@ export type InquiryType = 'host' | 'buyout'
 export type AudienceType = 'wellness' | 'creative' | 'corporate' | 'cultural' | 'other'
 export type SupportNeed = 'lodging' | 'meals' | 'facilitation' | 'full'
 
-export type PartySize = '1-2' | '3-4' | '5+'
 export type PurposeOfStay = 'personal' | 'creative' | 'friends' | 'pre-retreat' | 'other'
 export type Affiliation = 'existing_member' | 'new_member' | 'prospective' | 'none'
 
@@ -83,7 +82,7 @@ export type BuyoutInquiry = {
   email: string
   startDate: string
   endDate: string
-  partySize: PartySize | null
+  partySize: number | null
   purposeOfStay: PurposeOfStay | null
   affiliation: Affiliation | null
   additionalNotes: string | null
