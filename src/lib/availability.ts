@@ -137,19 +137,18 @@ export function nightsBetween(startIso: string, endIso: string): number {
   return Math.round((e - s) / (1000 * 60 * 60 * 24))
 }
 
-/** Human-readable range summary: "Sept 5 – Sept 12 · 7 nights" */
+/** Human-readable range summary: "May 16 – May 23, 2026 · 7 nights" */
 export function formatRangeSummary(startIso: string, endIso: string): string {
   const s = new Date(startIso + 'T00:00:00')
   const e = new Date(endIso + 'T00:00:00')
   const sameYear = s.getFullYear() === e.getFullYear()
-  const sameMonth = sameYear && s.getMonth() === e.getMonth()
   const sFmt = s.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     ...(sameYear ? {} : { year: 'numeric' }),
   })
   const eFmt = e.toLocaleDateString('en-US', {
-    month: sameMonth ? undefined : 'short',
+    month: 'short',
     day: 'numeric',
     year: 'numeric',
   })

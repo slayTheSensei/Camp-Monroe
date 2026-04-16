@@ -186,24 +186,36 @@ export default function AvailabilityCalendar({
 }
 
 const calendarStyles = `
-  .cm-calendar .rdp-root { --rdp-accent-color: #d4a843; --rdp-accent-background-color: #d4a843; color: #f5f0e8; }
-  .cm-calendar .rdp-month_caption { color: #f5f0e8; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; padding: 0.5rem 0; }
-  .cm-calendar .rdp-weekday { color: rgba(245, 240, 232, 0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 0.5rem 0; }
+  .cm-calendar .rdp-root { --rdp-accent-color: #d4a843; --rdp-accent-background-color: #d4a843; color: #f5f0e8; background: transparent; }
+  .cm-calendar .rdp-months, .cm-calendar .rdp-month, .cm-calendar .rdp-month_grid, .cm-calendar .rdp-table, .cm-calendar .rdp-week, .cm-calendar .rdp-row { background: transparent; }
+  .cm-calendar .rdp-month_caption { color: #f5f0e8; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; padding: 0.5rem 0; background: transparent; }
+  .cm-calendar .rdp-weekday { color: rgba(245, 240, 232, 0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 0.5rem 0; background: transparent; }
 
-  /* Give each cell a little breathing room so selected days don't merge into a solid bar */
-  .cm-calendar .rdp-day { padding: 2px; }
-  .cm-calendar .rdp-day_button { color: #f5f0e8; border-radius: 6px; width: 2.25rem; height: 2.25rem; display: inline-flex; align-items: center; justify-content: center; }
+  /* Each cell: transparent, small padding so pills don't touch */
+  .cm-calendar .rdp-day { padding: 2px; background: transparent; }
+  .cm-calendar .rdp-day_button {
+    color: #f5f0e8;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
   .cm-calendar .rdp-day_button:hover:not([disabled]) { background: rgba(212, 168, 67, 0.25); }
 
-  /* Range endpoints: solid amber, dark forest text — strong contrast */
-  .cm-calendar .rdp-selected .rdp-day_button { background: #d4a843; color: #1a2e1a; font-weight: 700; }
-  /* Range middle: slightly lighter amber, still dark text, same pill shape */
-  .cm-calendar .rdp-range_middle .rdp-day_button { background: rgba(212, 168, 67, 0.65); color: #1a2e1a; font-weight: 600; border-radius: 6px; }
+  /* Range endpoints: solid amber, dark forest text */
+  .cm-calendar .rdp-selected .rdp-day_button { background: #d4a843; color: #1a2e1a; font-weight: 700; border-color: #d4a843; }
+  /* Range middle: lighter amber, still dark text */
+  .cm-calendar .rdp-range_middle .rdp-day_button { background: rgba(212, 168, 67, 0.65); color: #1a2e1a; font-weight: 600; border-color: transparent; }
 
-  .cm-calendar .rdp-disabled .rdp-day_button { color: rgba(245, 240, 232, 0.25); text-decoration: line-through; cursor: not-allowed; }
+  .cm-calendar .rdp-disabled .rdp-day_button { background: transparent; color: rgba(245, 240, 232, 0.25); text-decoration: line-through; cursor: not-allowed; border-color: transparent; }
   .cm-calendar .rdp-disabled .rdp-day_button:hover { background: transparent; }
-  .cm-calendar .cm-outside-season .rdp-day_button { color: rgba(245, 240, 232, 0.15); }
+  .cm-calendar .cm-outside-season .rdp-day_button { background: transparent; color: rgba(245, 240, 232, 0.15); border-color: transparent; }
   .cm-calendar .rdp-chevron { fill: #f5f0e8; }
+  .cm-calendar .rdp-button_previous, .cm-calendar .rdp-button_next { background: transparent; color: #f5f0e8; }
   .cm-calendar .rdp-button_previous:hover,
   .cm-calendar .rdp-button_next:hover { background: rgba(212, 168, 67, 0.2); }
   .cm-calendar .rdp-today .rdp-day_button { outline: 1px solid rgba(212, 168, 67, 0.5); }
