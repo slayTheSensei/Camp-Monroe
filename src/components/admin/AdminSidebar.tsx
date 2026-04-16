@@ -39,7 +39,7 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
   }
 
   return (
-    <aside className="w-64 bg-forest text-cream flex flex-col min-h-screen shrink-0">
+    <aside className="w-64 bg-forest text-cream flex flex-col h-full shrink-0">
       {/* Logo + mobile close */}
       <div className="px-6 py-6 border-b border-cream/10 flex items-start justify-between">
         <Link href="/admin" onClick={onClose} className="block">

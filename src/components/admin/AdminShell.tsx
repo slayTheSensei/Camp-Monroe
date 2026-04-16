@@ -14,7 +14,7 @@ export default function AdminShell({ userEmail, children }: Props) {
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Desktop sidebar — always visible at md+, fixed height */}
-      <div className="hidden md:block shrink-0 h-screen overflow-y-auto">
+      <div className="hidden md:flex shrink-0 h-screen">
         <AdminSidebar userEmail={userEmail} />
       </div>
 
