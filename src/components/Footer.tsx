@@ -60,10 +60,10 @@ export default async function Footer() {
               {c('contact_intro', "Questions, partnerships, or press inquiries—we'd love to hear from you.")}
             </p>
             <a
-              href={`mailto:${c('contact_email', 'hello@campmonroe.com')}`}
+              href={`mailto:${c('contact_email', 'hello@monroemaine.com')}`}
               className="text-cream text-sm hover:text-amber transition-colors block mt-3"
             >
-              {c('contact_email', 'hello@campmonroe.com')}
+              {c('contact_email', 'hello@monroemaine.com')}
             </a>
 
             {/* Social */}

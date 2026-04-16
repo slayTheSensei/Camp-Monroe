@@ -15,11 +15,27 @@ const audienceOptions = [
   { value: 'other', label: 'Other' },
 ]
 
-const supportOptions: { value: SupportNeed; label: string }[] = [
-  { value: 'lodging', label: 'Lodging only' },
-  { value: 'meals', label: 'Meals / catering' },
-  { value: 'facilitation', label: 'Facilitation' },
-  { value: 'full', label: 'Full-service package' },
+const supportOptions: { value: SupportNeed; label: string; description: string }[] = [
+  {
+    value: 'lodging',
+    label: 'Lodging only',
+    description: "Just the venue — beds, kitchens, common spaces. You handle the rest.",
+  },
+  {
+    value: 'meals',
+    label: 'Meals / catering',
+    description: "We connect you with local catering partners and coordinate meal service.",
+  },
+  {
+    value: 'facilitation',
+    label: 'Facilitation',
+    description: "We introduce you to trusted facilitators and wellness practitioners in our network.",
+  },
+  {
+    value: 'full',
+    label: 'Full-service package',
+    description: "Lodging, meals, facilitation support, and logistics coordination end-to-end.",
+  },
 ]
 
 type Props = {
@@ -166,8 +182,11 @@ export default function HostInquiryForm({ selectedRange, onClearRange }: Props) 
       </div>
 
       <div>
-        <p className="text-cream/60 text-xs tracking-widest uppercase mb-2">Support needs</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="text-cream/60 text-xs tracking-widest uppercase mb-1">Support needs</p>
+        <p className="text-cream/40 text-xs mb-3">
+          Tap any that apply. We&apos;ll follow up with details on what each looks like for your retreat.
+        </p>
+        <div className="space-y-2">
           {supportOptions.map((o) => {
             const active = support.includes(o.value)
             return (
@@ -175,13 +194,30 @@ export default function HostInquiryForm({ selectedRange, onClearRange }: Props) 
                 key={o.value}
                 type="button"
                 onClick={() => toggleSupport(o.value)}
-                className={`px-3 py-1.5 text-sm rounded-full border transition-colors ${
+                className={`w-full text-left px-4 py-3 rounded-sm border transition-colors ${
                   active
-                    ? 'bg-amber text-forest border-amber'
-                    : 'border-cream/20 text-cream/70 hover:border-cream/40'
+                    ? 'bg-amber/10 border-amber text-cream'
+                    : 'border-cream/15 hover:border-cream/30 text-cream/80'
                 }`}
               >
-                {o.label}
+                <div className="flex items-start gap-3">
+                  <span
+                    className={`mt-0.5 w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 ${
+                      active ? 'bg-amber border-amber' : 'border-cream/30'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {active && (
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#1a2e1a" strokeWidth="2">
+                        <path d="M1 5l2.5 2.5L9 2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </span>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{o.label}</p>
+                    <p className="text-xs text-cream/50 mt-0.5 leading-relaxed">{o.description}</p>
+                  </div>
+                </div>
               </button>
             )
           })}

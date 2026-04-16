@@ -15,12 +15,20 @@ import {
   type AvailabilityContext,
 } from '@/lib/availability'
 
+export type SelectedRange = {
+  start: string
+  end: string
+  nights: number
+  valid: boolean
+}
+
 export type AvailabilityCalendarProps = {
   inquiryKind: InquiryType
   seasons: Season[]
   blackouts: PublicBlackout[]
   bookedRanges: BookedRange[]
-  onSelect: (range: { start: string; end: string; nights: number } | null) => void
+  /** Fires with the current selection. `valid=false` when < MIN_NIGHTS so the legend can show feedback. */
+  onSelect: (range: SelectedRange | null) => void
 }
 
 export default function AvailabilityCalendar({
@@ -85,11 +93,7 @@ export default function AvailabilityCalendar({
       const start = ymd(range.from)
       const end = ymd(range.to)
       const nights = nightsBetween(start, end)
-      if (nights >= MIN_NIGHTS) {
-        onSelect({ start, end, nights })
-      } else {
-        onSelect(null)
-      }
+      onSelect({ start, end, nights, valid: nights >= MIN_NIGHTS })
     }
   }
 
@@ -186,9 +190,11 @@ const calendarStyles = `
   .cm-calendar .rdp-month_caption { color: #f5f0e8; font-family: Georgia, serif; font-style: italic; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.05rem; padding: 0.5rem 0; }
   .cm-calendar .rdp-weekday { color: rgba(245, 240, 232, 0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 0.5rem 0; }
   .cm-calendar .rdp-day_button { color: #f5f0e8; border-radius: 4px; }
-  .cm-calendar .rdp-day_button:hover:not([disabled]) { background: rgba(212, 168, 67, 0.2); }
-  .cm-calendar .rdp-selected .rdp-day_button { background: #d4a843; color: #1a2e1a; font-weight: 600; }
-  .cm-calendar .rdp-range_middle .rdp-day_button { background: rgba(212, 168, 67, 0.4); color: #f5f0e8; }
+  .cm-calendar .rdp-day_button:hover:not([disabled]) { background: rgba(212, 168, 67, 0.25); }
+  /* Range endpoints: solid amber, dark forest text — strong contrast */
+  .cm-calendar .rdp-selected .rdp-day_button { background: #d4a843; color: #1a2e1a; font-weight: 700; }
+  /* Range middle: lighter amber with dark forest text — still readable */
+  .cm-calendar .rdp-range_middle .rdp-day_button { background: rgba(212, 168, 67, 0.7); color: #1a2e1a; font-weight: 600; }
   .cm-calendar .rdp-disabled .rdp-day_button { color: rgba(245, 240, 232, 0.25); text-decoration: line-through; cursor: not-allowed; }
   .cm-calendar .rdp-disabled .rdp-day_button:hover { background: transparent; }
   .cm-calendar .cm-outside-season .rdp-day_button { color: rgba(245, 240, 232, 0.15); }

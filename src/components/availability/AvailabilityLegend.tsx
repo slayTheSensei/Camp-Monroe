@@ -1,8 +1,48 @@
 type Props = {
   selectedLabel?: string | null
+  /** Number of nights currently selected (0 when nothing picked). */
+  selectedNights?: number
+  /** Minimum nights required by the booking policy. */
+  minNights?: number
+  /** Lead-time days (for the helper hint). */
+  leadDays?: number
 }
 
-export default function AvailabilityLegend({ selectedLabel }: Props) {
+export default function AvailabilityLegend({
+  selectedLabel,
+  selectedNights = 0,
+  minNights = 3,
+  leadDays,
+}: Props) {
+  // Dynamic helper line:
+  //   - Nothing picked:       "Select a start date, then an end date. 3-night minimum."
+  //   - Start picked only:    "Now pick an end date — at least N more nights."
+  //   - Range shorter than min: "N nights — need at least M."
+  //   - Valid range:          shows summary in amber
+  let helper: { text: string; tone: 'muted' | 'amber' | 'warn' } = {
+    text: `Select a start date, then an end date. ${minNights}-night minimum${
+      leadDays ? `, ${leadDays}-day lead time` : ''
+    }.`,
+    tone: 'muted',
+  }
+
+  if (selectedLabel) {
+    helper = { text: selectedLabel, tone: 'amber' }
+  } else if (selectedNights > 0 && selectedNights < minNights) {
+    const needed = minNights - selectedNights
+    helper = {
+      text: `${selectedNights} night${selectedNights === 1 ? '' : 's'} selected — we need ${minNights} or more (${needed} more to go).`,
+      tone: 'warn',
+    }
+  }
+
+  const toneClass =
+    helper.tone === 'amber'
+      ? 'text-amber'
+      : helper.tone === 'warn'
+      ? 'text-amber'
+      : 'text-cream/50'
+
   return (
     <div className="flex flex-col gap-2 mb-4">
       <div className="flex flex-wrap items-center gap-4 text-xs text-cream/60">
@@ -21,9 +61,7 @@ export default function AvailabilityLegend({ selectedLabel }: Props) {
           Your selection
         </span>
       </div>
-      <p className={`text-sm ${selectedLabel ? 'text-amber' : 'text-cream/40'}`}>
-        {selectedLabel ?? 'Select a start date, then an end date (3-night minimum).'}
-      </p>
+      <p className={`text-sm ${toneClass}`}>{helper.text}</p>
     </div>
   )
 }

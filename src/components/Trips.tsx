@@ -23,10 +23,17 @@ export default async function Trips() {
 
         {/* Trip cards */}
         <div className="grid sm:grid-cols-2 gap-6">
-          {experiences.map((trip) => (
+          {experiences.map((trip) => {
+            // The partner-hosted-retreat tile routes to the dedicated /host-a-retreat flow
+            // instead of the generic /experiences/[slug] detail page.
+            const href =
+              trip.slug === 'partner-hosted-retreat'
+                ? '/host-a-retreat'
+                : `/experiences/${trip.slug}`
+            return (
             <Link
               key={trip.slug}
-              href={`/experiences/${trip.slug}`}
+              href={href}
               className="group bg-forest rounded-sm cursor-pointer block overflow-hidden"
             >
               {/* Image container — relative so tag/arrow badges are scoped to it */}
@@ -67,7 +74,8 @@ export default async function Trips() {
                 <p className="text-cream/70 text-sm leading-relaxed">{trip.shortDescription}</p>
               </div>
             </Link>
-          ))}
+            )
+          })}
         </div>
 
         {/* Bottom CTA */}
