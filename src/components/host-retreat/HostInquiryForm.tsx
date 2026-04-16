@@ -182,43 +182,42 @@ export default function HostInquiryForm({ selectedRange, onClearRange }: Props) 
       </div>
 
       <div>
-        <p className="text-cream/60 text-xs tracking-widest uppercase mb-1">Support needs</p>
-        <p className="text-cream/40 text-xs mb-3">
-          Tap any that apply. We&apos;ll follow up with details on what each looks like for your retreat.
-        </p>
-        <div className="space-y-2">
+        <p className="text-cream/60 text-xs tracking-widest uppercase mb-3">Support needs</p>
+        <div className="divide-y divide-cream/10">
           {supportOptions.map((o) => {
             const active = support.includes(o.value)
             return (
-              <button
+              <label
                 key={o.value}
-                type="button"
-                onClick={() => toggleSupport(o.value)}
-                className={`w-full text-left px-4 py-3 rounded-sm border transition-colors ${
-                  active
-                    ? 'bg-amber/10 border-amber text-cream'
-                    : 'border-cream/15 hover:border-cream/30 text-cream/80'
-                }`}
+                className="flex items-start gap-3 py-3 cursor-pointer group"
               >
-                <div className="flex items-start gap-3">
-                  <span
-                    className={`mt-0.5 w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 ${
-                      active ? 'bg-amber border-amber' : 'border-cream/30'
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {active && (
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#1a2e1a" strokeWidth="2">
-                        <path d="M1 5l2.5 2.5L9 2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
+                <input
+                  type="checkbox"
+                  checked={active}
+                  onChange={() => toggleSupport(o.value)}
+                  className="sr-only peer"
+                />
+                <span
+                  className={`mt-0.5 w-4 h-4 rounded-sm border flex items-center justify-center shrink-0 transition-colors ${
+                    active ? 'bg-amber border-amber' : 'border-cream/30 group-hover:border-cream/50'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {active && (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#1a2e1a" strokeWidth="2.5">
+                      <path d="M1 5l2.5 2.5L9 2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </span>
+                <span className="flex-1">
+                  <span className={`block text-sm font-medium ${active ? 'text-cream' : 'text-cream/80'}`}>
+                    {o.label}
                   </span>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{o.label}</p>
-                    <p className="text-xs text-cream/50 mt-0.5 leading-relaxed">{o.description}</p>
-                  </div>
-                </div>
-              </button>
+                  <span className="block text-xs text-cream/45 mt-0.5 leading-snug">
+                    {o.description}
+                  </span>
+                </span>
+              </label>
             )
           })}
         </div>
