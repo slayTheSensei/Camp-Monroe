@@ -66,14 +66,14 @@ export default async function RetreatsDashboardPage() {
   return (
     <div className="flex flex-col gap-16 pb-16">
       {/* Header */}
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Retreats</h1>
           <p className="text-gray-500 text-sm mt-1">
             Dashboard for inquiries, bookings, seasons, and blackouts.
           </p>
         </div>
-        <nav className="flex flex-wrap gap-2">
+        <nav className="flex flex-wrap items-center gap-2 shrink-0">
           <HeaderLink href="/admin/retreats/calendar">Full Calendar</HeaderLink>
           <HeaderLink href="/admin/retreats/seasons">Seasons</HeaderLink>
           <HeaderLink href="/admin/retreats/blackouts">Blackouts</HeaderLink>
@@ -155,8 +155,8 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section className="flex flex-col gap-5">
-      <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+    <section className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
         {action}
       </div>
@@ -169,7 +169,7 @@ function HeaderLink({ href, children }: { href: string; children: React.ReactNod
   return (
     <Link
       href={href}
-      className="px-3 py-2 text-xs font-medium text-forest border border-forest/30 rounded-md hover:bg-forest/5 transition-colors"
+      className="inline-flex items-center justify-center h-9 px-4 text-xs font-medium text-forest border border-forest/30 rounded-md hover:bg-forest/5 transition-colors whitespace-nowrap"
     >
       {children}
     </Link>
