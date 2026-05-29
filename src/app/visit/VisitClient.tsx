@@ -15,11 +15,24 @@ interface DateRange {
   valid: boolean;
 }
 
+export interface VisitCopy {
+  hostHeadlinePart1: string;
+  hostHeadlineEmphasis: string;
+  buyoutHeadlinePart1: string;
+  buyoutHeadlineEmphasis: string;
+  hostLead: string;
+  buyoutLead: string;
+  hostCta: string;
+  buyoutCta: string;
+  bridgeLine: string;
+}
+
 interface Props {
   seasons: Season[];
   blackouts: PublicBlackout[];
   unavailableRanges: BookedRange[];
   initialMode: Mode;
+  copy: VisitCopy;
 }
 
 // ---------- Date helpers ----------
@@ -978,6 +991,7 @@ export default function VisitClient({
   blackouts,
   unavailableRanges,
   initialMode,
+  copy,
 }: Props) {
   const [mode, setMode] = useState<Mode>(initialMode);
   const [selStart, setSelStart] = useState<string | null>(null);
@@ -1079,19 +1093,19 @@ export default function VisitClient({
           <h1 style={{ marginTop: 26 }}>
             {isHost ? (
               <>
-                A quiet lakefront for the work that <em>matters.</em>
+                {copy.hostHeadlinePart1}{" "}
+                <em>{copy.hostHeadlineEmphasis}</em>
               </>
             ) : (
               <>
-                A quiet week on the <em>lake.</em>
+                {copy.buyoutHeadlinePart1}{" "}
+                <em>{copy.buyoutHeadlineEmphasis}</em>
               </>
             )}
           </h1>
 
           <p className="visit-hero-lead">
-            {isHost
-              ? "A historic Maine lakefront for gatherings of 8 to 24 — wellness intensives, creative residencies, offsites, cultural convenings. You needn’t be a member; request your dates and we read every inquiry by hand."
-              : "Between retreats, the camp opens select windows for whole-property stays — a getaway, a few friends, a stretch of creative work. Request the dates you have in mind and we’ll confirm what’s possible."}
+            {isHost ? copy.hostLead : copy.buyoutLead}
           </p>
 
           <div className="visit-hero-row">
@@ -1100,7 +1114,7 @@ export default function VisitClient({
               className="btn btn-amber"
               onClick={scrollToBook}
             >
-              {isHost ? "Request dates" : "Request a stay"}{" "}
+              {isHost ? copy.hostCta : copy.buyoutCta}{" "}
               <span className="arr" />
             </button>
           </div>
@@ -1147,12 +1161,20 @@ export default function VisitClient({
             </div>
 
             <p className="visit-bridge">
-              Rather join the line than book a week? Membership runs by
-              sponsorship and application &mdash;{" "}
-              <Link href="/request" className="ilink">
-                request an invitation
-              </Link>
-              .
+              {copy.bridgeLine.split(' — ').length === 2 ? (
+                <>
+                  {copy.bridgeLine.split(' — ')[0]} &mdash;{" "}
+                  <Link href="/request" className="ilink">
+                    {copy.bridgeLine
+                      .split(' — ')[1]
+                      .replace(/\.$/, '')
+                      .trim()}
+                  </Link>
+                  .
+                </>
+              ) : (
+                copy.bridgeLine
+              )}
             </p>
           </div>
         </div>

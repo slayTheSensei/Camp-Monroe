@@ -5,12 +5,14 @@ import Counter from "@/components/site/Counter";
 import Ph from "@/components/site/Ph";
 import CtaBand from "@/components/site/CtaBand";
 import FollowAlong from "@/components/site/FollowAlong";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "Cambridge Gun & Rod Club — Camp Monroe, Maine",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const c = await getPageContent("home");
   return (
     <>
       <Nav />
@@ -25,28 +27,34 @@ export default function HomePage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Photograph · Lake Cobbosseecontee at sunset
+              {t(c, "hero.tier_label", "Photograph · Lake Cobbosseecontee at sunset")}
             </span>
-            <span className="hero-shot-note">West Gardiner, Maine</span>
+            <span className="hero-shot-note">
+              {t(c, "hero.location_label", "West Gardiner, Maine")}
+            </span>
           </div>
           <div className="wrap hero-inner">
             <h1>
-              One hundred
+              {t(c, "hero.headline_line_1", "One hundred")}
               <br />
-              and thirty years,
+              {t(c, "hero.headline_line_2", "and thirty years,")}
               <br />
-              <em>unbroken.</em>
+              <em>{t(c, "hero.headline_emphasis", "unbroken.")}</em>
             </h1>
             <p className="hero-sub">
-              One of America&rsquo;s oldest Black sportsmen&rsquo;s clubs &mdash; founded 1893, open every
-              season since. Camp Monroe is its home on the water.
+              {t(
+                c,
+                "hero.sub",
+                "One of America's oldest Black sportsmen's clubs — founded 1893, open every season since. Camp Monroe is its home on the water."
+              )}
             </p>
             <div className="hero-cta">
               <Link className="btn btn-amber" href="/request">
-                Request an invitation <span className="arr" />
+                {t(c, "hero.primary_cta", "Request an invitation")}{" "}
+                <span className="arr" />
               </Link>
               <Link className="btn btn-outline-cream" href="/the-camp">
-                Explore the camp
+                {t(c, "hero.secondary_cta", "Explore the camp")}
               </Link>
             </div>
           </div>
@@ -104,27 +112,37 @@ export default function HomePage() {
           <div className="wrap">
             <div className="split">
               <div className="txt">
-                <div className="eyebrow reveal">The institution</div>
+                <div className="eyebrow reveal">
+                  {t(c, "story_split.eyebrow", "The institution")}
+                </div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  A club, not a resort. A line, not a season.
+                  {t(
+                    c,
+                    "story_split.headline",
+                    "A club, not a resort. A line, not a season."
+                  )}
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  In 1893 a circle of Black Bostonians &mdash; Pullman porters, doctors, ministers, lawyers shut
-                  out of America&rsquo;s clubs &mdash; claimed this lake for themselves. For 130 unbroken years
-                  it has been one of the country&rsquo;s most enduring Black institutions: a place of rest and
-                  standing.
+                  {t(
+                    c,
+                    "story_split.body_p1",
+                    "In 1893 a circle of Black Bostonians — Pullman porters, doctors, ministers, lawyers shut out of America's clubs — claimed this lake for themselves. For 130 unbroken years it has been one of the country's most enduring Black institutions: a place of rest and standing."
+                  )}
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
-                  W.E.B. Du Bois called it his Walden. Joe Louis came as a guest. The men&rsquo;s chapter still
-                  keeps the first full week of August. In 2026, a women&rsquo;s chapter opens the line for the
-                  first time.
+                  {t(
+                    c,
+                    "story_split.body_p2",
+                    "W.E.B. Du Bois called it his Walden. Joe Louis came as a guest. The men's chapter still keeps the first full week of August. In 2026, a women's chapter opens the line for the first time."
+                  )}
                 </p>
                 <Link
                   className="ilink reveal d4"
                   style={{ marginTop: 34, display: "inline-flex" }}
                   href="/history"
                 >
-                  Read the full history <span className="arr" />
+                  {t(c, "story_split.ilink_label", "Read the full history")}{" "}
+                  <span className="arr" />
                 </Link>
               </div>
               <div className="reveal d2">
@@ -233,14 +251,23 @@ export default function HomePage() {
           <div className="corner" />
           <div className="wrap" style={{ maxWidth: "880px" }}>
             <div className="eyebrow reveal" style={{ marginBottom: 32 }}>
-              From the record
+              {t(c, "pull_quote.eyebrow", "From the record")}
             </div>
             <blockquote className="reveal d1">
-              &ldquo;I have a box at the Cambridge Gun and Rod Club. Will you please have it sent to me by
-              railway express?&rdquo;
+              &ldquo;
+              {t(
+                c,
+                "pull_quote.quote",
+                "I have a box at the Cambridge Gun and Rod Club. Will you please have it sent to me by railway express?"
+              )}
+              &rdquo;
             </blockquote>
             <cite className="reveal d2">
-              W.E.B. Du Bois, in correspondence · 21 August 1947
+              {t(
+                c,
+                "pull_quote.citation",
+                "W.E.B. Du Bois, in correspondence · 21 August 1947"
+              )}
             </cite>
           </div>
         </section>

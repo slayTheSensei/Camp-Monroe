@@ -8,6 +8,7 @@ import {
   getHeldRanges,
 } from "@/lib/data/retreats";
 import type { BookedRange } from "@/lib/types/retreats";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +26,38 @@ export default async function VisitPage({
 
   const today = new Date().toISOString().slice(0, 10);
 
-  const [seasons, blackouts, bookedRanges, heldRanges] = await Promise.all([
-    getActiveSeasons(),
-    getPublicBlackouts(today),
-    getBookedRanges(today),
-    getHeldRanges(),
-  ]);
+  const [seasons, blackouts, bookedRanges, heldRanges, content] =
+    await Promise.all([
+      getActiveSeasons(),
+      getPublicBlackouts(today),
+      getBookedRanges(today),
+      getHeldRanges(),
+      getPageContent("visit"),
+    ]);
+
+  const copy = {
+    hostHeadlinePart1: t(content, "hero.host_headline_p1", "A quiet lakefront for the work that"),
+    hostHeadlineEmphasis: t(content, "hero.host_headline_emph", "matters."),
+    buyoutHeadlinePart1: t(content, "hero.buyout_headline_p1", "A quiet week on the"),
+    buyoutHeadlineEmphasis: t(content, "hero.buyout_headline_emph", "lake."),
+    hostLead: t(
+      content,
+      "hero.host_lead",
+      "A historic Maine lakefront for gatherings of 8 to 24 — wellness intensives, creative residencies, offsites, cultural convenings. You needn't be a member; request your dates and we read every inquiry by hand."
+    ),
+    buyoutLead: t(
+      content,
+      "hero.buyout_lead",
+      "Between retreats, the camp opens select windows for whole-property stays — a getaway, a few friends, a stretch of creative work. Request the dates you have in mind and we'll confirm what's possible."
+    ),
+    hostCta: t(content, "hero.host_cta", "Request dates"),
+    buyoutCta: t(content, "hero.buyout_cta", "Request a stay"),
+    bridgeLine: t(
+      content,
+      "book.bridge_line",
+      "Rather join the line than book a week? Membership runs by sponsorship and application — request an invitation."
+    ),
+  };
 
   const seen = new Set<string>();
   const unavailableRanges: BookedRange[] = [];
@@ -51,6 +78,7 @@ export default async function VisitPage({
           blackouts={blackouts}
           unavailableRanges={unavailableRanges}
           initialMode={initialMode}
+          copy={copy}
         />
       </main>
       <Footer />

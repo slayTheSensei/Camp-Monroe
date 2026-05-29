@@ -1,7 +1,7 @@
 import PageHeader from '@/components/admin/ui/PageHeader'
 import PageBody from '@/components/admin/ui/PageBody'
 import PartnerWaysAdmin from './PartnerWaysAdmin'
-import { getWaysToPartnerItemsAdmin } from '@/lib/data/content'
+import { getWaysToPartnerItemsAdmin } from '@/lib/data/content-admin'
 
 export const dynamic = 'force-dynamic'
 

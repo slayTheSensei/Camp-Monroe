@@ -1,8 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { createSupabaseAdmin } from '@/lib/supabase-admin'
-import { createSupabaseServer } from '@/lib/supabase-server'
 import type {
-  PageContentRow,
   PageContentMap,
   TimelineItem,
   WayToPartnerItem,
@@ -10,9 +7,13 @@ import type {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// ============================================================================
-// Public anon client (build-safe, no cookies)
-// ============================================================================
+/**
+ * Public anon reads only — safe for both server and client bundles
+ * (no `next/headers`, no service role, no server-only imports).
+ *
+ * Admin operations live in @/lib/data/content-admin.ts.
+ */
+
 function anonClient() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,21 +22,8 @@ function anonClient() {
 }
 
 // ============================================================================
-// page_content (singular fields)
+// page_content
 // ============================================================================
-
-function mapPageContent(row: any): PageContentRow {
-  return {
-    id: row.id,
-    page: row.page,
-    block: row.block,
-    field: row.field,
-    value: row.value ?? '',
-    type: row.type,
-    updatedAt: row.updated_at,
-    updatedBy: row.updated_by ?? null,
-  }
-}
 
 /**
  * Fetch all editable copy for one page and return a flat lookup keyed
@@ -74,55 +62,8 @@ export function t(
   return v && v.trim().length > 0 ? v : fallback
 }
 
-/** Admin-only — list every row for a page (with metadata for the editor). */
-export async function getPageContentAdmin(
-  page: string
-): Promise<PageContentRow[]> {
-  const supabase = await createSupabaseServer()
-  const { data, error } = await supabase
-    .from('page_content')
-    .select('*')
-    .eq('page', page)
-    .order('block')
-    .order('field')
-  if (error) {
-    console.error(`getPageContentAdmin(${page}):`, error)
-    return []
-  }
-  return (data ?? []).map(mapPageContent)
-}
-
-/** Admin-only — full upsert of one (page, block, field) cell. */
-export async function upsertPageContent(input: {
-  page: string
-  block: string
-  field: string
-  value: string
-  type?: PageContentRow['type']
-}): Promise<{ error?: string }> {
-  const supabase = createSupabaseAdmin()
-  const { error } = await supabase
-    .from('page_content')
-    .upsert(
-      {
-        page: input.page,
-        block: input.block,
-        field: input.field,
-        value: input.value,
-        type: input.type ?? 'text',
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'page,block,field' }
-    )
-  if (error) {
-    console.error('upsertPageContent:', error)
-    return { error: 'Failed to save.' }
-  }
-  return {}
-}
-
 // ============================================================================
-// timeline_items
+// timeline_items (public read)
 // ============================================================================
 
 function mapTimelineItem(row: any): TimelineItem {
@@ -151,84 +92,8 @@ export async function getTimelineItems(): Promise<TimelineItem[]> {
   return (data ?? []).map(mapTimelineItem)
 }
 
-export async function getTimelineItemsAdmin(): Promise<TimelineItem[]> {
-  const supabase = await createSupabaseServer()
-  const { data, error } = await supabase
-    .from('timeline_items')
-    .select('*')
-    .order('sort_order', { ascending: true })
-  if (error) {
-    console.error('getTimelineItemsAdmin:', error)
-    return []
-  }
-  return (data ?? []).map(mapTimelineItem)
-}
-
-export async function insertTimelineItem(input: {
-  year: string
-  head: string
-  body: string
-  sortOrder?: number
-}): Promise<{ id: string } | { error: string }> {
-  const supabase = createSupabaseAdmin()
-  const { data, error } = await supabase
-    .from('timeline_items')
-    .insert({
-      year: input.year,
-      head: input.head,
-      body: input.body,
-      sort_order: input.sortOrder ?? 9999,
-    })
-    .select('id')
-    .maybeSingle()
-  if (error || !data) {
-    console.error('insertTimelineItem:', error)
-    return { error: 'Failed to add.' }
-  }
-  return { id: data.id }
-}
-
-export async function updateTimelineItem(
-  id: string,
-  update: Partial<{
-    year: string
-    head: string
-    body: string
-    sortOrder: number
-    isVisible: boolean
-  }>
-): Promise<{ error?: string }> {
-  const supabase = createSupabaseAdmin()
-  const dbUpdate: Record<string, unknown> = { updated_at: new Date().toISOString() }
-  if (update.year !== undefined) dbUpdate.year = update.year
-  if (update.head !== undefined) dbUpdate.head = update.head
-  if (update.body !== undefined) dbUpdate.body = update.body
-  if (update.sortOrder !== undefined) dbUpdate.sort_order = update.sortOrder
-  if (update.isVisible !== undefined) dbUpdate.is_visible = update.isVisible
-
-  const { error } = await supabase
-    .from('timeline_items')
-    .update(dbUpdate)
-    .eq('id', id)
-  if (error) {
-    console.error('updateTimelineItem:', error)
-    return { error: 'Failed to save.' }
-  }
-  return {}
-}
-
-export async function deleteTimelineItem(id: string): Promise<{ error?: string }> {
-  const supabase = createSupabaseAdmin()
-  const { error } = await supabase.from('timeline_items').delete().eq('id', id)
-  if (error) {
-    console.error('deleteTimelineItem:', error)
-    return { error: 'Failed to delete.' }
-  }
-  return {}
-}
-
 // ============================================================================
-// ways_to_partner_items
+// ways_to_partner_items (public read)
 // ============================================================================
 
 function mapWayItem(row: any): WayToPartnerItem {
@@ -255,80 +120,4 @@ export async function getWaysToPartnerItems(): Promise<WayToPartnerItem[]> {
     return []
   }
   return (data ?? []).map(mapWayItem)
-}
-
-export async function getWaysToPartnerItemsAdmin(): Promise<WayToPartnerItem[]> {
-  const supabase = await createSupabaseServer()
-  const { data, error } = await supabase
-    .from('ways_to_partner_items')
-    .select('*')
-    .order('sort_order', { ascending: true })
-  if (error) {
-    console.error('getWaysToPartnerItemsAdmin:', error)
-    return []
-  }
-  return (data ?? []).map(mapWayItem)
-}
-
-export async function insertWayItem(input: {
-  number: string
-  title: string
-  description: string
-  sortOrder?: number
-}): Promise<{ id: string } | { error: string }> {
-  const supabase = createSupabaseAdmin()
-  const { data, error } = await supabase
-    .from('ways_to_partner_items')
-    .insert({
-      number: input.number,
-      title: input.title,
-      description: input.description,
-      sort_order: input.sortOrder ?? 9999,
-    })
-    .select('id')
-    .maybeSingle()
-  if (error || !data) {
-    console.error('insertWayItem:', error)
-    return { error: 'Failed to add.' }
-  }
-  return { id: data.id }
-}
-
-export async function updateWayItem(
-  id: string,
-  update: Partial<{
-    number: string
-    title: string
-    description: string
-    sortOrder: number
-    isVisible: boolean
-  }>
-): Promise<{ error?: string }> {
-  const supabase = createSupabaseAdmin()
-  const dbUpdate: Record<string, unknown> = { updated_at: new Date().toISOString() }
-  if (update.number !== undefined) dbUpdate.number = update.number
-  if (update.title !== undefined) dbUpdate.title = update.title
-  if (update.description !== undefined) dbUpdate.description = update.description
-  if (update.sortOrder !== undefined) dbUpdate.sort_order = update.sortOrder
-  if (update.isVisible !== undefined) dbUpdate.is_visible = update.isVisible
-
-  const { error } = await supabase
-    .from('ways_to_partner_items')
-    .update(dbUpdate)
-    .eq('id', id)
-  if (error) {
-    console.error('updateWayItem:', error)
-    return { error: 'Failed to save.' }
-  }
-  return {}
-}
-
-export async function deleteWayItem(id: string): Promise<{ error?: string }> {
-  const supabase = createSupabaseAdmin()
-  const { error } = await supabase.from('ways_to_partner_items').delete().eq('id', id)
-  if (error) {
-    console.error('deleteWayItem:', error)
-    return { error: 'Failed to delete.' }
-  }
-  return {}
 }

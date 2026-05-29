@@ -5,7 +5,7 @@ import {
   insertWayItem,
   updateWayItem,
   deleteWayItem,
-} from '@/lib/data/content'
+} from '@/lib/data/content-admin'
 
 function revalidateAll() {
   revalidatePath('/partner')

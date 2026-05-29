@@ -3,7 +3,7 @@ import { createSupabaseServer } from '@/lib/supabase-server'
 import {
   getTimelineItemsAdmin,
   getWaysToPartnerItemsAdmin,
-} from '@/lib/data/content'
+} from '@/lib/data/content-admin'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import PageBody from '@/components/admin/ui/PageBody'
 import Section from '@/components/admin/ui/Section'
@@ -33,6 +33,17 @@ export default async function ContentHubPage() {
         subtitle="Editable copy and structured content blocks on the public site."
       />
       <PageBody>
+        <Section title="Pages copy">
+          <div className="grid gap-4">
+            <ContentCard
+              href="/admin/content/pages"
+              title="Edit page copy"
+              subtitle="CTA band · Footer · Home hero · Visit headlines"
+              description="Singular copy fields across the public site — hero text, CTAs, footer brand block, the Du Bois pull quote. Edits revalidate the affected public page automatically."
+            />
+          </div>
+        </Section>
+
         <Section title="Structured content">
           <div className="grid gap-4 md:grid-cols-2">
             <ContentCard
