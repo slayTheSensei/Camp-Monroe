@@ -4,6 +4,7 @@ import Footer from "@/components/site/Footer";
 import Counter from "@/components/site/Counter";
 import Ph from "@/components/site/Ph";
 import CtaBand from "@/components/site/CtaBand";
+import FollowAlong from "@/components/site/FollowAlong";
 
 export const metadata = {
   title: "Cambridge Gun & Rod Club — Camp Monroe, Maine",
@@ -245,6 +246,8 @@ export default function HomePage() {
         </section>
 
         <CtaBand />
+
+        <FollowAlong />
       </main>
       <Footer />
     </>
