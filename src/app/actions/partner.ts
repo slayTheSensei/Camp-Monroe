@@ -1,6 +1,8 @@
 "use server";
 
 import { getResend, getFromAddress } from "@/lib/email/resend";
+import { insertPartnerInquiry } from "@/lib/data/front-door";
+import type { PartnerContext } from "@/lib/types/front-door";
 
 export interface PartnerInquiryData {
   name: string;
@@ -10,45 +12,78 @@ export interface PartnerInquiryData {
   message: string;
 }
 
+function normalizeContext(raw: string): PartnerContext | null {
+  if (
+    raw === "capital" ||
+    raw === "heritage" ||
+    raw === "press" ||
+    raw === "community" ||
+    raw === "other"
+  )
+    return raw;
+  return null;
+}
+
 export async function submitPartnerInquiry(
   data: PartnerInquiryData
 ): Promise<{ ok: boolean; error?: string }> {
-  const inbox = process.env.PARTNER_INBOX;
-  if (!inbox) {
-    console.error("PARTNER_INBOX env var not set");
-    return { ok: false, error: "Configuration error. Please email us directly." };
+  // 1. Persist first.
+  const insertResult = await insertPartnerInquiry({
+    name: data.name,
+    organization: data.org || null,
+    email: data.email,
+    context: normalizeContext(data.context),
+    message: data.message || null,
+  });
+
+  if ("error" in insertResult) {
+    return { ok: false, error: insertResult.error };
   }
+
+  // 2. Best-effort email fan-out.
+  const inbox = process.env.PARTNER_INBOX;
 
   try {
     const resend = getResend();
     const from = getFromAddress();
 
-    await resend.emails.send({
-      from,
-      to: [inbox],
-      replyTo: data.email,
-      subject: `Partner inquiry — ${data.name}${data.org ? ` · ${data.org}` : ""}`,
-      text: [
-        `Name: ${data.name}`,
-        data.org ? `Organization: ${data.org}` : "",
-        `Email: ${data.email}`,
-        `Partnership context: ${data.context || "(not specified)"}`,
-        `\nMessage:\n${data.message || "(none)"}`,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    });
+    if (inbox) {
+      await resend.emails.send({
+        from,
+        to: [inbox],
+        replyTo: data.email,
+        subject: `Partner inquiry — ${data.name}${
+          data.org ? ` · ${data.org}` : ""
+        }`,
+        text: [
+          `Name: ${data.name}`,
+          data.org ? `Organization: ${data.org}` : "",
+          `Email: ${data.email}`,
+          `Partnership context: ${data.context || "(not specified)"}`,
+          `\nMessage:\n${data.message || "(none)"}`,
+          `\n— Admin: https://www.monroemaine.com/admin/partner-inquiries/${insertResult.id}`,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      });
+    } else {
+      console.warn("PARTNER_INBOX env var not set — admin alert email skipped.");
+    }
 
     await resend.emails.send({
       from,
       to: [data.email],
       subject: "We received your inquiry — Cambridge Gun & Rod Club",
-      text: `Hi ${data.name},\n\nThank you for reaching out about partnering with the Cambridge Gun & Rod Club. We will review your message and follow up shortly.\n\nCambridge Gun & Rod Club\nCamp Monroe · Lake Cobbosseecontee, Maine`,
-    });
+      text: `Hi ${data.name},
 
-    return { ok: true };
+Thank you for reaching out about partnering with the Cambridge Gun & Rod Club. We will review your message and follow up shortly.
+
+Cambridge Gun & Rod Club
+Camp Monroe · Lake Cobbosseecontee, Maine`,
+    });
   } catch (err) {
     console.error("Partner inquiry email error:", err);
-    return { ok: false, error: "Failed to send inquiry. Please try again." };
   }
+
+  return { ok: true };
 }

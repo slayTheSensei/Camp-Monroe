@@ -6,9 +6,11 @@ import { createBrowserClient } from '@supabase/ssr'
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: DashboardIcon },
-  { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
+  { label: 'Membership', href: '/admin/membership', icon: MembershipIcon },
+  { label: 'Partner inquiries', href: '/admin/partner-inquiries', icon: PartnerIcon },
   { label: 'Retreats', href: '/admin/retreats', icon: RetreatsIcon },
-  { label: 'Waitlist', href: '/admin/waitlist', icon: WaitlistIcon },
+  { label: 'Follow along', href: '/admin/waitlist', icon: WaitlistIcon },
+  { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
   { label: 'Content', href: '/admin/content', icon: ContentIcon },
   { label: 'Users', href: '/admin/users', icon: UsersIcon },
 ]
@@ -184,6 +186,27 @@ function HelpIcon({ active }: { active: boolean }) {
       <circle cx="9" cy="9" r="7" />
       <path d="M6.5 6.5a2.5 2.5 0 114.5 1.5c-.5.5-1.5 1-1.5 2" strokeLinecap="round" />
       <circle cx="9" cy="13" r="0.5" fill="currentColor" />
+    </svg>
+  )
+}
+
+function MembershipIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
+      className={active ? 'text-amber' : 'text-cream/40'}>
+      <path d="M2 5h14v9a1 1 0 01-1 1H3a1 1 0 01-1-1V5z" />
+      <path d="M2 5l7 5 7-5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function PartnerIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5"
+      className={active ? 'text-amber' : 'text-cream/40'}>
+      <path d="M2 10l3.5-3.5L9 10l3.5-3.5L16 10" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 10v5" strokeLinecap="round" />
+      <circle cx="9" cy="3" r="1.5" />
     </svg>
   )
 }

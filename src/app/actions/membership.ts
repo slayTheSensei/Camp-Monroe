@@ -1,6 +1,8 @@
 "use server";
 
 import { getResend, getFromAddress } from "@/lib/email/resend";
+import { insertMembershipRequest } from "@/lib/data/front-door";
+import type { MembershipChapter } from "@/lib/types/front-door";
 
 export interface MembershipRequestData {
   name: string;
@@ -11,49 +13,79 @@ export interface MembershipRequestData {
   sponsorName: string;
 }
 
+function normalizeChapter(raw: string): MembershipChapter | null {
+  if (raw === "mens" || raw === "womens") return raw;
+  return null;
+}
+
 export async function submitMembershipRequest(
   data: MembershipRequestData
 ): Promise<{ ok: boolean; error?: string }> {
-  const inbox = process.env.MEMBERSHIP_INBOX;
-  if (!inbox) {
-    console.error("MEMBERSHIP_INBOX env var not set");
-    return { ok: false, error: "Configuration error. Please email us directly." };
+  // 1. Persist to Supabase first — the email is best-effort but the row is not.
+  const insertResult = await insertMembershipRequest({
+    name: data.name,
+    email: data.email,
+    chapter: normalizeChapter(data.chapter),
+    hasSponsor: data.hasSponsor,
+    sponsorName: data.hasSponsor && data.sponsorName ? data.sponsorName : null,
+    note: data.note || null,
+  });
+
+  if ("error" in insertResult) {
+    return { ok: false, error: insertResult.error };
   }
+
+  // 2. Best-effort email fan-out. Failures here do not block the request
+  //    because the row is already captured for triage.
+  const inbox = process.env.MEMBERSHIP_INBOX;
 
   try {
     const resend = getResend();
     const from = getFromAddress();
 
-    const sponsorLine = data.hasSponsor && data.sponsorName
-      ? `\nSponsor: ${data.sponsorName}`
-      : "";
+    const sponsorLine =
+      data.hasSponsor && data.sponsorName ? `\nSponsor: ${data.sponsorName}` : "";
 
-    await resend.emails.send({
-      from,
-      to: [inbox],
-      replyTo: data.email,
-      subject: `Membership request — ${data.name} (${data.chapter} chapter)`,
-      text: [
-        `Name: ${data.name}`,
-        `Email: ${data.email}`,
-        `Chapter: ${data.chapter}`,
-        sponsorLine,
-        `\nNote:\n${data.note || "(none)"}`,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    });
+    if (inbox) {
+      await resend.emails.send({
+        from,
+        to: [inbox],
+        replyTo: data.email,
+        subject: `Membership request — ${data.name}${
+          data.chapter ? ` (${data.chapter} chapter)` : ""
+        }`,
+        text: [
+          `Name: ${data.name}`,
+          `Email: ${data.email}`,
+          `Chapter: ${data.chapter || "no preference"}`,
+          sponsorLine,
+          `\nNote:\n${data.note || "(none)"}`,
+          `\n— Admin: https://www.monroemaine.com/admin/membership/${insertResult.id}`,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      });
+    } else {
+      console.warn(
+        "MEMBERSHIP_INBOX env var not set — admin alert email skipped."
+      );
+    }
 
     await resend.emails.send({
       from,
       to: [data.email],
       subject: "We received your request — Cambridge Gun & Rod Club",
-      text: `Hi ${data.name},\n\nThank you for your interest in the Cambridge Gun & Rod Club. We have received your membership request and will be in touch.\n\nCambridge Gun & Rod Club\nCamp Monroe · Lake Cobbosseecontee, Maine`,
-    });
+      text: `Hi ${data.name},
 
-    return { ok: true };
+Thank you for your interest in the Cambridge Gun & Rod Club. We have received your membership request and will be in touch. The line moves at the line's pace.
+
+Cambridge Gun & Rod Club
+Camp Monroe · Lake Cobbosseecontee, Maine`,
+    });
   } catch (err) {
     console.error("Membership request email error:", err);
-    return { ok: false, error: "Failed to send request. Please try again." };
+    // Row is saved — still report success to the user.
   }
+
+  return { ok: true };
 }
