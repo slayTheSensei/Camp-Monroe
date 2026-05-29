@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import SmoothAnchor from "@/components/SmoothAnchor";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
-  title: "Camp Monroe — Outdoor Adventures in Maine",
+  title: "Cambridge Gun & Rod Club — Camp Monroe, Maine",
   description:
-    "Guided camping trips, retreats, and outdoor experiences in Maine built for Black and brown explorers. Rooted in the legacy of the Cambridge Gun & Rod Club, est. 1893.",
+    "The Cambridge Gun & Rod Club, est. 1893 — a private membership club and historic lakefront property on Lake Cobbosseecontee, Maine. Rooted in a 130-year legacy of Black outdoor life.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -22,8 +30,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Camp Monroe",
-    description: "The outdoors has always been ours. We're just reclaiming it.",
+    title: "Cambridge Gun & Rod Club — Camp Monroe",
+    description: "130 years of Black outdoor life. One of a kind in America.",
     siteName: "Camp Monroe",
   },
 };
@@ -34,8 +42,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="antialiased">
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
+      <body className="antialiased" data-take="editorial">
         <SmoothAnchor />
         {children}
       </body>
