@@ -1,12 +1,16 @@
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import CtaBand from "@/components/site/CtaBand";
+import { getTimelineItems } from "@/lib/data/content";
 
 export const metadata = {
   title: "History — Cambridge Gun & Rod Club",
 };
 
-const TIMELINE = [
+// Fallback used when the DB has no rows (initial deploy, RLS issue, etc.).
+// The seed migration populates these same values into timeline_items;
+// keeping them inline preserves graceful rendering if the table is empty.
+const FALLBACK_TIMELINE = [
   {
     year: "1893",
     head: "The club is founded",
@@ -39,7 +43,12 @@ const TIMELINE = [
   },
 ];
 
-export default function HistoryPage() {
+export default async function HistoryPage() {
+  const dbItems = await getTimelineItems();
+  const timeline =
+    dbItems.length > 0
+      ? dbItems.map((d) => ({ year: d.year, head: d.head, body: d.body }))
+      : FALLBACK_TIMELINE;
   return (
     <>
       <Nav />
@@ -114,9 +123,9 @@ export default function HistoryPage() {
               </h2>
             </div>
             <div className="tl">
-              {TIMELINE.map((item, i) => (
+              {timeline.map((item, i) => (
                 <div
-                  key={item.year}
+                  key={`${item.year}-${i}`}
                   className={`tl-item reveal${i % 2 === 1 ? " d1" : ""}`}
                 >
                   <div className="tl-yr">{item.year}</div>
