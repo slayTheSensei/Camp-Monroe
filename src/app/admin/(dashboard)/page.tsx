@@ -12,11 +12,6 @@ import {
   getMembershipRequests,
   getPartnerInquiries,
 } from '@/lib/data/front-door'
-import PageHeader from '@/components/admin/ui/PageHeader'
-import PageBody from '@/components/admin/ui/PageBody'
-import Section from '@/components/admin/ui/Section'
-import StatCard from '@/components/admin/ui/StatCard'
-import Card from '@/components/admin/ui/Card'
 import EmptyState from '@/components/admin/ui/EmptyState'
 
 export const dynamic = 'force-dynamic'
@@ -80,14 +75,15 @@ export default async function AdminDashboard() {
   const totalWaitlist = waitlistRes.count ?? 0
   const monthWaitlist = monthSignupsRes.count ?? 0
 
-  // Front-door inbox (membership + partner, most recent 5)
   const recentFrontDoor: FrontDoorRow[] = [
     ...recentMembership.map((m) => ({
       id: m.id,
       kind: 'membership' as const,
       name: m.name,
       secondary: m.chapter
-        ? `${m.chapter === 'mens' ? "Men's chapter" : "Women's chapter"}`
+        ? m.chapter === 'mens'
+          ? "Men's chapter"
+          : "Women's chapter"
         : 'No preference',
       status: m.status,
       submittedAt: m.submittedAt,
@@ -105,9 +101,8 @@ export default async function AdminDashboard() {
       (a, b) =>
         new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
     )
-    .slice(0, 5)
+    .slice(0, 6)
 
-  // Retreat inbox (host + buyout, most recent 5)
   const recentRetreats: RetreatRow[] = [
     ...recentHost.map((h) => ({
       id: h.id,
@@ -132,306 +127,351 @@ export default async function AdminDashboard() {
       (a, b) =>
         new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
     )
-    .slice(0, 5)
+    .slice(0, 6)
 
   return (
-    <>
-      <PageHeader
-        title="Dashboard"
-        subtitle="The front door, in one view."
-      />
-
-      <PageBody>
-        {/* FRONT DOOR */}
-        <Section
-          title="Front door"
-          action={
-            <Link
-              href="/admin/membership"
-              className="text-xs text-amber hover:text-amber/80 font-medium transition-colors"
-            >
-              Open inbox →
-            </Link>
-          }
+    <div className="space-y-4">
+      {/* Header — compact */}
+      <header className="flex items-baseline justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900 leading-tight">
+            Dashboard
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            The front door, in one view.
+          </p>
+        </div>
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-amber hover:text-amber/80 font-medium whitespace-nowrap"
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-            <StatCard
-              label="Membership · new"
-              value={membershipCounts.new}
-              tone="blue"
-              href="/admin/membership"
-            />
-            <StatCard
-              label="Partner · new"
-              value={partnerCounts.new}
-              tone="blue"
-              href="/admin/partner-inquiries"
-            />
-            <StatCard
-              label="Follow along"
-              value={totalWaitlist}
-              href="/admin/waitlist"
-              sub={
-                monthWaitlist
-                  ? `+${monthWaitlist} this month`
-                  : 'no signups this month'
-              }
-            />
-            <StatCard
-              label="Reviewing total"
-              value={
-                membershipCounts.reviewing +
-                partnerCounts.reviewing +
-                inquiryCounts.reviewing
-              }
-              tone="gray"
-            />
-          </div>
-        </Section>
+          View public site ↗
+        </a>
+      </header>
 
-        {/* RETREATS */}
-        <Section
-          title="Retreats"
-          action={
-            <Link
-              href="/admin/retreats"
-              className="text-xs text-amber hover:text-amber/80 font-medium transition-colors"
-            >
-              Open retreats dashboard →
-            </Link>
-          }
+      {/* All stats in one tight 8-card band — front door + retreats together */}
+      <section>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+          {/* Row 1: Front door */}
+          <StatTile
+            scope="Front door"
+            label="Membership · new"
+            value={membershipCounts.new}
+            tone="blue"
+            href="/admin/membership"
+          />
+          <StatTile
+            scope="Front door"
+            label="Partner · new"
+            value={partnerCounts.new}
+            tone="blue"
+            href="/admin/partner-inquiries"
+          />
+          <StatTile
+            scope="Front door"
+            label="Follow along"
+            value={totalWaitlist}
+            sub={monthWaitlist ? `+${monthWaitlist} this month` : 'no new signups'}
+            href="/admin/waitlist"
+          />
+          <StatTile
+            scope="Front door"
+            label="Reviewing"
+            value={
+              membershipCounts.reviewing +
+              partnerCounts.reviewing +
+              inquiryCounts.reviewing
+            }
+            tone="gray"
+            sub="all inquiry types"
+          />
+          {/* Row 2: Retreats */}
+          <StatTile
+            scope="Retreats"
+            label="New inquiries"
+            value={inquiryCounts.new}
+            tone="blue"
+            href="/admin/retreats"
+          />
+          <StatTile
+            scope="Retreats"
+            label="On hold"
+            value={inquiryCounts.hold}
+            tone="orange"
+            href="/admin/retreats"
+          />
+          <StatTile
+            scope="Retreats"
+            label="Confirmed"
+            value={inquiryCounts.confirmed}
+            tone="green"
+            href="/admin/retreats"
+          />
+          <StatTile
+            scope="Retreats"
+            label="Upcoming"
+            value={upcomingBookings}
+            tone="green"
+            sub="next 90 days"
+            href="/admin/retreats"
+          />
+        </div>
+      </section>
+
+      {/* Quick actions strip */}
+      <section>
+        <div className="flex flex-wrap gap-1.5">
+          <QuickAction href="/admin/membership" label="Membership inbox" />
+          <QuickAction href="/admin/partner-inquiries" label="Partner inbox" />
+          <QuickAction href="/admin/retreats" label="Retreats inbox" />
+          <QuickAction href="/admin/retreats/blackouts/new" label="+ Add blackout" />
+          <QuickAction href="/admin/content" label="Edit site content" />
+          <QuickAction href="/admin/waitlist" label="Export follow-along CSV" />
+        </div>
+      </section>
+
+      {/* Recent activity — two columns */}
+      <section className="grid gap-3 lg:grid-cols-2">
+        <FeedCard
+          title="Recent front-door submissions"
+          links={[
+            { href: '/admin/membership', label: 'Membership' },
+            { href: '/admin/partner-inquiries', label: 'Partner' },
+          ]}
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-            <StatCard
-              label="New inquiries"
-              value={inquiryCounts.new}
-              tone="blue"
-              href="/admin/retreats"
-            />
-            <StatCard
-              label="On hold"
-              value={inquiryCounts.hold}
-              tone="orange"
-              href="/admin/retreats"
-            />
-            <StatCard
-              label="Confirmed"
-              value={inquiryCounts.confirmed}
-              tone="green"
-              href="/admin/retreats"
-            />
-            <StatCard
-              label="Upcoming"
-              value={upcomingBookings}
-              tone="green"
-              sub="next 90 days"
-              href="/admin/retreats"
-            />
-          </div>
-        </Section>
-
-        <Section title="Activity">
-          <div className="grid lg:grid-cols-3 gap-4">
-            <Card padding="lg">
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-                Quick actions
-              </h3>
-              <div className="space-y-1">
-                <QuickAction
-                  href="/admin/membership"
-                  label="Membership inbox"
-                  glyph="→"
-                />
-                <QuickAction
-                  href="/admin/partner-inquiries"
-                  label="Partner inbox"
-                  glyph="→"
-                />
-                <QuickAction
-                  href="/admin/retreats"
-                  label="Retreats inbox"
-                  glyph="→"
-                />
-                <QuickAction
-                  href="/admin/retreats/blackouts/new"
-                  label="Add blackout"
-                  glyph="+"
-                />
-                <QuickAction
-                  href="/admin/content"
-                  label="Edit site content"
-                  glyph="→"
-                />
-                <QuickAction
-                  href="/"
-                  label="View public site"
-                  glyph="↗"
-                  external
-                />
-              </div>
-            </Card>
-
-            <Card padding="lg" className="lg:col-span-2">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
-                  Recent front-door submissions
-                </h3>
-                <div className="flex items-center gap-4 text-xs">
+          {recentFrontDoor.length === 0 ? (
+            <EmptyState message="No front-door submissions yet." />
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {recentFrontDoor.map((r) => (
+                <li key={`${r.kind}-${r.id}`}>
                   <Link
-                    href="/admin/membership"
-                    className="text-amber hover:text-amber/80 font-medium"
+                    href={
+                      r.kind === 'membership'
+                        ? `/admin/membership/${r.id}`
+                        : `/admin/partner-inquiries/${r.id}`
+                    }
+                    className="flex items-center justify-between gap-2 px-2 py-1.5 -mx-2 rounded transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60"
                   >
-                    Membership →
-                  </Link>
-                  <Link
-                    href="/admin/partner-inquiries"
-                    className="text-amber hover:text-amber/80 font-medium"
-                  >
-                    Partner →
-                  </Link>
-                </div>
-              </div>
-              {recentFrontDoor.length === 0 ? (
-                <EmptyState message="No front-door submissions yet." />
-              ) : (
-                <ul className="divide-y divide-gray-50">
-                  {recentFrontDoor.map((r) => (
-                    <li key={`${r.kind}-${r.id}`}>
-                      <Link
-                        href={
-                          r.kind === 'membership'
-                            ? `/admin/membership/${r.id}`
-                            : `/admin/partner-inquiries/${r.id}`
-                        }
-                        className="flex items-start justify-between py-3 -mx-2 px-2 rounded transition-colors hover:bg-gray-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60"
-                      >
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">
-                            {r.name}
-                            {r.secondary && (
-                              <span className="text-gray-500 font-normal">
-                                {' '}· {r.secondary}
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-xs text-gray-500 truncate mt-0.5">
-                            {r.kind === 'membership'
-                              ? 'Membership request'
-                              : 'Partner inquiry'}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0 ml-3">
-                          <span className="text-xs text-gray-400 capitalize">
-                            {r.status}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm text-gray-900 truncate">
+                        <span className="font-medium">{r.name}</span>
+                        {r.secondary && (
+                          <span className="text-gray-400 font-normal">
+                            {' · '}
+                            {r.secondary}
                           </span>
-                          <span className="text-xs text-gray-400">
-                            {new Date(r.submittedAt).toLocaleDateString(
-                              'en-US',
-                              { month: 'short', day: 'numeric' }
-                            )}
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Card>
-          </div>
-        </Section>
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <KindBadge kind={r.kind} />
+                      <StatusDot status={r.status} />
+                      <span className="text-[11px] text-gray-400 tabular-nums w-12 text-right">
+                        {new Date(r.submittedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </FeedCard>
 
-        <Section
+        <FeedCard
           title="Recent retreat inquiries"
-          action={
-            <Link
-              href="/admin/retreats"
-              className="text-xs text-amber hover:text-amber/80 font-medium transition-colors"
-            >
-              View all →
-            </Link>
-          }
+          links={[{ href: '/admin/retreats', label: 'All' }]}
         >
           {recentRetreats.length === 0 ? (
             <EmptyState message="No retreat inquiries yet." />
           ) : (
-            <Card padding="lg">
-              <ul className="divide-y divide-gray-50">
-                {recentRetreats.map((r) => (
-                  <li key={`${r.kind}-${r.id}`}>
-                    <Link
-                      href={`/admin/retreats/${r.kind}/${r.id}`}
-                      className="flex items-start justify-between py-3 -mx-2 px-2 rounded transition-colors hover:bg-gray-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">
-                          {r.name}
-                          {r.org && (
-                            <span className="text-gray-500 font-normal">
-                              {' '}· {r.org}
-                            </span>
-                          )}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate mt-0.5">
-                          {r.kind === 'host' ? 'Host' : 'Buyout'} · {r.dates}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0 ml-3">
-                        <span className="text-xs text-gray-400 capitalize">
-                          {r.status}
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {new Date(r.submittedAt).toLocaleDateString(
-                            'en-US',
-                            { month: 'short', day: 'numeric' }
-                          )}
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            <ul className="divide-y divide-gray-100">
+              {recentRetreats.map((r) => (
+                <li key={`${r.kind}-${r.id}`}>
+                  <Link
+                    href={`/admin/retreats/${r.kind}/${r.id}`}
+                    className="flex items-center justify-between gap-2 px-2 py-1.5 -mx-2 rounded transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm text-gray-900 truncate">
+                        <span className="font-medium">{r.name}</span>
+                        {r.org && (
+                          <span className="text-gray-400 font-normal">
+                            {' · '}
+                            {r.org}
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-[11px] text-gray-400 truncate mt-0.5">
+                        {r.dates}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <KindBadge kind={r.kind} />
+                      <StatusDot status={r.status} />
+                      <span className="text-[11px] text-gray-400 tabular-nums w-12 text-right">
+                        {new Date(r.submittedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
-        </Section>
-      </PageBody>
-    </>
+        </FeedCard>
+      </section>
+    </div>
   )
 }
 
-function QuickAction({
-  href,
+// =============================================================================
+// Components
+// =============================================================================
+
+function StatTile({
+  scope,
   label,
-  glyph,
-  external,
+  value,
+  sub,
+  tone = 'default',
+  href,
 }: {
-  href: string
+  scope: string
   label: string
-  glyph: string
-  external?: boolean
+  value: React.ReactNode
+  sub?: string
+  tone?: 'default' | 'blue' | 'orange' | 'green' | 'gray' | 'amber'
+  href?: string
 }) {
-  const className =
-    'flex items-center gap-3 px-3 py-2.5 rounded-md text-sm text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60'
-  if (external) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
+  const toneClass: Record<typeof tone, string> = {
+    default: 'text-gray-900',
+    blue: 'text-blue-700',
+    orange: 'text-orange-700',
+    green: 'text-green-700',
+    gray: 'text-gray-700',
+    amber: 'text-amber',
+  }
+
+  const inner = (
+    <>
+      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">
+        {scope}
+      </p>
+      <p className="text-[11px] text-gray-600 font-medium mt-0.5">{label}</p>
+      <p
+        className={`text-2xl font-bold leading-none mt-2 tabular-nums ${toneClass[tone]}`}
       >
-        <span className="text-amber" aria-hidden="true">
-          {glyph}
-        </span>
-        {label}
-      </a>
+        {value}
+      </p>
+      <p className="text-[10px] text-gray-400 mt-1 min-h-[1em] leading-snug">
+        {sub ?? ' '}
+      </p>
+    </>
+  )
+
+  const base =
+    'block bg-white p-3 transition-colors duration-150'
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={`${base} hover:bg-amber/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60 focus-visible:relative focus-visible:z-10`}
+      >
+        {inner}
+      </Link>
     )
   }
+  return <div className={base}>{inner}</div>
+}
+
+function QuickAction({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className={className}>
-      <span className="text-amber" aria-hidden="true">
-        {glyph}
-      </span>
+    <Link
+      href={href}
+      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded transition-colors hover:border-amber hover:text-amber focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60"
+    >
       {label}
     </Link>
+  )
+}
+
+function FeedCard({
+  title,
+  links,
+  children,
+}: {
+  title: string
+  links: { href: string; label: string }[]
+  children: React.ReactNode
+}) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-100 bg-gray-50/40">
+        <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+          {title}
+        </h3>
+        <div className="flex items-center gap-3">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-[11px] text-amber hover:text-amber/80 font-medium"
+            >
+              {l.label} →
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="px-3 py-2">{children}</div>
+    </div>
+  )
+}
+
+function KindBadge({ kind }: { kind: string }) {
+  const labels: Record<string, string> = {
+    membership: 'M',
+    partner: 'P',
+    host: 'H',
+    buyout: 'B',
+  }
+  const tones: Record<string, string> = {
+    membership: 'bg-blue-50 text-blue-700 border-blue-100',
+    partner: 'bg-purple-50 text-purple-700 border-purple-100',
+    host: 'bg-amber/10 text-amber border-amber/20',
+    buyout: 'bg-green-50 text-green-700 border-green-100',
+  }
+  return (
+    <span
+      className={`inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold rounded border ${
+        tones[kind] ?? 'bg-gray-50 text-gray-600 border-gray-100'
+      }`}
+      title={kind}
+    >
+      {labels[kind] ?? '?'}
+    </span>
+  )
+}
+
+function StatusDot({ status }: { status: string }) {
+  const tones: Record<string, string> = {
+    new: 'bg-blue-500',
+    reviewing: 'bg-gray-400',
+    hold: 'bg-orange-500',
+    confirmed: 'bg-green-500',
+    declined: 'bg-red-400',
+  }
+  return (
+    <span
+      className={`inline-block w-1.5 h-1.5 rounded-full ${tones[status] ?? 'bg-gray-300'}`}
+      title={status}
+    />
   )
 }
