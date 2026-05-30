@@ -2,12 +2,14 @@ import Link from "next/link";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import CtaBand from "@/components/site/CtaBand";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "Locations — Cambridge Gun & Rod Club",
 };
 
-export default function LocationsPage() {
+export default async function LocationsPage() {
+  const c = await getPageContent("locations");
   return (
     <>
       <Nav />
@@ -15,7 +17,9 @@ export default function LocationsPage() {
         <section className="phero">
           <div
             className="photo photo-modern"
-            style={{ ["--photo" as string]: "url(/assets/photos/open-water-dusk.jpg)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/open-water-dusk.jpg")})`,
+            }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">

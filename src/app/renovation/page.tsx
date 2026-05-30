@@ -2,6 +2,7 @@ import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import Ph from "@/components/site/Ph";
 import CtaBand from "@/components/site/CtaBand";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "2026 Renovation — Camp Monroe, Maine",
@@ -44,7 +45,8 @@ const SCOPE_ITEMS = [
   },
 ];
 
-export default function RenovationPage() {
+export default async function RenovationPage() {
+  const c = await getPageContent("renovation");
   return (
     <>
       <Nav />
@@ -52,7 +54,9 @@ export default function RenovationPage() {
         <section className="phero">
           <div
             className="photo photo-modern"
-            style={{ ["--photo" as string]: "url(/assets/photos/bathroom-rendering.png)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/bathroom-rendering.png")})`,
+            }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">

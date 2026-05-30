@@ -3,12 +3,14 @@ import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import Counter from "@/components/site/Counter";
 import CtaBand from "@/components/site/CtaBand";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "Membership — Cambridge Gun & Rod Club",
 };
 
-export default function MembershipPage() {
+export default async function MembershipPage() {
+  const c = await getPageContent("membership");
   return (
     <>
       <Nav />
@@ -16,7 +18,9 @@ export default function MembershipPage() {
         <section className="phero">
           <div
             className="photo photo-archival"
-            style={{ ["--photo" as string]: "url(/assets/photos/group-portrait-modern.jpg)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/group-portrait-modern.jpg")})`,
+            }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">

@@ -3,12 +3,14 @@ import Footer from "@/components/site/Footer";
 import Counter from "@/components/site/Counter";
 import Ph from "@/components/site/Ph";
 import CtaBand from "@/components/site/CtaBand";
+import { getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "The Camp — Camp Monroe, Maine",
 };
 
-export default function TheCampPage() {
+export default async function TheCampPage() {
+  const c = await getPageContent("the_camp");
   return (
     <>
       <Nav />
@@ -16,7 +18,9 @@ export default function TheCampPage() {
         <section className="phero">
           <div
             className="photo photo-modern"
-            style={{ ["--photo" as string]: "url(/assets/photos/dining-hall-summer.jpg)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/dining-hall-summer.jpg")})`,
+            }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">

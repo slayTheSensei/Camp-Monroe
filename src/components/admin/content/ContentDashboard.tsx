@@ -19,7 +19,7 @@ import {
 } from './contentMeta'
 import ImageField from './ImageField'
 
-type Tab = 'site' | 'home' | 'history' | 'partner' | 'visit' | 'legacy'
+type Tab = 'photos' | 'site' | 'home' | 'history' | 'partner' | 'visit' | 'legacy'
 
 type Props = {
   initialTab: string
@@ -28,9 +28,12 @@ type Props = {
   timeline: TimelineItem[]
   ways: WayToPartnerItem[]
   legacyRowCount: number
+  /** Every image_url row across every page, for the unified Photos tab. */
+  allImageRows: PageContentRow[]
 }
 
 const TABS: { key: Tab; label: string; publicPath: string | null }[] = [
+  { key: 'photos', label: 'Photos', publicPath: null },
   { key: 'site', label: 'Site-wide', publicPath: '/' },
   { key: 'home', label: 'Home', publicPath: '/' },
   { key: 'history', label: 'History', publicPath: '/history' },
@@ -39,6 +42,31 @@ const TABS: { key: Tab; label: string; publicPath: string | null }[] = [
   { key: 'legacy', label: 'Legacy', publicPath: null },
 ]
 
+// Friendly labels for the "what page is this image on?" caption
+const PAGE_LABELS: Record<string, string> = {
+  site: 'Site-wide',
+  home: 'Home',
+  the_camp: 'The Camp',
+  renovation: 'Renovation',
+  membership: 'Membership',
+  locations: 'Locations',
+  history: 'History',
+  partner: 'Partner',
+  visit: 'Visit',
+}
+
+const PAGE_PATHS: Record<string, string> = {
+  site: '/',
+  home: '/',
+  the_camp: '/the-camp',
+  renovation: '/renovation',
+  membership: '/membership',
+  locations: '/locations',
+  history: '/history',
+  partner: '/partner',
+  visit: '/visit',
+}
+
 export default function ContentDashboard({
   initialTab,
   initialPage,
@@ -46,6 +74,7 @@ export default function ContentDashboard({
   timeline,
   ways,
   legacyRowCount,
+  allImageRows,
 }: Props) {
   // Back-compat: old links used ?tab=pages&page=home → map to ?tab=home
   const resolvedTab: Tab = (() => {
@@ -56,7 +85,7 @@ export default function ContentDashboard({
     if (initialTab === 'timeline') return 'history'
     if (initialTab === 'ways') return 'partner'
     if (TABS.find((t) => t.key === initialTab)) return initialTab as Tab
-    return 'site'
+    return 'photos'
   })()
 
   const [tab, setTab] = useState<Tab>(resolvedTab)
@@ -98,6 +127,10 @@ export default function ContentDashboard({
       />
 
       {/* Tab body */}
+      {tab === 'photos' && (
+        <PhotosTab rows={allImageRows} />
+      )}
+
       {tab === 'site' && (
         <PageContentBlocks page="site" rows={pageContent.site} />
       )}
@@ -206,6 +239,8 @@ function TabHeader({
   const meta = getPageMeta(tab)
   let description = ''
   if (meta) description = meta.description
+  else if (tab === 'photos')
+    description = `Every editable photo across the public site, in one place. Click 'Replace…' on any image to upload a new one from your computer.`
   else if (tab === 'history')
     description = `Editable content on /history. The ${timelineCount}-item timeline is the only editable surface for now — pull quote and W.E.B. Files captions are still hardcoded.`
   else if (tab === 'partner')
@@ -469,4 +504,99 @@ function StatusBadge({
     return <span className="text-xs text-amber font-medium">Unsaved</span>
   }
   return <span aria-hidden="true" className="opacity-0">·</span>
+}
+
+// =============================================================================
+// Photos tab — every editable image, in one grid
+// =============================================================================
+
+function PhotosTab({ rows }: { rows: PageContentRow[] }) {
+  // Group by page so each card is labeled correctly
+  const byPage = new Map<string, PageContentRow[]>()
+  for (const r of rows) {
+    if (!byPage.has(r.page)) byPage.set(r.page, [])
+    byPage.get(r.page)!.push(r)
+  }
+
+  // Order pages for display
+  const pageOrder = [
+    'home',
+    'the_camp',
+    'renovation',
+    'membership',
+    'locations',
+    'history',
+    'partner',
+    'visit',
+    'site',
+  ]
+  const orderedPages = pageOrder.filter((p) => byPage.has(p))
+  const extras = Array.from(byPage.keys())
+    .filter((p) => !pageOrder.includes(p))
+    .sort()
+  const allPages = [...orderedPages, ...extras]
+
+  if (rows.length === 0) {
+    return (
+      <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
+        <p className="text-sm text-gray-500">
+          No editable photos yet.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {allPages.map((page) => {
+        const pageRows = byPage.get(page) ?? []
+        const pageLabel = PAGE_LABELS[page] ?? page
+        const publicPath = PAGE_PATHS[page]
+        return (
+          <BlockCard
+            key={page}
+            title={pageLabel}
+            description={
+              publicPath
+                ? `Photos used on ${publicPath}.`
+                : 'Site-wide imagery.'
+            }
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              {pageRows.map((row) => {
+                const meta = fieldMetaFor(page, row.block, row.field)
+                // Override the label for the Photos view so it always
+                // reads as "Hero photo" / "Story side image" etc with
+                // page context.
+                const label = describePhotoSlot(page, row.block, row.field, meta.label)
+                return (
+                  <ImageField
+                    key={row.id}
+                    page={page}
+                    block={row.block}
+                    field={row.field}
+                    rowId={row.id}
+                    initialValue={row.value}
+                    label={label}
+                    hint={meta.hint}
+                  />
+                )
+              })}
+            </div>
+          </BlockCard>
+        )
+      })}
+    </div>
+  )
+}
+
+function describePhotoSlot(
+  _page: string,
+  block: string,
+  field: string,
+  fallback: string
+): string {
+  if (block === 'hero' && field === 'image_url') return 'Hero photo'
+  if (block === 'story_split' && field === 'image_url') return 'Story side image'
+  return fallback
 }

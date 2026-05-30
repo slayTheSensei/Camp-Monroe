@@ -1,5 +1,5 @@
 import PartnerClient, { type PartnerWay } from "./PartnerClient";
-import { getWaysToPartnerItems } from "@/lib/data/content";
+import { getWaysToPartnerItems, getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "Partner with us — Cambridge Gun & Rod Club",
@@ -31,11 +31,16 @@ const FALLBACK_WAYS: PartnerWay[] = [
 ];
 
 export default async function PartnerPage() {
-  const dbWays = await getWaysToPartnerItems();
+  const [dbWays, c] = await Promise.all([
+    getWaysToPartnerItems(),
+    getPageContent("partner"),
+  ]);
   const ways: PartnerWay[] =
     dbWays.length > 0
       ? dbWays.map((w) => ({ n: w.number, t: w.title, d: w.description }))
       : FALLBACK_WAYS;
 
-  return <PartnerClient ways={ways} />;
+  const heroImage = t(c, "hero.image_url", "/assets/photos/open-water-dusk.jpg");
+
+  return <PartnerClient ways={ways} heroImage={heroImage} />;
 }

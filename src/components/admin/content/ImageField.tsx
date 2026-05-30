@@ -238,17 +238,30 @@ export default function ImageField({
           </div>
         </div>
 
-        {/* Hidden file input */}
+        {/* Visually hidden file input (using sr-only-style positioning, not
+            display:none, because Safari sometimes blocks programmatic .click()
+            on display:none file inputs). */}
         <input
           type="file"
           accept="image/*"
-          className="hidden"
           ref={fileInputRef}
           onChange={(e) => {
             const file = e.target.files?.[0]
             if (file) handleFile(file)
             e.target.value = ''
           }}
+          style={{
+            position: 'absolute',
+            width: 1,
+            height: 1,
+            padding: 0,
+            margin: -1,
+            overflow: 'hidden',
+            clip: 'rect(0,0,0,0)',
+            border: 0,
+          }}
+          aria-hidden="true"
+          tabIndex={-1}
         />
       </div>
 

@@ -57,6 +57,11 @@ export default async function VisitPage({
       "book.bridge_line",
       "Rather join the line than book a week? Membership runs by sponsorship and application — request an invitation."
     ),
+    heroImage: t(
+      content,
+      "hero.image_url",
+      "/assets/photos/camp-golden-hour.jpg"
+    ),
   };
 
   const seen = new Set<string>();

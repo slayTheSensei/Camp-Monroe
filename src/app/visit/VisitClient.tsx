@@ -25,6 +25,7 @@ export interface VisitCopy {
   hostCta: string;
   buyoutCta: string;
   bridgeLine: string;
+  heroImage: string;
 }
 
 interface Props {
@@ -1050,7 +1051,7 @@ export default function VisitClient({
         <div
           className="photo photo-modern"
           style={{
-            ["--photo" as string]: "url(/assets/photos/camp-golden-hour.jpg)",
+            ["--photo" as string]: `url(${copy.heroImage})`,
             ["--photo-pos" as string]: "center 42%",
           }}
         />

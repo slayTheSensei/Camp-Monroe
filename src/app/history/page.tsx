@@ -1,7 +1,7 @@
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import CtaBand from "@/components/site/CtaBand";
-import { getTimelineItems } from "@/lib/data/content";
+import { getTimelineItems, getPageContent, t } from "@/lib/data/content";
 
 export const metadata = {
   title: "History — Cambridge Gun & Rod Club",
@@ -44,7 +44,10 @@ const FALLBACK_TIMELINE = [
 ];
 
 export default async function HistoryPage() {
-  const dbItems = await getTimelineItems();
+  const [dbItems, c] = await Promise.all([
+    getTimelineItems(),
+    getPageContent("history"),
+  ]);
   const timeline =
     dbItems.length > 0
       ? dbItems.map((d) => ({ year: d.year, head: d.head, body: d.body }))
@@ -56,7 +59,9 @@ export default async function HistoryPage() {
         <section className="phero">
           <div
             className="photo photo-archival"
-            style={{ ["--photo" as string]: "url(/assets/photos/dubois-hammock.png)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/dubois-hammock.png")})`,
+            }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">

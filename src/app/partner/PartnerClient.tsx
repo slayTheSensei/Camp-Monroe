@@ -15,9 +15,10 @@ export interface PartnerWay {
 
 interface PartnerClientProps {
   ways: PartnerWay[];
+  heroImage: string;
 }
 
-export default function PartnerClient({ ways }: PartnerClientProps) {
+export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
   const [name, setName] = useState("");
   const [org, setOrg] = useState("");
   const [email, setEmail] = useState("");
@@ -54,7 +55,7 @@ export default function PartnerClient({ ways }: PartnerClientProps) {
         <section className="phero">
           <div
             className="photo photo-modern"
-            style={{ ["--photo" as string]: "url(/assets/photos/open-water-dusk.jpg)" }}
+            style={{ ["--photo" as string]: `url(${heroImage})` }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">
