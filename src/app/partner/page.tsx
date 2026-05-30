@@ -1,3 +1,5 @@
+import Nav from "@/components/site/Nav";
+import Footer from "@/components/site/Footer";
 import PartnerClient, { type PartnerWay } from "./PartnerClient";
 import { getWaysToPartnerItems, getPageContent, t } from "@/lib/data/content";
 
@@ -5,8 +7,6 @@ export const metadata = {
   title: "Partner with us — Cambridge Gun & Rod Club",
 };
 
-// Fallback ways used if DB has no rows. Seeded by Block B1 migration so
-// production should always have content; this is the safety net.
 const FALLBACK_WAYS: PartnerWay[] = [
   {
     n: "01",
@@ -42,5 +42,11 @@ export default async function PartnerPage() {
 
   const heroImage = t(c, "hero.image_url", "/assets/photos/open-water-dusk.jpg");
 
-  return <PartnerClient ways={ways} heroImage={heroImage} />;
+  return (
+    <>
+      <Nav />
+      <PartnerClient ways={ways} heroImage={heroImage} />
+      <Footer />
+    </>
+  );
 }

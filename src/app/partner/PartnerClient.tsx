@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import Nav from "@/components/site/Nav";
-import Footer from "@/components/site/Footer";
 import Counter from "@/components/site/Counter";
 import { submitPartnerInquiry } from "@/app/actions/partner";
 
@@ -49,9 +47,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
   };
 
   return (
-    <>
-      <Nav />
-      <main>
+    <main>
         <section className="phero">
           <div
             className="photo photo-modern"
@@ -362,7 +358,5 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
   );
 }
