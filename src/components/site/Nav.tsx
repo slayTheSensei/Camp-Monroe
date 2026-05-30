@@ -70,6 +70,7 @@ export default function Nav() {
     .join(" ");
 
   return (
+    <>
     <header className={navCls}>
       <div className="nav-inner">
         <Link className="brand" href="/">
@@ -103,8 +104,12 @@ export default function Nav() {
           <span />
         </button>
       </div>
+    </header>
 
-      {menuOpen && (
+    {/* Mobile menu rendered as a sibling of the header so it isn't
+        clipped by the nav's backdrop-filter (which creates a containing
+        block for fixed-positioned descendants). */}
+    {menuOpen && (
         <div
           className={`mobile-menu${menuShown ? " is-in" : ""}`}
           role="dialog"
@@ -164,6 +169,6 @@ export default function Nav() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
