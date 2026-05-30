@@ -21,7 +21,9 @@ export default async function HomePage() {
         <section className="hero hero-home">
           <div
             className="photo photo-modern"
-            style={{ ["--photo" as string]: "url(/assets/photos/lake-golden.jpg)" }}
+            style={{
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/lake-golden.jpg")})`,
+            }}
           />
           <div className="hero-overlay" />
           <div className="hero-shot-meta">
@@ -147,9 +149,17 @@ export default async function HomePage() {
               </div>
               <div className="reveal d2">
                 <Ph
-                  cap="Archival — Cambridge Gun & Rod Club at Cobbosseecontee Lake, August 1897"
-                  src="/assets/photos/cgr-club-1897.jpg"
-                  alt="Cambridge Gun & Rod Club members at Lake Cobbosseecontee, 1897"
+                  cap={t(
+                    c,
+                    "story_split.image_caption",
+                    "Archival — Cambridge Gun & Rod Club at Cobbosseecontee Lake, August 1897"
+                  )}
+                  src={t(
+                    c,
+                    "story_split.image_url",
+                    "/assets/photos/cgr-club-1897.jpg"
+                  )}
+                  alt="Story image"
                 />
               </div>
             </div>

@@ -17,6 +17,7 @@ import {
   fieldMetaFor,
   orderedBlocksFor,
 } from './contentMeta'
+import ImageField from './ImageField'
 
 type Tab = 'site' | 'home' | 'history' | 'partner' | 'visit' | 'legacy'
 
@@ -301,9 +302,24 @@ function PageContentBlocks({
             description={meta.description}
           >
             <div className="space-y-4">
-              {blockRows.map((row) => (
-                <FieldEditor key={row.id} row={row} pageKey={page} />
-              ))}
+              {blockRows.map((row) => {
+                if (row.type === 'image_url') {
+                  const meta = fieldMetaFor(page, row.block, row.field)
+                  return (
+                    <ImageField
+                      key={row.id}
+                      page={page}
+                      block={row.block}
+                      field={row.field}
+                      rowId={row.id}
+                      initialValue={row.value}
+                      label={meta.label}
+                      hint={meta.hint}
+                    />
+                  )
+                }
+                return <FieldEditor key={row.id} row={row} pageKey={page} />
+              })}
             </div>
           </BlockCard>
         )

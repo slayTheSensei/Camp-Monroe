@@ -105,6 +105,10 @@ const META: Record<string, PageMeta> = {
         label: 'Hero',
         description: 'The full-bleed lake photo and overlaid text at the top of the home page.',
         fields: {
+          image_url: {
+            label: 'Hero photo',
+            hint: 'Full-bleed image behind the headline. Upload a wide landscape photo (1600×900 or larger works best).',
+          },
           tier_label: {
             label: 'Caption — photo tier',
             hint: 'Small caption shown on the photo, e.g. "Photograph · Lake Cobbosseecontee at sunset".',
@@ -138,6 +142,14 @@ const META: Record<string, PageMeta> = {
           ilink_label: {
             label: 'Inline link label',
             hint: 'Text on the link that leads to /history.',
+          },
+          image_url: {
+            label: 'Side image',
+            hint: 'Portrait or square image shown next to the text. Archival photos work well here.',
+          },
+          image_caption: {
+            label: 'Image caption',
+            hint: 'Small caption shown under the image.',
           },
         },
       },
