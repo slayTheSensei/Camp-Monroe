@@ -11,39 +11,32 @@ import type {
 import { savePageContent } from '@/app/admin/(dashboard)/content/pages/actions'
 import TimelineAdmin from '@/app/admin/(dashboard)/content/timeline/TimelineAdmin'
 import PartnerWaysAdmin from '@/app/admin/(dashboard)/content/partner-ways/PartnerWaysAdmin'
+import {
+  getPageMeta,
+  blockMetaFor,
+  fieldMetaFor,
+  orderedBlocksFor,
+} from './contentMeta'
 
-type Tab = 'pages' | 'timeline' | 'ways' | 'legacy'
-type PageKey = 'site' | 'home' | 'visit'
+type Tab = 'site' | 'home' | 'history' | 'partner' | 'visit' | 'legacy'
 
 type Props = {
   initialTab: string
-  initialPage: string
-  pageContent: Record<PageKey, PageContentRow[]>
+  initialPage: string // legacy param — was used for sub-tabs
+  pageContent: Record<'site' | 'home' | 'visit', PageContentRow[]>
   timeline: TimelineItem[]
   ways: WayToPartnerItem[]
   legacyRowCount: number
 }
 
-const PAGE_META: Record<
-  PageKey,
-  { label: string; sub: string; publicPath: string | null }
-> = {
-  site: {
-    label: 'Site-wide',
-    sub: 'CTA band + Footer — appears on every page',
-    publicPath: '/',
-  },
-  home: {
-    label: 'Home',
-    sub: 'Hero, story split, Du Bois pull quote',
-    publicPath: '/',
-  },
-  visit: {
-    label: 'Visit',
-    sub: 'Mode-specific headlines, leads, and bridge line',
-    publicPath: '/visit',
-  },
-}
+const TABS: { key: Tab; label: string; publicPath: string | null }[] = [
+  { key: 'site', label: 'Site-wide', publicPath: '/' },
+  { key: 'home', label: 'Home', publicPath: '/' },
+  { key: 'history', label: 'History', publicPath: '/history' },
+  { key: 'partner', label: 'Partner', publicPath: '/partner' },
+  { key: 'visit', label: 'Visit', publicPath: '/visit' },
+  { key: 'legacy', label: 'Legacy', publicPath: null },
+]
 
 export default function ContentDashboard({
   initialTab,
@@ -53,115 +46,109 @@ export default function ContentDashboard({
   ways,
   legacyRowCount,
 }: Props) {
-  const validTab: Tab = (['pages', 'timeline', 'ways', 'legacy'] as Tab[]).includes(
-    initialTab as Tab
-  )
-    ? (initialTab as Tab)
-    : 'pages'
-  const validPage: PageKey = (['site', 'home', 'visit'] as PageKey[]).includes(
-    initialPage as PageKey
-  )
-    ? (initialPage as PageKey)
-    : 'site'
+  // Back-compat: old links used ?tab=pages&page=home → map to ?tab=home
+  const resolvedTab: Tab = (() => {
+    if (initialTab === 'pages') {
+      if (initialPage === 'home' || initialPage === 'visit') return initialPage
+      return 'site'
+    }
+    if (initialTab === 'timeline') return 'history'
+    if (initialTab === 'ways') return 'partner'
+    if (TABS.find((t) => t.key === initialTab)) return initialTab as Tab
+    return 'site'
+  })()
 
-  const [tab, setTab] = useState<Tab>(validTab)
-  const [page, setPage] = useState<PageKey>(validPage)
+  const [tab, setTab] = useState<Tab>(resolvedTab)
+  const current = TABS.find((t) => t.key === tab)!
 
   return (
     <div className="space-y-4">
-      {/* Primary tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex gap-6 overflow-x-auto">
-          <TabButton active={tab === 'pages'} onClick={() => setTab('pages')}>
-            Pages copy
-          </TabButton>
-          <TabButton
-            active={tab === 'timeline'}
-            onClick={() => setTab('timeline')}
-          >
-            History timeline{' '}
-            <span className="text-xs text-gray-400 ml-1">({timeline.length})</span>
-          </TabButton>
-          <TabButton active={tab === 'ways'} onClick={() => setTab('ways')}>
-            Partner ways{' '}
-            <span className="text-xs text-gray-400 ml-1">({ways.length})</span>
-          </TabButton>
-          <TabButton active={tab === 'legacy'} onClick={() => setTab('legacy')}>
-            Legacy{' '}
-            <span className="text-xs text-gray-400 ml-1">({legacyRowCount})</span>
-          </TabButton>
+      {/* Tabs */}
+      <div className="border-b border-gray-200 sticky top-0 bg-gray-50 z-10 -mt-1 pt-1">
+        <nav className="-mb-px flex gap-5 overflow-x-auto">
+          {TABS.map((t) => (
+            <TabButton
+              key={t.key}
+              active={tab === t.key}
+              onClick={() => setTab(t.key)}
+            >
+              {t.label}
+              {t.key === 'history' && (
+                <Count value={timeline.length} active={tab === t.key} />
+              )}
+              {t.key === 'partner' && (
+                <Count value={ways.length} active={tab === t.key} />
+              )}
+              {t.key === 'legacy' && (
+                <Count value={legacyRowCount} active={tab === t.key} />
+              )}
+            </TabButton>
+          ))}
         </nav>
       </div>
 
-      {tab === 'pages' && (
-        <PagesEditor
-          page={page}
-          onPageChange={setPage}
-          rows={pageContent[page]}
-        />
+      {/* Tab header — description + view link */}
+      <TabHeader
+        tab={tab}
+        publicPath={current.publicPath}
+        timelineCount={timeline.length}
+        waysCount={ways.length}
+        legacyCount={legacyRowCount}
+      />
+
+      {/* Tab body */}
+      {tab === 'site' && (
+        <PageContentBlocks page="site" rows={pageContent.site} />
+      )}
+      {tab === 'home' && (
+        <PageContentBlocks page="home" rows={pageContent.home} />
+      )}
+      {tab === 'visit' && (
+        <PageContentBlocks page="visit" rows={pageContent.visit} />
       )}
 
-      {tab === 'timeline' && (
-        <div className="pt-2">
-          <p className="text-xs text-gray-500 mb-4">
-            Rendered on{' '}
-            <Link
-              href="/history"
-              target="_blank"
-              className="text-amber hover:underline"
-            >
-              /history ↗
-            </Link>
-          </p>
+      {tab === 'history' && (
+        <BlockCard
+          title="Timeline items"
+          description="The ordered timeline rendered on /history. Drag-free reorder via the arrows, click Edit to change copy, or hide/show to manage visibility."
+        >
           <TimelineAdmin items={timeline} />
-        </div>
+        </BlockCard>
       )}
 
-      {tab === 'ways' && (
-        <div className="pt-2">
-          <p className="text-xs text-gray-500 mb-4">
-            Rendered on{' '}
-            <Link
-              href="/partner"
-              target="_blank"
-              className="text-amber hover:underline"
-            >
-              /partner ↗
-            </Link>
-          </p>
+      {tab === 'partner' && (
+        <BlockCard
+          title="Ways to partner"
+          description="The four cards in the Partner page grid. Reorder, edit, or hide."
+        >
           <PartnerWaysAdmin items={ways} />
-        </div>
+        </BlockCard>
       )}
 
       {tab === 'legacy' && (
-        <div className="pt-4">
-          <div className="bg-amber/10 border border-amber/20 rounded-md px-4 py-3 mb-4">
-            <p className="text-sm text-gray-800">
-              <strong>{legacyRowCount} rows</strong> from the pre-redesign{' '}
-              <code className="text-xs bg-amber/20 px-1.5 py-0.5 rounded">
-                site_content
-              </code>{' '}
-              table. <em>Not currently rendered on the public site.</em>
-            </p>
-            <p className="text-xs text-gray-600 mt-1.5">
-              Preserved for reference. Open the full editor if you need to look
-              up any of the old copy.
-            </p>
+        <BlockCard
+          title="Legacy site_content"
+          description="Pre-redesign copy data from the old home page (hero, story, mission, footer, nav, waitlist). Not currently rendered on the live site — preserved for reference."
+        >
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-sm text-gray-600">
+              <strong>{legacyRowCount}</strong> rows
+            </span>
+            <Link
+              href="/admin/content/legacy"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-white border border-gray-200 rounded text-gray-700 hover:border-amber hover:text-amber transition-colors"
+            >
+              Open legacy editor →
+            </Link>
           </div>
-          <Link
-            href="/admin/content/legacy"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-white border border-gray-200 rounded text-gray-700 hover:border-amber hover:text-amber transition-colors"
-          >
-            Open legacy editor →
-          </Link>
-        </div>
+        </BlockCard>
       )}
     </div>
   )
 }
 
 // =============================================================================
-// Tab button
+// Tab UI
 // =============================================================================
 
 function TabButton({
@@ -177,7 +164,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`whitespace-nowrap py-2.5 px-1 text-sm font-medium border-b-2 transition-colors ${
+      className={`whitespace-nowrap py-2.5 px-0.5 text-sm font-medium border-b-2 transition-colors flex items-center gap-1.5 ${
         active
           ? 'border-amber text-amber'
           : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300'
@@ -188,74 +175,110 @@ function TabButton({
   )
 }
 
-// =============================================================================
-// Pages editor — sub-tabs + auto-save block editor
-// =============================================================================
+function Count({ value, active }: { value: number; active: boolean }) {
+  return (
+    <span
+      className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+        active
+          ? 'bg-amber/15 text-amber'
+          : 'bg-gray-100 text-gray-500'
+      }`}
+    >
+      {value}
+    </span>
+  )
+}
 
-function PagesEditor({
-  page,
-  onPageChange,
-  rows,
+function TabHeader({
+  tab,
+  publicPath,
+  timelineCount,
+  waysCount,
+  legacyCount,
 }: {
-  page: PageKey
-  onPageChange: (p: PageKey) => void
-  rows: PageContentRow[]
+  tab: Tab
+  publicPath: string | null
+  timelineCount: number
+  waysCount: number
+  legacyCount: number
 }) {
-  const meta = PAGE_META[page]
+  const meta = getPageMeta(tab)
+  let description = ''
+  if (meta) description = meta.description
+  else if (tab === 'history')
+    description = `Editable content on /history. The ${timelineCount}-item timeline is the only editable surface for now — pull quote and W.E.B. Files captions are still hardcoded.`
+  else if (tab === 'partner')
+    description = `Editable content on /partner. The ${waysCount} "ways to partner" cards are the only editable surface for now — hero, intro, and stats are still hardcoded.`
+  else if (tab === 'legacy')
+    description = `${legacyCount} rows from the old site_content table, kept for reference but not rendered.`
 
   return (
-    <div className="space-y-4">
-      {/* Sub-tabs for which page to edit */}
-      <div className="flex items-center justify-between gap-4 pt-2">
-        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
-          {(Object.keys(PAGE_META) as PageKey[]).map((p) => (
-            <button
-              key={p}
-              type="button"
-              onClick={() => onPageChange(p)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                page === p
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              {PAGE_META[p].label}
-            </button>
-          ))}
-        </div>
-        {meta.publicPath && (
-          <a
-            href={meta.publicPath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-amber hover:text-amber/80 font-medium whitespace-nowrap"
-          >
-            View {meta.publicPath} ↗
-          </a>
-        )}
-      </div>
-
-      <p className="text-xs text-gray-500">{meta.sub}</p>
-
-      <BlocksList page={page} rows={rows} />
+    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4 pt-1">
+      <p className="text-sm text-gray-600 max-w-3xl leading-relaxed">
+        {description}
+      </p>
+      {publicPath && (
+        <a
+          href={publicPath}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-amber hover:text-amber/80 font-medium whitespace-nowrap shrink-0"
+        >
+          View {publicPath} ↗
+        </a>
+      )}
     </div>
   )
 }
 
 // =============================================================================
-// Blocks list — auto-save, tight, scannable
+// Generic block card wrapper
 // =============================================================================
 
-function BlocksList({ page, rows }: { page: PageKey; rows: PageContentRow[] }) {
-  // Group by block, preserve insertion order within block
+function BlockCard({
+  title,
+  description,
+  children,
+}: {
+  title: string
+  description?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <div className="px-5 py-3 border-b border-gray-100 bg-gray-50/40">
+        <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+        {description && (
+          <p className="text-xs text-gray-500 mt-0.5 max-w-2xl leading-relaxed">
+            {description}
+          </p>
+        )}
+      </div>
+      <div className="p-5">{children}</div>
+    </div>
+  )
+}
+
+// =============================================================================
+// page_content blocks (Site / Home / Visit tabs)
+// =============================================================================
+
+function PageContentBlocks({
+  page,
+  rows,
+}: {
+  page: 'site' | 'home' | 'visit'
+  rows: PageContentRow[]
+}) {
   const blocks = useMemo(() => {
     const map = new Map<string, PageContentRow[]>()
     for (const r of rows) {
       if (!map.has(r.block)) map.set(r.block, [])
       map.get(r.block)!.push(r)
     }
-    return Array.from(map.entries())
-  }, [rows])
+    const blockNames = orderedBlocksFor(page, Array.from(map.keys()))
+    return blockNames.map((name) => [name, map.get(name) ?? []] as const)
+  }, [rows, page])
 
   if (blocks.length === 0) {
     return (
@@ -268,55 +291,39 @@ function BlocksList({ page, rows }: { page: PageKey; rows: PageContentRow[] }) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg divide-y divide-gray-100">
-      {blocks.map(([blockName, blockRows]) => (
-        <BlockGroup
-          key={`${page}-${blockName}`}
-          name={blockName}
-          rows={blockRows}
-          pageKey={page}
-        />
-      ))}
-    </div>
-  )
-}
-
-function BlockGroup({
-  name,
-  rows,
-  pageKey,
-}: {
-  name: string
-  rows: PageContentRow[]
-  pageKey: PageKey
-}) {
-  const title = formatBlockName(name)
-  return (
-    <div className="px-5 py-4">
-      <h3 className="text-xs font-semibold text-amber uppercase tracking-wider mb-3">
-        {title}
-      </h3>
-      <div className="space-y-3">
-        {rows.map((row) => (
-          <FieldRow key={row.id} row={row} pageKey={pageKey} />
-        ))}
-      </div>
+    <div className="space-y-4">
+      {blocks.map(([blockName, blockRows]) => {
+        const meta = blockMetaFor(page, blockName)
+        return (
+          <BlockCard
+            key={blockName}
+            title={meta.label}
+            description={meta.description}
+          >
+            <div className="space-y-4">
+              {blockRows.map((row) => (
+                <FieldEditor key={row.id} row={row} pageKey={page} />
+              ))}
+            </div>
+          </BlockCard>
+        )
+      })}
     </div>
   )
 }
 
 // =============================================================================
-// Field row — auto-save on blur with debounced "Saving…" indicator
+// Field editor — vertical (label above input), auto-save on blur
 // =============================================================================
 
 type FieldStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error'
 
-function FieldRow({
+function FieldEditor({
   row,
   pageKey,
 }: {
   row: PageContentRow
-  pageKey: PageKey
+  pageKey: 'site' | 'home' | 'visit'
 }) {
   const router = useRouter()
   const [value, setValue] = useState(row.value)
@@ -324,9 +331,10 @@ function FieldRow({
   const [status, setStatus] = useState<FieldStatus>('idle')
   const [errMsg, setErrMsg] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
-  const savedAt = useRef<number | null>(null)
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const dirty = value !== savedValue
+  const meta = fieldMetaFor(pageKey, row.block, row.field)
 
   const handleSave = useCallback(() => {
     if (value === savedValue) return
@@ -346,12 +354,10 @@ function FieldRow({
         return
       }
       setSavedValue(value)
-      savedAt.current = Date.now()
       setStatus('saved')
       router.refresh()
-      // Drop the "saved" indicator after 2 seconds
-      setTimeout(() => {
-        // Only clear if no new edits happened in the meantime
+      if (idleTimer.current) clearTimeout(idleTimer.current)
+      idleTimer.current = setTimeout(() => {
         setStatus((s) => (s === 'saved' ? 'idle' : s))
       }, 2000)
     })
@@ -360,61 +366,68 @@ function FieldRow({
   const isLong = row.type === 'longtext' || savedValue.length > 80
 
   return (
-    <div className="grid grid-cols-[140px_minmax(0,1fr)_72px] items-start gap-3">
-      <label
-        htmlFor={row.id}
-        className="text-xs font-medium text-gray-600 mt-2 leading-tight"
-      >
-        {formatFieldName(row.field)}
-      </label>
-
-      <div>
-        {isLong ? (
-          <textarea
-            id={row.id}
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value)
-              setStatus('dirty')
-            }}
-            onBlur={handleSave}
-            rows={Math.min(6, Math.max(2, Math.ceil(value.length / 70)))}
-            className={`w-full px-2.5 py-1.5 text-sm rounded border resize-y transition-colors focus:outline-none focus:ring-2 focus:ring-amber/40 focus:border-amber/60 ${
-              dirty ? 'border-amber/50 bg-amber/5' : 'border-gray-200 bg-white'
-            }`}
-          />
-        ) : (
-          <input
-            id={row.id}
-            type="text"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value)
-              setStatus('dirty')
-            }}
-            onBlur={handleSave}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                ;(e.target as HTMLInputElement).blur()
-              }
-            }}
-            className={`w-full px-2.5 py-1.5 text-sm rounded border transition-colors focus:outline-none focus:ring-2 focus:ring-amber/40 focus:border-amber/60 ${
-              dirty ? 'border-amber/50 bg-amber/5' : 'border-gray-200 bg-white'
-            }`}
-          />
-        )}
-        {errMsg && (
-          <p className="text-xs text-red-600 mt-1">{errMsg}</p>
-        )}
+    <div>
+      <div className="flex items-baseline justify-between gap-2 mb-1">
+        <label
+          htmlFor={row.id}
+          className="text-sm font-medium text-gray-800"
+        >
+          {meta.label}
+        </label>
+        <StatusBadge status={status} pending={isPending} dirty={dirty} />
       </div>
 
-      <StatusIndicator status={status} pending={isPending} dirty={dirty} />
+      {isLong ? (
+        <textarea
+          id={row.id}
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value)
+            if (status === 'saved') setStatus('idle')
+          }}
+          onBlur={handleSave}
+          rows={Math.min(6, Math.max(2, Math.ceil(value.length / 70)))}
+          className={`w-full px-3 py-2 text-sm rounded-md border resize-y transition-colors focus:outline-none focus:ring-2 focus:ring-amber/40 focus:border-amber/60 ${
+            dirty
+              ? 'border-amber/50 bg-amber/5'
+              : 'border-gray-200 bg-white'
+          }`}
+        />
+      ) : (
+        <input
+          id={row.id}
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value)
+            if (status === 'saved') setStatus('idle')
+          }}
+          onBlur={handleSave}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              ;(e.target as HTMLInputElement).blur()
+            }
+          }}
+          className={`w-full px-3 py-2 text-sm rounded-md border transition-colors focus:outline-none focus:ring-2 focus:ring-amber/40 focus:border-amber/60 ${
+            dirty
+              ? 'border-amber/50 bg-amber/5'
+              : 'border-gray-200 bg-white'
+          }`}
+        />
+      )}
+
+      {meta.hint && (
+        <p className="text-xs text-gray-500 mt-1 leading-snug">{meta.hint}</p>
+      )}
+      {errMsg && (
+        <p className="text-xs text-red-600 mt-1">{errMsg}</p>
+      )}
     </div>
   )
 }
 
-function StatusIndicator({
+function StatusBadge({
   status,
   pending,
   dirty,
@@ -424,50 +437,20 @@ function StatusIndicator({
   dirty: boolean
 }) {
   if (pending || status === 'saving') {
-    return (
-      <span className="text-xs text-gray-400 mt-2 leading-tight">
-        Saving…
-      </span>
-    )
+    return <span className="text-xs text-gray-400">Saving…</span>
   }
   if (status === 'saved') {
     return (
-      <span className="text-xs text-green-600 font-medium mt-2 leading-tight">
-        ✓ Saved
-      </span>
+      <span className="text-xs text-green-600 font-medium">✓ Saved</span>
     )
   }
   if (status === 'error') {
     return (
-      <span className="text-xs text-red-600 font-medium mt-2 leading-tight">
-        Failed
-      </span>
+      <span className="text-xs text-red-600 font-medium">Failed</span>
     )
   }
   if (dirty) {
-    return (
-      <span className="text-xs text-amber mt-2 leading-tight">
-        Unsaved
-      </span>
-    )
+    return <span className="text-xs text-amber font-medium">Unsaved</span>
   }
-  return null
-}
-
-// =============================================================================
-// Formatters
-// =============================================================================
-
-function formatBlockName(s: string): string {
-  return s
-    .split('_')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ')
-}
-
-function formatFieldName(s: string): string {
-  return s
-    .split('_')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ')
+  return <span aria-hidden="true" className="opacity-0">·</span>
 }

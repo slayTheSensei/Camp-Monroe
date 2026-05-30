@@ -40,7 +40,7 @@ export default async function ContentPage({
       />
       <PageBody>
         <ContentDashboard
-          initialTab={tab ?? 'pages'}
+          initialTab={tab ?? 'site'}
           initialPage={page ?? 'site'}
           pageContent={{
             site: sitePage,
