@@ -23,7 +23,7 @@ const navSections: NavSection[] = [
     ],
   },
   {
-    title: 'Front door',
+    title: 'Inbox',
     items: [
       { label: 'Membership requests', href: '/admin/membership', icon: MembershipIcon },
       { label: 'Partner inquiries', href: '/admin/partner-inquiries', icon: PartnerIcon },

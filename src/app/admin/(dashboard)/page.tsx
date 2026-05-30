@@ -151,34 +151,36 @@ export default async function AdminDashboard() {
         </a>
       </header>
 
-      {/* All stats in one tight 8-card band — front door + retreats together */}
+      {/* All stats in one tight 8-tile band */}
       <section>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden">
-          {/* Row 1: Front door */}
+          {/* Row 1: Public form submissions */}
           <StatTile
-            scope="Front door"
-            label="Membership · new"
+            label="New membership requests"
             value={membershipCounts.new}
             tone="blue"
             href="/admin/membership"
+            sub="from /request"
           />
           <StatTile
-            scope="Front door"
-            label="Partner · new"
+            label="New partner inquiries"
             value={partnerCounts.new}
             tone="blue"
             href="/admin/partner-inquiries"
+            sub="from /partner"
           />
           <StatTile
-            scope="Front door"
-            label="Follow along"
+            label="Follow-along signups"
             value={totalWaitlist}
-            sub={monthWaitlist ? `+${monthWaitlist} this month` : 'no new signups'}
+            sub={
+              monthWaitlist
+                ? `+${monthWaitlist} this month`
+                : 'no new signups this month'
+            }
             href="/admin/waitlist"
           />
           <StatTile
-            scope="Front door"
-            label="Reviewing"
+            label="Reviewing across inquiries"
             value={
               membershipCounts.reviewing +
               partnerCounts.reviewing +
@@ -187,31 +189,28 @@ export default async function AdminDashboard() {
             tone="gray"
             sub="all inquiry types"
           />
-          {/* Row 2: Retreats */}
+          {/* Row 2: Retreats pipeline */}
           <StatTile
-            scope="Retreats"
-            label="New inquiries"
+            label="New retreat inquiries"
             value={inquiryCounts.new}
             tone="blue"
             href="/admin/retreats"
+            sub="host + buyout"
           />
           <StatTile
-            scope="Retreats"
-            label="On hold"
+            label="Retreats on hold"
             value={inquiryCounts.hold}
             tone="orange"
             href="/admin/retreats"
           />
           <StatTile
-            scope="Retreats"
-            label="Confirmed"
+            label="Retreats confirmed"
             value={inquiryCounts.confirmed}
             tone="green"
             href="/admin/retreats"
           />
           <StatTile
-            scope="Retreats"
-            label="Upcoming"
+            label="Upcoming bookings"
             value={upcomingBookings}
             tone="green"
             sub="next 90 days"
@@ -337,14 +336,12 @@ export default async function AdminDashboard() {
 // =============================================================================
 
 function StatTile({
-  scope,
   label,
   value,
   sub,
   tone = 'default',
   href,
 }: {
-  scope: string
   label: string
   value: React.ReactNode
   sub?: string
@@ -362,10 +359,9 @@ function StatTile({
 
   const inner = (
     <>
-      <p className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">
-        {scope}
+      <p className="text-[11px] text-gray-600 font-medium leading-snug min-h-[2em]">
+        {label}
       </p>
-      <p className="text-[11px] text-gray-600 font-medium mt-0.5">{label}</p>
       <p
         className={`text-2xl font-bold leading-none mt-2 tabular-nums ${toneClass[tone]}`}
       >
@@ -378,7 +374,7 @@ function StatTile({
   )
 
   const base =
-    'block bg-white p-3 transition-colors duration-150'
+    'block bg-white p-3.5 transition-colors duration-150'
   if (href) {
     return (
       <Link
