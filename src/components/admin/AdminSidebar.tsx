@@ -4,15 +4,46 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 
-const navItems = [
-  { label: 'Dashboard', href: '/admin', icon: DashboardIcon },
-  { label: 'Membership', href: '/admin/membership', icon: MembershipIcon },
-  { label: 'Partner inquiries', href: '/admin/partner-inquiries', icon: PartnerIcon },
-  { label: 'Retreats', href: '/admin/retreats', icon: RetreatsIcon },
-  { label: 'Follow along', href: '/admin/waitlist', icon: WaitlistIcon },
-  { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
-  { label: 'Content', href: '/admin/content', icon: ContentIcon },
-  { label: 'Users', href: '/admin/users', icon: UsersIcon },
+type NavItem = {
+  label: string
+  href: string
+  icon: (props: { active: boolean }) => React.ReactElement
+}
+
+type NavSection = {
+  title: string
+  items: NavItem[]
+}
+
+const navSections: NavSection[] = [
+  {
+    title: 'Overview',
+    items: [
+      { label: 'Dashboard', href: '/admin', icon: DashboardIcon },
+    ],
+  },
+  {
+    title: 'Front door',
+    items: [
+      { label: 'Membership requests', href: '/admin/membership', icon: MembershipIcon },
+      { label: 'Partner inquiries', href: '/admin/partner-inquiries', icon: PartnerIcon },
+      { label: 'Follow along', href: '/admin/waitlist', icon: WaitlistIcon },
+    ],
+  },
+  {
+    title: 'Operations',
+    items: [
+      { label: 'Retreats', href: '/admin/retreats', icon: RetreatsIcon },
+      { label: 'Experiences', href: '/admin/experiences', icon: ExperiencesIcon },
+    ],
+  },
+  {
+    title: 'Settings',
+    items: [
+      { label: 'Site content', href: '/admin/content', icon: ContentIcon },
+      { label: 'Users', href: '/admin/users', icon: UsersIcon },
+    ],
+  },
 ]
 
 type Props = {
@@ -58,25 +89,35 @@ export default function AdminSidebar({ userEmail, onClose }: Props) {
       </div>
 
       {/* Navigation (scrolls internally if items overflow) */}
-      <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-1">
-        {navItems.map((item) => {
-          const active = isActive(item.href)
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                active
-                  ? 'bg-amber/20 text-amber'
-                  : 'text-cream/60 hover:text-cream hover:bg-cream/5'
-              }`}
-            >
-              <item.icon active={active} />
-              {item.label}
-            </Link>
-          )
-        })}
+      <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-5">
+        {navSections.map((section, sIdx) => (
+          <div key={section.title} className="space-y-0.5">
+            {sIdx > 0 && (
+              <p className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-cream/30">
+                {section.title}
+              </p>
+            )}
+            {sIdx === 0 ? null : null}
+            {section.items.map((item) => {
+              const active = isActive(item.href)
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    active
+                      ? 'bg-amber/20 text-amber'
+                      : 'text-cream/60 hover:text-cream hover:bg-cream/5'
+                  }`}
+                >
+                  <item.icon active={active} />
+                  {item.label}
+                </Link>
+              )
+            })}
+          </div>
+        ))}
       </nav>
 
       {/* Help link (pinned above the email footer, subtle separator above) */}
