@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import {
   DndContext,
   closestCenter,
@@ -320,10 +320,7 @@ export default function ExperienceList({ experiences: initialExperiences }: Prop
   const [statusSaved, setStatusSaved] = useState<Record<string, boolean>>({})
   const router = useRouter()
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   const sensors = useSensors(
     useSensor(PointerSensor),

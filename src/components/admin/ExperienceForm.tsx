@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import { Experience } from '@/types/experience'
 import BasicInfoFields from './ExperienceFormFields/BasicInfo'
 import PricingFields from './ExperienceFormFields/Pricing'
@@ -112,10 +112,7 @@ export default function ExperienceForm({ initialData, isNew, slug }: Props) {
   const [showDiscardDialog, setShowDiscardDialog] = useState(false)
   const router = useRouter()
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   // Tick every minute so relative time updates
   useEffect(() => {

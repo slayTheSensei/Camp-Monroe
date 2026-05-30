@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 
 type Props = {
   open: boolean
@@ -20,10 +20,7 @@ export default function StorageBrowser({ open, onClose, onSelect }: Props) {
   const [items, setItems] = useState<StorageItem[]>([])
   const [loading, setLoading] = useState(false)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/experience-images`
 

@@ -4,19 +4,16 @@ type Props = {
 
 /**
  * Vertical rhythm container for a page. Between direct children (typically
- * <Section>s), adds a subtle divider + 40px top padding on all but the first.
- *
- * CSS via Tailwind arbitrary variants — sidesteps the space-y-* specificity
- * quirks in Tailwind v4.
+ * <Section>s), adds a compact 24px gap — enough to separate concepts
+ * without making the page feel airy.
  */
 export default function PageBody({ children }: Props) {
   return (
     <div
       className={
         'flex flex-col ' +
-        // Every direct child except the first gets a top border + breathing room
-        '[&>*:not(:first-child)]:border-t [&>*:not(:first-child)]:border-gray-100 ' +
-        '[&>*:not(:first-child)]:pt-10 [&>*:not(:first-child)]:mt-10'
+        // 24px between sections, no dividers — sections speak for themselves
+        '[&>*:not(:first-child)]:mt-6'
       }
     >
       {children}

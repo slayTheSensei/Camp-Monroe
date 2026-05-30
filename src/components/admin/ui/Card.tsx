@@ -6,9 +6,9 @@ type Props = {
 
 const paddingClass = {
   none: '',
-  sm: 'p-4',
-  md: 'p-5',
-  lg: 'p-6',
+  sm: 'p-3',
+  md: 'p-4',
+  lg: 'p-5',
 }
 
 /**

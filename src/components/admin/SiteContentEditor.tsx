@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import StorageBrowser from './StorageBrowser'
 
 type ContentRow = {
@@ -41,10 +41,7 @@ export default function SiteContentEditor({ initialRows }: Props) {
   const [uploadingField, setUploadingField] = useState<string | null>(null)
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   function showToast(type: 'success' | 'error', message: string) {
     setToast({ type, message })

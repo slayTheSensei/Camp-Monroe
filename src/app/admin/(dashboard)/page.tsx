@@ -154,7 +154,7 @@ export default async function AdminDashboard() {
             </Link>
           }
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
             <StatCard
               label="Membership · new"
               value={membershipCounts.new}
@@ -201,7 +201,7 @@ export default async function AdminDashboard() {
             </Link>
           }
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
             <StatCard
               label="New inquiries"
               value={inquiryCounts.new}
@@ -231,7 +231,7 @@ export default async function AdminDashboard() {
         </Section>
 
         <Section title="Activity">
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-4">
             <Card padding="lg">
               <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
                 Quick actions

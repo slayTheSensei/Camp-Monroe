@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import type { EmailOtpType } from '@supabase/supabase-js'
 
 export default function AuthCallbackPage() {
@@ -10,10 +10,7 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     async function handleCallback() {
-      const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      )
+      const supabase = getBrowserSupabase()
 
       // --- Hash fragment flow (implicit — Supabase uses this for invites) ---
       const hash = window.location.hash.slice(1) // strip leading #

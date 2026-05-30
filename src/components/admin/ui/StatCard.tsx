@@ -22,15 +22,21 @@ type Props = {
 export default function StatCard({ label, value, tone = 'default', sub, href }: Props) {
   const inner = (
     <>
-      <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">{label}</p>
-      <p className={`text-3xl font-bold mt-3 ${toneClass[tone]}`}>{value}</p>
+      <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">
+        {label}
+      </p>
+      <p className={`text-2xl font-bold mt-1.5 leading-tight ${toneClass[tone]}`}>
+        {value}
+      </p>
       {/* Reserved sub-label slot keeps all cards the same height */}
-      <p className="text-xs text-gray-400 mt-1 min-h-[1em]">{sub ?? '\u00A0'}</p>
+      <p className="text-[11px] text-gray-400 mt-0.5 min-h-[1em]">
+        {sub ?? '\u00A0'}
+      </p>
     </>
   )
 
   const base =
-    'block bg-white rounded-lg border border-gray-200 p-5 transition-colors duration-150'
+    'block bg-white rounded-lg border border-gray-200 p-3.5 transition-colors duration-150'
 
   if (href) {
     return (

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import {
   DndContext,
   closestCenter,
@@ -49,10 +49,7 @@ export default function ImagesFields({ data, update, slug }: Props) {
   const [browseOpen, setBrowseOpen] = useState(false)
   const topFileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),

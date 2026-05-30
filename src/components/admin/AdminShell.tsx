@@ -61,7 +61,7 @@ export default function AdminShell({ userEmail, children }: Props) {
 
         {/* Single scroll region — all page content goes here */}
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 pb-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5 pb-10">
             {children}
           </div>
         </main>

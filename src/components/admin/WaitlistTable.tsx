@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
+import { getBrowserSupabase } from '@/lib/supabase-browser'
 import DeleteConfirmDialog from './DeleteConfirmDialog'
 
 type WaitlistEntry = {
@@ -43,10 +43,7 @@ export default function WaitlistTable({ entries: initialEntries }: Props) {
   const [deleteTarget, setDeleteTarget] = useState<WaitlistEntry | null>(null)
   const [deleting, setDeleting] = useState(false)
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
+  const supabase = getBrowserSupabase()
 
   // Distinct sources observed in the data set
   const sourceOptions = useMemo(() => {
