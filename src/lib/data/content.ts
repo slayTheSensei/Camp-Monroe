@@ -33,20 +33,34 @@ function anonClient() {
  * hardcoded JSX defaults — never breaks on a content-layer failure.
  */
 export async function getPageContent(page: string): Promise<PageContentMap> {
-  const supabase = anonClient()
-  const { data, error } = await supabase
-    .from('page_content')
-    .select('block, field, value')
-    .eq('page', page)
-  if (error) {
-    console.error(`getPageContent(${page}):`, error)
+  try {
+    const supabase = anonClient()
+    const { data, error } = await supabase
+      .from('page_content')
+      .select('block, field, value')
+      .eq('page', page)
+    if (error) {
+      console.error(
+        `[content] getPageContent(${page}) failed:`,
+        error.message || error.code || 'unknown error',
+        '— falling back to hardcoded defaults'
+      )
+      return {}
+    }
+    const map: PageContentMap = {}
+    for (const row of data ?? []) {
+      map[`${row.block}.${row.field}`] = row.value ?? ''
+    }
+    return map
+  } catch (err) {
+    // Network-level failures (fetch threw) don't go through .error
+    console.error(
+      `[content] getPageContent(${page}) network exception:`,
+      err instanceof Error ? err.message : err,
+      '— falling back to hardcoded defaults'
+    )
     return {}
   }
-  const map: PageContentMap = {}
-  for (const row of data ?? []) {
-    map[`${row.block}.${row.field}`] = row.value ?? ''
-  }
-  return map
 }
 
 /**
@@ -79,17 +93,29 @@ function mapTimelineItem(row: any): TimelineItem {
 }
 
 export async function getTimelineItems(): Promise<TimelineItem[]> {
-  const supabase = anonClient()
-  const { data, error } = await supabase
-    .from('timeline_items')
-    .select('*')
-    .eq('is_visible', true)
-    .order('sort_order', { ascending: true })
-  if (error) {
-    console.error('getTimelineItems:', error)
+  try {
+    const supabase = anonClient()
+    const { data, error } = await supabase
+      .from('timeline_items')
+      .select('*')
+      .eq('is_visible', true)
+      .order('sort_order', { ascending: true })
+    if (error) {
+      console.error(
+        '[content] getTimelineItems failed:',
+        error.message || error.code || 'unknown error',
+        '— falling back to []'
+      )
+      return []
+    }
+    return (data ?? []).map(mapTimelineItem)
+  } catch (err) {
+    console.error(
+      '[content] getTimelineItems network exception:',
+      err instanceof Error ? err.message : err
+    )
     return []
   }
-  return (data ?? []).map(mapTimelineItem)
 }
 
 // ============================================================================
@@ -109,15 +135,27 @@ function mapWayItem(row: any): WayToPartnerItem {
 }
 
 export async function getWaysToPartnerItems(): Promise<WayToPartnerItem[]> {
-  const supabase = anonClient()
-  const { data, error } = await supabase
-    .from('ways_to_partner_items')
-    .select('*')
-    .eq('is_visible', true)
-    .order('sort_order', { ascending: true })
-  if (error) {
-    console.error('getWaysToPartnerItems:', error)
+  try {
+    const supabase = anonClient()
+    const { data, error } = await supabase
+      .from('ways_to_partner_items')
+      .select('*')
+      .eq('is_visible', true)
+      .order('sort_order', { ascending: true })
+    if (error) {
+      console.error(
+        '[content] getWaysToPartnerItems failed:',
+        error.message || error.code || 'unknown error',
+        '— falling back to []'
+      )
+      return []
+    }
+    return (data ?? []).map(mapWayItem)
+  } catch (err) {
+    console.error(
+      '[content] getWaysToPartnerItems network exception:',
+      err instanceof Error ? err.message : err
+    )
     return []
   }
-  return (data ?? []).map(mapWayItem)
 }
