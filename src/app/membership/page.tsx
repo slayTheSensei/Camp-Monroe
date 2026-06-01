@@ -25,7 +25,7 @@ export default async function MembershipPage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Archival · Members at the camp, mid-century
+              Members at the camp, mid-century
             </span>
             <span className="hero-shot-note">From the camp&rsquo;s archive</span>
           </div>
@@ -33,13 +33,13 @@ export default async function MembershipPage() {
             <div className="hero-loc reveal">
               <span className="tick" />
               <span className="tx">
-                Membership · By sponsorship and application
+                Sponsorship · Application · Member vote
               </span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
               Sixty seats.
               <br />
-              Held for a <em>lifetime.</em>
+              Held for <em>life.</em>
             </h1>
           </div>
         </section>
@@ -50,16 +50,16 @@ export default async function MembershipPage() {
               <div>
                 <div className="eyebrow reveal">Membership</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  A line, not a booking.
+                  A club, not a hotel.
                 </h2>
                 <p
                   className="lead reveal d2"
                   style={{ marginTop: 28, fontSize: 18 }}
                 >
-                  Membership in the Cambridge Gun &amp; Rod Club is membership in a 130-year-old
-                  institution &mdash; not a timeshare, not a booking discount. Two chapters, a historic
-                  men&rsquo;s and a new women&rsquo;s, share one home and identical standing. Admission is
-                  by sponsorship and application, the way it has always been.
+                  Membership is membership in a 130-year-old club. Not a timeshare. Not
+                  a booking discount. There are two chapters &mdash; the men&rsquo;s, founded in
+                  1893, and the women&rsquo;s, which opens in 2026. Identical standing. Identical
+                  pricing. We admit by sponsorship and application. We always have.
                 </p>
 
                 <div className="price-row reveal d3">
@@ -107,7 +107,7 @@ export default async function MembershipPage() {
                     <div>
                       <div className="st">Sponsorship</div>
                       <div className="sd">
-                        A current member puts your name forward — by letter, in their own hand.
+                        A current member puts your name forward.
                       </div>
                     </div>
                   </div>
@@ -116,7 +116,7 @@ export default async function MembershipPage() {
                     <div>
                       <div className="st">Application</div>
                       <div className="sd">
-                        You apply to your chapter, with two letters of support.
+                        You apply to a chapter, with two letters of support.
                       </div>
                     </div>
                   </div>
@@ -125,17 +125,16 @@ export default async function MembershipPage() {
                     <div>
                       <div className="st">Approval</div>
                       <div className="sd">
-                        The membership votes &mdash; a 130-year tradition.
+                        The members vote.
                       </div>
                     </div>
                   </div>
                   <div className="step">
                     <span className="sn">04</span>
                     <div>
-                      <div className="st">Join the line</div>
+                      <div className="st">Your seat</div>
                       <div className="sd">
-                        Held for life. A waitlist forms when a chapter is full; the line moves at the
-                        line&rsquo;s pace.
+                        Yours for life. If a chapter is full, a waitlist forms.
                       </div>
                     </div>
                   </div>
@@ -145,7 +144,7 @@ export default async function MembershipPage() {
 
             {/* CHAPTERS */}
             <div className="reveal" style={{ marginTop: 96 }}>
-              <div className="eyebrow">Two chapters · One home</div>
+              <div className="eyebrow">Two chapters · One camp</div>
               <h3
                 className="sec-h"
                 style={{
@@ -154,7 +153,7 @@ export default async function MembershipPage() {
                   maxWidth: "24ch",
                 }}
               >
-                The line opens, for the first time.
+                The men&rsquo;s chapter, and the women&rsquo;s.
               </h3>
             </div>
             <div className="chapters">
@@ -162,16 +161,15 @@ export default async function MembershipPage() {
                 <div className="y">1893</div>
                 <div className="nm">The men&rsquo;s chapter</div>
                 <p>
-                  Founded 1893. Continuous. The historic chapter still keeps the first full week of August
-                  at the camp — a hundred and thirty-three Augusts, and counting.
+                  Founded 1893. Open every August since. Still takes the first full week
+                  of August at the camp.
                 </p>
               </div>
               <div className="chapter reveal d1">
                 <div className="y">2026</div>
                 <div className="nm">The women&rsquo;s chapter</div>
                 <p>
-                  Opens the line for the first time, with identical standing. The same buy-in. The same
-                  dues. The same hold for life.
+                  Opens in 2026. Identical standing. Identical buy-in and dues. Same hold for life.
                 </p>
               </div>
             </div>
@@ -182,9 +180,9 @@ export default async function MembershipPage() {
         <section className="dark">
           <div className="wrap">
             <div className="sec-head reveal">
-              <div className="eyebrow">What you join</div>
+              <div className="eyebrow">What you get</div>
               <h2 className="sec-h" style={{ marginTop: 14 }}>
-                This is what&rsquo;s yours.
+                A camp, a chapter, a seat.
               </h2>
             </div>
             <div className="stat-band">
@@ -192,9 +190,9 @@ export default async function MembershipPage() {
                 <div className="num">
                   <Counter to={130} />
                 </div>
-                <div className="lab">Years of standing</div>
+                <div className="lab">Years on the lake</div>
                 <div className="det">
-                  A 501(c)(7) since long before the form existed.
+                  Open every August since 1893.
                 </div>
               </div>
               <div className="stat reveal d1">
@@ -203,20 +201,20 @@ export default async function MembershipPage() {
                 </div>
                 <div className="lab">Acres of lake</div>
                 <div className="det">
-                  Lake Cobbosseecontee. Members&rsquo; use.
+                  Lake Cobbosseecontee.
                 </div>
               </div>
               <div className="stat reveal d2">
                 <div className="num">August</div>
                 <div className="lab">The first full week</div>
                 <div className="det">
-                  The historic men&rsquo;s week. Continuous since 1893.
+                  Men&rsquo;s chapter, every August since 1893.
                 </div>
               </div>
               <div className="stat reveal d3">
                 <div className="num">For life</div>
                 <div className="lab">Your seat</div>
-                <div className="det">Transferable to family per the bylaws.</div>
+                <div className="det">Transferable per the bylaws.</div>
               </div>
             </div>
           </div>

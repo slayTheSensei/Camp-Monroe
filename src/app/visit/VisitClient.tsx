@@ -920,47 +920,47 @@ const HOST_SPECS = [
   {
     k: "Capacity",
     items: [
-      "8 – 24 guests",
+      "8 to 24 guests",
       "Lodge and cabin lodging",
-      "Best for groups seeking privacy and quiet",
+      "Built for groups that need quiet",
     ],
   },
   {
     k: "Included",
     items: [
-      "Full property use",
+      "The whole property",
       "Private lake frontage",
-      "Common gathering spaces",
+      "Common rooms",
       "Dining hall and lodge",
     ],
   },
   {
-    k: "Support — optional",
+    k: "Support, optional",
     items: [
-      "Meals and catering partners",
-      "Facilitation referrals",
-      "Transport coordination",
-      "Full-service packages",
+      "Meals and catering",
+      "Facilitators",
+      "Transport",
+      "Full-service end to end",
     ],
   },
 ];
 const BUYOUT_SPECS = [
   {
     k: "The buyout",
-    items: ["The whole property, to yourselves", "Lodge, cabins, dining hall", "Up to 24 guests"],
+    items: ["The whole property", "Lodge, cabins, dining hall", "Up to 24 guests"],
   },
   {
     k: "Included",
     items: [
       "Private lake frontage",
       "Canoes and the dock",
-      "Common gathering spaces",
+      "Common rooms",
       "Run of the grounds",
     ],
   },
   {
     k: "Good to know",
-    items: ["3-night minimum", "7-day lead time", "Select windows between retreats"],
+    items: ["3-night minimum", "7 days' lead time", "Select windows between retreats"],
   },
 ];
 

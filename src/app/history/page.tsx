@@ -73,10 +73,10 @@ export default async function HistoryPage() {
           <div className="wrap phero-inner">
             <div className="hero-loc reveal">
               <span className="tick" />
-              <span className="tx">The history · Since 1893, every season</span>
+              <span className="tx">Every August since 1893</span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
-              The coalition of the <em>excluded.</em>
+              How it <em>started.</em>
             </h1>
           </div>
         </section>
@@ -87,20 +87,19 @@ export default async function HistoryPage() {
               <div className="txt">
                 <div className="eyebrow reveal">The founding</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  They were shut out of America&rsquo;s clubs. So they built their own &mdash; and never
-                  gave it back.
+                  Shut out of Boston&rsquo;s clubs. So they built one of their own.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  In 1893, a circle of Black Bostonians &mdash; Pullman porters, ministers, doctors, lawyers
-                  &mdash; claimed a piece of Lake Cobbosseecontee for themselves. They called it the
-                  Cambridge Gun &amp; Rod Club. Over the next century it became one of the most enduring
-                  Black institutions in the country: a place of rest and standing.
+                  In 1893 a group of Black men in Boston pooled their money, bought a stretch of
+                  shoreline on Lake Cobbosseecontee in Maine, and built a dining hall and a lodge.
+                  They were Pullman porters, doctors, ministers, lawyers. They named it the
+                  Cambridge Gun and Rod Club. We have opened it every August since.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
-                  Its most renowned member was W.E.B. Du Bois &mdash; not a founder; a member &mdash; who
-                  returned summer after summer and called the camp his Walden. The champion Joe Louis was a
-                  guest. The historic men&rsquo;s chapter still keeps the first full week of August. In 2026
-                  a women&rsquo;s chapter opens the line for the first time.
+                  Its best-known member was W.E.B. Du Bois. Not a founder. A member. He came back
+                  summer after summer and called the camp his Walden. The boxer Joe Louis came
+                  as a guest. The men&rsquo;s chapter still takes the first full week of August.
+                  In 2026 a women&rsquo;s chapter joins.
                 </p>
               </div>
               <div className="reveal d2">
@@ -124,7 +123,7 @@ export default async function HistoryPage() {
             <div className="sec-head reveal">
               <div className="eyebrow">The record</div>
               <h2 className="sec-h" style={{ marginTop: 14 }}>
-                One hundred and thirty years, in beats.
+                The beats.
               </h2>
             </div>
             <div className="tl">
@@ -150,12 +149,12 @@ export default async function HistoryPage() {
             <div className="sec-head reveal">
               <div className="eyebrow">The W.E.B. Files</div>
               <h2 className="sec-h" style={{ marginTop: 14, maxWidth: "24ch" }}>
-                The evidence is in the paper.
+                What&rsquo;s in the papers.
               </h2>
               <p className="lead" style={{ marginTop: 28 }}>
-                A handful of primary sources from the W.E.B. Du Bois Papers at the University of
-                Massachusetts Amherst &mdash; letters, envelopes, vacation schedules &mdash; document the
-                long association between Du Bois and the Cambridge Gun &amp; Rod Club.
+                A few documents from the Du Bois Papers at UMass Amherst. Letters. Envelopes.
+                Vacation schedules. They show what we already knew: Du Bois came back to the
+                camp summer after summer.
               </p>
             </div>
             <div className="archival-strip">

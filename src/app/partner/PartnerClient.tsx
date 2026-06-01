@@ -66,11 +66,11 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
             <div className="hero-loc reveal">
               <span className="tick" />
               <span className="tx">
-                Partner with us · Investors, partners, press, policymakers
+                For investors, press, and policymakers
               </span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
-              Finish what was <em>started.</em>
+              Another century to <em>put in.</em>
             </h1>
           </div>
         </section>
@@ -82,18 +82,18 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
               <div className="txt">
                 <div className="eyebrow reveal">Partner with us</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  Not a museum &mdash; a continuation.
+                  Not a museum. A club, still open.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  The Cambridge Gun &amp; Rod Club has been open every season since 1893 &mdash; the
-                  longest-running Black outdoor heritage site in New England, and the lake W.E.B. Du Bois
-                  called his Walden. That continuity is the asset. We intend to extend it.
+                  The Cambridge Gun and Rod Club has been open every August since 1893. The
+                  lake W.E.B. Du Bois called his Walden. The longest-running Black outdoor
+                  heritage site in New England. The continuity is the asset. We&rsquo;re going
+                  to extend it.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
-                  In 2026, three core buildings are renovated and unveiled on Juneteenth, a women&rsquo;s
-                  chapter opens the line for the first time, and a second sporting property restores the
-                  other half of the club&rsquo;s name. There is room here for partners who measure return in
-                  decades.
+                  Three buildings renovated and unveiled on Juneteenth, 2026. A women&rsquo;s
+                  chapter joining. A second sporting property in the works. There is room here
+                  for partners who measure return in decades.
                 </p>
               </div>
               <div className="reveal d2">
@@ -103,7 +103,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                     alt="Members of the Cambridge Gun & Rod Club at the camp"
                   />
                   <div className="archival-cap">
-                    Archival — members at the camp · W.E.B. Du Bois Papers, UMass Amherst
+                    Members at the camp · W.E.B. Du Bois Papers, UMass Amherst
                   </div>
                 </div>
               </div>
@@ -117,7 +117,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
             <div className="sec-head reveal">
               <div className="eyebrow">Ways to partner</div>
               <h2 className="sec-h" style={{ marginTop: 14 }}>
-                Four ways to be part of the next hundred years.
+                Four ways to put in.
               </h2>
             </div>
             <div className="ways">
@@ -138,15 +138,15 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                 <div className="num">
                   <Counter to={130} />
                 </div>
-                <div className="lab">Years, unbroken</div>
-                <div className="det">Open every season since 1893.</div>
+                <div className="lab">Years on the lake</div>
+                <div className="det">Open every August since 1893.</div>
               </div>
               <div className="stat">
                 <div className="num">
                   <Counter to={5500} />
                 </div>
                 <div className="lab">Acres of lake</div>
-                <div className="det">Lake Cobbosseecontee, Maine.</div>
+                <div className="det">Lake Cobbosseecontee.</div>
               </div>
               <div className="stat">
                 <div className="num">2026</div>
@@ -156,7 +156,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
               <div className="stat">
                 <div className="num">501(c)(7)</div>
                 <div className="lab">Member-owned</div>
-                <div className="det">A club, long before the form existed.</div>
+                <div className="det">A club in the old sense.</div>
               </div>
             </div>
           </div>
@@ -167,14 +167,14 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
           <div className="corner" />
           <div className="wrap" style={{ maxWidth: "880px" }}>
             <div className="eyebrow reveal" style={{ marginBottom: 32 }}>
-              The case, in a line
+              On record
             </div>
             <blockquote className="reveal d1">
-              We are finishing what was started in 1893 &mdash; and we are looking for the people who want
-              to help finish it.
+              We&rsquo;re not a museum. We&rsquo;re a club, still open. We&rsquo;d like to do
+              another hundred years.
             </blockquote>
             <cite className="reveal d2">
-              The Cambridge Gun &amp; Rod Club · Camp Monroe
+              The Cambridge Gun and Rod Club · Camp Monroe
             </cite>
           </div>
         </section>
@@ -184,7 +184,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
           <div className="wrap">
             <div className="reqpage reqpage-partner">
               <div className="reqpage-aside">
-                <div className="eyebrow">Start a conversation</div>
+                <div className="eyebrow">Write to us</div>
                 <h2
                   className="sec-h"
                   style={{
@@ -192,11 +192,11 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                     fontSize: "clamp(30px,4vw,52px)",
                   }}
                 >
-                  Tell us how you&rsquo;d like to help.
+                  Tell us what you do and what you have in mind.
                 </h2>
                 <p className="lead" style={{ marginTop: 24, fontSize: 16 }}>
-                  Investment, preservation, press, or community &mdash; we read every note by hand and reply
-                  to the ones that fit. Concrete is welcome: tell us what you do and what you have in mind.
+                  Capital. Preservation. Press. Community. We read every note and write back
+                  to the ones that fit.
                 </p>
                 <div className="reqpage-reassure">
                   Prefer email? Write us at{" "}

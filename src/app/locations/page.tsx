@@ -24,21 +24,21 @@ export default async function LocationsPage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Photograph · Lake Cobbosseecontee at dusk
+              Lake Cobbosseecontee at dusk
             </span>
             <span className="hero-shot-note">
-              Coastal &amp; central · the properties
+              The properties
             </span>
           </div>
           <div className="wrap phero-inner">
             <div className="hero-loc reveal">
               <span className="tick" />
-              <span className="tx">The properties · One club, growing</span>
+              <span className="tx">Camp Monroe · A sporting property to come</span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
-              One club.
+              Camp Monroe.
               <br />
-              And where it&rsquo;s <em>headed.</em>
+              And what&rsquo;s <em>next.</em>
             </h1>
           </div>
         </section>
@@ -47,19 +47,18 @@ export default async function LocationsPage() {
           <div className="wrap">
             <div className="split">
               <div className="txt">
-                <div className="eyebrow reveal">The institution</div>
+                <div className="eyebrow reveal">The club</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  The club is the constant. The places are a second layer.
+                  The club is the constant.
                 </h2>
               </div>
               <div className="reveal d2">
                 <p className="lead">
-                  The Cambridge Gun &amp; Rod Club has always been an institution first and a place second.
-                  Camp Monroe is its home on the water &mdash; the lakefront camp the club has held since
-                  1893. A second property, a sporting one, restores the other half of its name.
+                  The Cambridge Gun and Rod Club is the institution. Camp Monroe is the
+                  place. We have held the camp on Lake Cobbosseecontee since 1893.
                 </p>
                 <p className="lead" style={{ marginTop: 18 }}>
-                  One club. The same membership. The same line.
+                  A second property, a sporting one, is in the works. Same club. Same membership.
                 </p>
               </div>
             </div>
@@ -89,8 +88,7 @@ export default async function LocationsPage() {
                     Lake Cobbosseecontee · West Gardiner, ME
                   </div>
                   <p className="desc">
-                    5,500 acres of water. Dining hall, lodge, dock. Open every season since 1893. The home
-                    of the club.
+                    5,500 acres of water. Dining hall. Lodge. Dock. Open every August since 1893.
                   </p>
                   <Link
                     className="ilink"
@@ -118,8 +116,7 @@ export default async function LocationsPage() {
                   </div>
                   <div className="where">Maine · to be announced</div>
                   <p className="desc">
-                    Restoring the full &ldquo;Gun &amp; Rod&rdquo; &mdash; a working hunting and fishing
-                    property to come, under the same club, the same membership, the same line.
+                    A hunting and fishing property to come. Same club. Same members.
                   </p>
                 </div>
               </div>

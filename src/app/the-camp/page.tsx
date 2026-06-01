@@ -25,7 +25,7 @@ export default async function TheCampPage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Photograph · the dining hall &amp; lake
+              The dining hall and the lake
             </span>
             <span className="hero-shot-note">West Gardiner, Maine</span>
           </div>
@@ -33,7 +33,7 @@ export default async function TheCampPage() {
             <div className="hero-loc reveal">
               <span className="tick" />
               <span className="tx">
-                The flagship · Lake Cobbosseecontee, West Gardiner, Maine
+                Lake Cobbosseecontee · West Gardiner, Maine
               </span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
@@ -48,13 +48,13 @@ export default async function TheCampPage() {
               <div className="txt">
                 <div className="eyebrow reveal">The place</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  A lake, a dining hall, a dock &mdash; and a hundred and thirty summers.
+                  A lake. A dining hall. A dock.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  Camp Monroe sits on Lake Cobbosseecontee in West Gardiner: fifteen minutes from Augusta,
-                  under an hour from Portland, two and a half from Boston. The dining hall faces the sunset.
-                  The dock is the heart of the place. Outside a handful of private events each season, the
-                  camp belongs to its members.
+                  Camp Monroe sits on Lake Cobbosseecontee in West Gardiner. Fifteen minutes
+                  from Augusta. An hour from Portland. Two and a half from Boston. The dining
+                  hall faces the sunset. The dock is the heart of the place. Outside a few
+                  private events each summer, the camp belongs to the members.
                 </p>
                 <div className="facts reveal d3">
                   <div className="fact">
@@ -75,7 +75,7 @@ export default async function TheCampPage() {
                 <Ph
                   src="/assets/photos/stone-steps.jpg"
                   alt="The stone steps down to the lake"
-                  cap="Photograph — the stone steps down to the lake"
+                  cap="The stone steps down to the lake"
                 />
               </div>
             </div>
@@ -176,7 +176,7 @@ export default async function TheCampPage() {
                 <Ph
                   src="/assets/photos/lake-autumn.jpg"
                   alt="Lake Cobbosseecontee, mid-October"
-                  cap="Photograph — Lake Cobbosseecontee, mid-October"
+                  cap="Lake Cobbosseecontee, mid-October"
                 />
               </div>
               <div className="txt">
@@ -185,9 +185,9 @@ export default async function TheCampPage() {
                   One of the best bass lakes in the Northeast.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  Five and a half thousand acres of water, a hundred feet deep in places. Smallmouth and
-                  largemouth, plus swimming, paddling, sailing, and open water for boats. Golf and the hills
-                  of central Maine are minutes away; the coast is an hour off.
+                  Five thousand five hundred acres of water. A hundred feet deep in places.
+                  Smallmouth bass and largemouth. Swim. Paddle. Sail. Golf and the hills are
+                  minutes away. The coast is an hour off.
                 </p>
                 <div
                   className="stat-band reveal d3"
