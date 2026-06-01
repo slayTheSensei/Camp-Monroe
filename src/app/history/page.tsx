@@ -13,33 +13,33 @@ export const metadata = {
 const FALLBACK_TIMELINE = [
   {
     year: "1893",
-    head: "The club is founded",
-    body: "A circle of Black Bostonians — Pullman porters and professionals shut out of America's clubs — incorporate the Cambridge Gun & Rod Club and claim a stretch of Lake Cobbosseecontee for themselves.",
+    head: "The camp is started",
+    body: "A group of Black and Jewish men in Boston wanted a hunting and fishing camp of their own. The Pullman porters among them scouted Lake Cobbosseecontee on the run between Boston and Maine. The Goodwin family, who owned land on the lake, leased it to them for one hundred years at a dollar. The summer tradition started that August.",
   },
   {
     year: "1920s",
-    head: "A summer institution takes shape",
-    body: "The dining hall and lodge anchor the season. The camp becomes a destination for Black professional families across New England and the mid-Atlantic — and a working part of the era's Black summer geography.",
+    head: "An intellectual circle takes shape",
+    body: "The camp draws lawyers, judges, ministers, and scholars. W.E.B. Du Bois comes back summer after summer to rest, fish, and talk. The camp becomes one of the country's quiet centers of Black intellectual life.",
   },
   {
-    year: "1928",
-    head: "W.E.B. Du Bois begins his Maine summers",
-    body: 'Du Bois opens an account at the Maine Savings Bank and begins summering near Cobbosseecontee. Over the next two decades he returns again and again, writing letters from the lake — “his Walden.”',
+    year: "Around 1950",
+    head: "The club becomes almost exclusively Black",
+    body: "Through the first half of the century the club had been mixed Black and Jewish. By the late 1940s and early 1950s the Jewish members, by then assimilated into white American institutions, no longer needed a club of their own. The CGRC continued, now nearly all-Black.",
   },
   {
-    year: "1947",
-    head: "“I have a box at the Cambridge Gun and Rod Club”",
-    body: "Du Bois writes Mr. Dorch from the road, asking for his trunk to be sent by railway express. The letter survives in the Du Bois Papers at UMass Amherst — small evidence of a long affiliation.",
+    year: "1970s–2000s",
+    head: "An annual social institution",
+    body: "For three decades the club is the August home of a particular Black professional class. Many members take the first week of August at the camp, then join their families on Martha's Vineyard for the rest of the month.",
   },
   {
-    year: "Mid-c.",
-    head: "Joe Louis among the guests",
-    body: "The champion Joe Louis visits the camp. The line of guests across the century reads like a quiet ledger of Black American life — figures who came not to perform, but to rest.",
+    year: "2013",
+    head: "The members buy the camp",
+    body: "The hundred-year lease comes up. The Goodwin grandchildren prepare to sell. A handful of members of the club purchase the land from them and bring the camp into member ownership. The grandson of the Goodwin who first leased the land stays on as the caretaker.",
   },
   {
     year: "2026",
-    head: "A women's chapter opens the line",
-    body: "For the first time in 133 years, the line opens to a women's chapter — identical standing, the same buy-in, the same hold for life. The same summer. The camp's core buildings are renovated for the next hundred years.",
+    head: "The first major renovation in sixty years",
+    body: "Three of the camp's core buildings — dining hall, dock, lodge — get a top-to-bottom renovation. A women's chapter joins. The club starts looking at a second property.",
   },
 ];
 
@@ -66,7 +66,7 @@ export default async function HistoryPage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Archival · Du Bois at camp, c.1935
+              Du Bois at camp, c. 1935
             </span>
             <span className="hero-shot-note">Du Bois Papers · UMass</span>
           </div>

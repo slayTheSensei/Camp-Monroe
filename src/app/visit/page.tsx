@@ -55,7 +55,7 @@ export default async function VisitPage({
     bridgeLine: t(
       content,
       "book.bridge_line",
-      "Rather join the line than book a week? Membership runs by sponsorship and application — request an invitation."
+      "Rather be a member than a guest? Membership is by sponsorship and application — request an invitation."
     ),
     heroImage: t(
       content,

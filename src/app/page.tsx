@@ -29,7 +29,7 @@ export default async function HomePage() {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              {t(c, "hero.tier_label", "Photograph · Lake Cobbosseecontee at sunset")}
+              {t(c, "hero.tier_label", "Lake Cobbosseecontee at sunset")}
             </span>
             <span className="hero-shot-note">
               {t(c, "hero.location_label", "West Gardiner, Maine")}
@@ -37,17 +37,17 @@ export default async function HomePage() {
           </div>
           <div className="wrap hero-inner">
             <h1>
-              {t(c, "hero.headline_line_1", "One hundred")}
+              {t(c, "hero.headline_line_1", "Every summer")}
               <br />
-              {t(c, "hero.headline_line_2", "and thirty years,")}
+              {t(c, "hero.headline_line_2", "since")}
               <br />
-              <em>{t(c, "hero.headline_emphasis", "unbroken.")}</em>
+              <em>{t(c, "hero.headline_emphasis", "1893.")}</em>
             </h1>
             <p className="hero-sub">
               {t(
                 c,
                 "hero.sub",
-                "One of America's oldest Black sportsmen's clubs — founded 1893, open every season since. Camp Monroe is its home on the water."
+                "The Cambridge Gun and Rod Club is one of America's oldest Black sportsmen's clubs. Camp Monroe is its home on the water. We have kept the camp open one hundred and thirty seasons."
               )}
             </p>
             <div className="hero-cta">
@@ -56,7 +56,7 @@ export default async function HomePage() {
                 <span className="arr" />
               </Link>
               <Link className="btn btn-outline-cream" href="/the-camp">
-                {t(c, "hero.secondary_cta", "Explore the camp")}
+                {t(c, "hero.secondary_cta", "See the camp")}
               </Link>
             </div>
           </div>
@@ -72,22 +72,22 @@ export default async function HomePage() {
         >
           <div className="wrap">
             <div className="eyebrow reveal" style={{ marginBottom: 48 }}>
-              The line, in numbers
+              The facts
             </div>
             <div className="stat-band">
               <div className="stat reveal">
                 <div className="num">
                   <Counter to={130} />
                 </div>
-                <div className="lab">Years, unbroken</div>
-                <div className="det">Open every season since 1893.</div>
+                <div className="lab">Years on the lake</div>
+                <div className="det">Open every August since 1893.</div>
               </div>
               <div className="stat reveal d1">
                 <div className="num">
                   <Counter to={60} />
                 </div>
                 <div className="lab">Memberships</div>
-                <div className="det">Held for life. Two chapters.</div>
+                <div className="det">Capped, held for life.</div>
               </div>
               <div className="stat reveal d2">
                 <div className="num">
@@ -95,7 +95,7 @@ export default async function HomePage() {
                 </div>
                 <div className="lab">Chapters</div>
                 <div className="det">
-                  Historic men&rsquo;s · new women&rsquo;s, 2026.
+                  Men&rsquo;s (1893) · Women&rsquo;s (2026).
                 </div>
               </div>
               <div className="stat reveal d3">
@@ -115,27 +115,27 @@ export default async function HomePage() {
             <div className="split">
               <div className="txt">
                 <div className="eyebrow reveal">
-                  {t(c, "story_split.eyebrow", "The institution")}
+                  {t(c, "story_split.eyebrow", "How it started")}
                 </div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
                   {t(
                     c,
                     "story_split.headline",
-                    "A club, not a resort. A line, not a season."
+                    "A club. Not a resort."
                   )}
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
                   {t(
                     c,
                     "story_split.body_p1",
-                    "In 1893 a circle of Black Bostonians — Pullman porters, doctors, ministers, lawyers shut out of America's clubs — claimed this lake for themselves. For 130 unbroken years it has been one of the country's most enduring Black institutions: a place of rest and standing."
+                    "In 1893 a group of Black and Jewish men in Boston were shut out of the city's hunting and fishing clubs. So they built one of their own — on a lake in Maine. They named it the Cambridge Gun and Rod Club. We have opened it every August since."
                   )}
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
                   {t(
                     c,
                     "story_split.body_p2",
-                    "W.E.B. Du Bois called it his Walden. Joe Louis came as a guest. The men's chapter still keeps the first full week of August. In 2026, a women's chapter opens the line for the first time."
+                    "By the 1920s the camp drew lawyers, judges, and scholars. W.E.B. Du Bois was a member, not a founder. He came back summer after summer and treated the camp like his Walden Pond. Joe Louis came as a guest. The men's chapter still takes the first full week of August. In 2026 a women's chapter joins."
                   )}
                 </p>
                 <Link
@@ -143,7 +143,7 @@ export default async function HomePage() {
                   style={{ marginTop: 34, display: "inline-flex" }}
                   href="/history"
                 >
-                  {t(c, "story_split.ilink_label", "Read the full history")}{" "}
+                  {t(c, "story_split.ilink_label", "Read the history")}{" "}
                   <span className="arr" />
                 </Link>
               </div>
@@ -152,7 +152,7 @@ export default async function HomePage() {
                   cap={t(
                     c,
                     "story_split.image_caption",
-                    "Archival — Cambridge Gun & Rod Club at Cobbosseecontee Lake, August 1897"
+                    "Cambridge Gun and Rod Club, Lake Cobbosseecontee, August 1897"
                   )}
                   src={t(
                     c,
@@ -172,7 +172,7 @@ export default async function HomePage() {
             <div className="sec-head reveal">
               <div className="eyebrow">Explore</div>
               <h2 className="sec-h" style={{ marginTop: 14 }}>
-                What you&rsquo;ll find on this line.
+                What&rsquo;s here.
               </h2>
             </div>
 
@@ -181,13 +181,13 @@ export default async function HomePage() {
                 <Ph
                   src="/assets/photos/camp-golden-hour.jpg"
                   alt="The camp shore at golden hour"
-                  cap="Photograph — the camp shore at golden hour"
+                  cap="The camp shore at golden hour"
                 />
                 <div className="body">
                   <div className="num">01</div>
                   <div className="tn">The Camp</div>
                   <div className="td">
-                    Five and a half thousand acres of water. One of the best bass lakes in the Northeast.
+                    Five thousand five hundred acres of water. One of the best bass lakes in the Northeast.
                   </div>
                   <div className="ig">
                     Lake Cobbosseecontee <span className="arr" />

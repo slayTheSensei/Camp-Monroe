@@ -72,8 +72,8 @@ export default function FollowAlong() {
                   ✓
                 </div>
                 <p>
-                  You&rsquo;re on the line{name.trim() ? `, ${name.trim().split(/\s+/)[0]}` : ""}.
-                  We&rsquo;ll be in touch.
+                  Thank you{name.trim() ? `, ${name.trim().split(/\s+/)[0]}` : ""}.
+                  We&rsquo;ll be in touch when there&rsquo;s news.
                 </p>
               </div>
             ) : (

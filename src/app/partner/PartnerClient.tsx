@@ -56,7 +56,7 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Photograph · Lake Cobbosseecontee at dusk
+              Lake Cobbosseecontee at dusk
             </span>
             <span className="hero-shot-note">
               For partners, press &amp; policymakers

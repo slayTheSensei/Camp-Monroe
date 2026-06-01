@@ -89,7 +89,7 @@ export default async function TheCampPage() {
                   loading="lazy"
                 />
                 <span className="cap">
-                  Photograph — Lake Cobbosseecontee, golden hour
+                  Lake Cobbosseecontee, golden hour
                 </span>
               </div>
               <div className="ph">
