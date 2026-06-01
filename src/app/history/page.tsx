@@ -105,6 +105,10 @@ export default async function HistoryPage() {
                   came as a guest. The men&rsquo;s chapter still takes the first full week
                   of August. In 2026 a women&rsquo;s chapter joins.
                 </p>
+                <p className="lead reveal d4" style={{ marginTop: 18 }}>
+                  The grandson of the Goodwin who first leased the land is the caretaker
+                  of the camp today.
+                </p>
               </div>
               <div className="reveal d2">
                 <div className="archival">
