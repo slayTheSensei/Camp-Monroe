@@ -296,40 +296,6 @@ body.menu-lock { overflow: hidden; }
 }
 .photo-modern::after { display: none !important; }
 
-/* Hero photos on wide viewports (DL-039, second revision).
-   Photo renders at its natural aspect ratio (contain), anchored to the
-   left edge of the hero. A horizontal gradient overlay (::before) softly
-   fades from transparent on the left to solid forest-deep on the right,
-   so the photo dissolves into the page color instead of ending at a hard
-   seam. Mobile and standard-laptop viewports keep the existing cover. */
-@media (min-width: 1400px) {
-  .hero .photo,
-  .phero .photo {
-    background-size: cover, cover, cover, cover, contain !important;
-    background-position: center, center, center, center, left center !important;
-  }
-  /* Right-fade gradient attached to the hero/phero element itself so it
-     sits above .photo AND .hero-overlay (z-index 2) but below the text
-     content (z-index 4). On .phero the text is at z-index 2 so the
-     fade uses z-index 1 there. */
-  .hero::before,
-  .phero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      transparent 45%,
-      var(--color-forest-deep) 95%,
-      var(--color-forest-deep) 100%
-    );
-    pointer-events: none;
-  }
-  .hero::before { z-index: 3; }
-  .phero::before { z-index: 1; }
-}
-
 .hero-shot-meta { position: absolute; right: var(--gutter); bottom: 30px; z-index: 3; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none; }
 .hero-tier { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; padding: 7px 12px; border: 1px solid rgba(245,240,232,0.22); background: rgba(11,22,17,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-family: var(--font-sans); font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 600; color: var(--color-amber); }
 .hero-tier .dot { width: 4px; height: 4px; background: var(--color-amber); display: inline-block; flex-shrink: 0; }
