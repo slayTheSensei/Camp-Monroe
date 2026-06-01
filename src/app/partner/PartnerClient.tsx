@@ -91,9 +91,9 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                   We&rsquo;re going to extend it.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
-                  Three buildings renovated and unveiled on Juneteenth, 2026. A women&rsquo;s
-                  chapter joining. A second sporting property in the works. There is room here
-                  for partners who measure return in decades.
+                  Three buildings under renovation. A women&rsquo;s chapter opening. A second
+                  sporting property in the works. There is room here for partners who measure
+                  return in decades.
                 </p>
               </div>
               <div className="reveal d2">
@@ -150,8 +150,8 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
               </div>
               <div className="stat">
                 <div className="num">2026</div>
-                <div className="lab">Renovation unveiled</div>
-                <div className="det">Three buildings. Juneteenth.</div>
+                <div className="lab">Renovation</div>
+                <div className="det">Three buildings under renovation.</div>
               </div>
               <div className="stat">
                 <div className="num">501(c)(7)</div>
@@ -226,8 +226,8 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                       how to take this forward.
                     </p>
                     <div className="reqpage-success-row">
-                      <Link className="btn btn-ink" href="/renovation">
-                        See the 2026 renovation <span className="arr" />
+                      <Link className="btn btn-ink" href="/history">
+                        Read the history <span className="arr" />
                       </Link>
                     </div>
                   </div>

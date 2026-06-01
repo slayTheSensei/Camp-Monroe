@@ -57,10 +57,9 @@ export default function FollowAlong() {
       <div className="wrap">
         <div className="fa-inner">
           <div className="fa-text">
-            <div className="eyebrow">2026 · Follow along</div>
-            <h2>The renovation reveal. The women&rsquo;s chapter.</h2>
+            <div className="eyebrow">Follow along</div>
+            <h2>The next chapter of the club.</h2>
             <p>
-              The next chapter of a place that never closed is unveiled on Juneteenth.
               Leave an email and we&rsquo;ll send a quiet note when there&rsquo;s
               something to share.
             </p>

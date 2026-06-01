@@ -194,25 +194,14 @@ export default async function HomePage() {
                   </div>
                 </div>
               </Link>
-              <Link className="teaser tmd reveal d1" href="/renovation">
+              <Link className="teaser tmd reveal d1" href="/membership">
                 <Ph
-                  src="/assets/photos/bathroom-rendering.png"
-                  alt="Rendering of refreshed lodge bathrooms for 2026"
-                  cap="Rendering — refreshed lodge bathrooms [2026]"
+                  src="/assets/photos/group-portrait-modern.jpg"
+                  alt="Members at the camp"
+                  cap="Members at the camp"
                 />
                 <div className="body">
                   <div className="num">02</div>
-                  <div className="tn">The 2026 Renovation</div>
-                  <div className="td">Dining hall, kitchen, dock, lodge. Unveiled June 19th.</div>
-                  <div className="ig">
-                    See the plans <span className="arr" />
-                  </div>
-                </div>
-              </Link>
-              <Link className="teaser tsm reveal" href="/membership">
-                <Ph cap="Sixty seats. Held for life." />
-                <div className="body">
-                  <div className="num">03</div>
                   <div className="tn">Membership</div>
                   <div className="td">By sponsorship. By application.</div>
                   <div className="ig">
@@ -220,32 +209,32 @@ export default async function HomePage() {
                   </div>
                 </div>
               </Link>
-              <Link className="teaser tlg2 reveal d1" href="/history">
+              <Link className="teaser tlg2 reveal" href="/history">
                 <Ph
-                  cap="Archival — Du Bois at the camp"
+                  cap="Du Bois at the camp"
                   src="/assets/photos/dubois-hammock.png"
                   alt="W.E.B. Du Bois at the camp"
                 />
                 <div className="body">
-                  <div className="num">04</div>
-                  <div className="tn">The History</div>
-                  <div className="td">From 1893 to the next hundred years.</div>
+                  <div className="num">03</div>
+                  <div className="tn">History</div>
+                  <div className="td">A hundred and thirty years on the lake.</div>
                   <div className="ig">
                     Read the history <span className="arr" />
                   </div>
                 </div>
               </Link>
-              <Link className="teaser tsm reveal d2" href="/locations">
+              <Link className="teaser tsm reveal d1" href="/locations">
                 <Ph
                   src="/assets/photos/open-water-dusk.jpg"
                   alt="Open water at dusk — Maine"
-                  cap="Maine · one club, growing"
+                  cap="The lake at dusk"
                 />
                 <div className="body">
-                  <div className="num">05</div>
+                  <div className="num">04</div>
                   <div className="tn">Locations</div>
                   <div className="td">
-                    Camp Monroe is the flagship. A sporting property restores the Rod.
+                    Camp Monroe is the flagship. A sporting property is in the works.
                   </div>
                   <div className="ig">
                     One club, growing <span className="arr" />

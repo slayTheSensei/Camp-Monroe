@@ -41,7 +41,6 @@ export default async function Footer() {
           <div>
             <h5>The Camp</h5>
             <Link href="/the-camp">Lake Cobbosseecontee</Link>
-            <Link href="/renovation">2026 Renovation</Link>
             <Link href="/visit">Visit &amp; private events</Link>
           </div>
 

@@ -68,7 +68,7 @@ export default async function RenovationPage() {
           <div className="wrap phero-inner">
             <div className="hero-loc reveal">
               <span className="tick" />
-              <span className="tx">Unveiled Juneteenth, 2026</span>
+              <span className="tx">Unveiled 2026</span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
               Building the next <em>chapter.</em>
@@ -98,7 +98,7 @@ export default async function RenovationPage() {
                   </div>
                   <div className="fact">
                     <div className="fk">Unveiled</div>
-                    <div className="fv">Juneteenth, 2026</div>
+                    <div className="fv">2026</div>
                   </div>
                   <div className="fact">
                     <div className="fk">Open</div>

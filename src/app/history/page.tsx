@@ -87,16 +87,16 @@ export default async function HistoryPage() {
               <div className="txt">
                 <div className="eyebrow reveal">The founding</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  How the camp was found, and how it was kept.
+                  Shut out of Boston&rsquo;s clubs. So they built one of their own.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  In 1893 a group of Black and Jewish men in Boston wanted a hunting and
-                  fishing camp of their own. The Pullman porters among them scouted Lake
-                  Cobbosseecontee on the run between Boston and Maine. They got to know
-                  the Goodwin family, who owned land on the lake. The Goodwins leased it
-                  to them for one hundred years, for one dollar. They built a dining hall
-                  and a lodge, named it the Cambridge Gun and Rod Club, and opened it
-                  that August.
+                  In 1893 a group of Black and Jewish men in Boston were shut out of the
+                  city&rsquo;s hunting and fishing clubs. So they built one of their own.
+                  The Pullman porters among them scouted Lake Cobbosseecontee on the run
+                  between Boston and Maine. They got to know the Goodwin family, who owned
+                  land on the lake. The Goodwins leased it to them for one hundred years,
+                  for one dollar. They built a dining hall and a lodge, named it the
+                  Cambridge Gun and Rod Club, and opened it that August.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
                   By the 1920s the camp drew lawyers, judges, ministers, and scholars.
