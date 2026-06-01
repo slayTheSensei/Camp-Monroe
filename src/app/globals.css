@@ -296,17 +296,32 @@ body.menu-lock { overflow: hidden; }
 }
 .photo-modern::after { display: none !important; }
 
-/* Hero photos: on wide viewports, switch the photo layer from cover
-   (which crops + zooms to fill) to contain (whole photo visible at its
-   natural aspect ratio, solid forest-deep fills the empty sides).
-   The four gradient overlays stay at cover so the vignette character is
-   preserved across the full hero. Mobile and standard-laptop viewports
-   keep the existing cover behavior — the zoom isn't visible there.
-   DL-039 (revised). */
+/* Hero photos on wide viewports (DL-039, second revision).
+   Photo renders at its natural aspect ratio (contain), anchored to the
+   left edge of the hero. A horizontal gradient overlay (::before) softly
+   fades from transparent on the left to solid forest-deep on the right,
+   so the photo dissolves into the page color instead of ending at a hard
+   seam. Mobile and standard-laptop viewports keep the existing cover. */
 @media (min-width: 1400px) {
   .hero .photo,
   .phero .photo {
     background-size: cover, cover, cover, cover, contain !important;
+    background-position: center, center, center, center, left center !important;
+  }
+  .hero .photo::before,
+  .phero .photo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 45%,
+      var(--color-forest-deep) 95%,
+      var(--color-forest-deep) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
   }
 }
 
