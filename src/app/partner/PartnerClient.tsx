@@ -86,9 +86,9 @@ export default function PartnerClient({ ways, heroImage }: PartnerClientProps) {
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
                   The Cambridge Gun and Rod Club has been open every August since 1893. The
-                  lake W.E.B. Du Bois called his Walden. The longest-running Black outdoor
-                  heritage site in New England. The continuity is the asset. We&rsquo;re going
-                  to extend it.
+                  lake W.E.B. Du Bois treated like his Walden Pond. The longest-running
+                  Black outdoor heritage site in New England. The continuity is the asset.
+                  We&rsquo;re going to extend it.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
                   Three buildings renovated and unveiled on Juneteenth, 2026. A women&rsquo;s

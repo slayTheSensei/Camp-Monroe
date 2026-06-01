@@ -71,7 +71,7 @@ export default async function RenovationPage() {
               <span className="tx">Unveiled Juneteenth, 2026</span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
-              Renovating a camp we never <em>closed.</em>
+              Building the next <em>chapter.</em>
             </h1>
           </div>
         </section>

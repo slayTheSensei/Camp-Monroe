@@ -56,26 +56,24 @@ export default async function MembershipPage() {
                   className="lead reveal d2"
                   style={{ marginTop: 28, fontSize: 18 }}
                 >
-                  Membership is membership in a 130-year-old club. Not a timeshare. Not
-                  a booking discount. There are two chapters &mdash; the men&rsquo;s, founded in
-                  1893, and the women&rsquo;s, which opens in 2026. Identical standing. Identical
-                  pricing. We admit by sponsorship and application. We always have.
+                  Membership is membership in a 130-year-old club. Not a timeshare. Not a
+                  booking discount. There are two chapters. The men&rsquo;s, founded in 1893.
+                  The women&rsquo;s, opening in 2026. We admit by sponsorship and application.
+                  We always have.
                 </p>
 
                 <div className="price-row reveal d3">
                   <div className="price">
-                    <div className="pn">$1,000</div>
-                    <div className="pl">One-time buy-in</div>
+                    <div className="pn">Buy-in</div>
+                    <div className="pl">One-time, on admission</div>
                   </div>
                   <div className="price">
-                    <div className="pn">
-                      $125<span className="per">/mo</span>
-                    </div>
-                    <div className="pl">Member dues</div>
+                    <div className="pn">Dues</div>
+                    <div className="pl">Monthly</div>
                   </div>
                   <div className="price">
-                    <div className="pn">60</div>
-                    <div className="pl">Seats &middot; held for life</div>
+                    <div className="pn">Seats</div>
+                    <div className="pl">Capped &middot; held for life</div>
                   </div>
                 </div>
 
@@ -169,7 +167,7 @@ export default async function MembershipPage() {
                 <div className="y">2026</div>
                 <div className="nm">The women&rsquo;s chapter</div>
                 <p>
-                  Opens in 2026. Identical standing. Identical buy-in and dues. Same hold for life.
+                  Opens in 2026.
                 </p>
               </div>
             </div>

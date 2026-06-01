@@ -87,19 +87,23 @@ export default async function HistoryPage() {
               <div className="txt">
                 <div className="eyebrow reveal">The founding</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  Shut out of Boston&rsquo;s clubs. So they built one of their own.
+                  How the camp was found, and how it was kept.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
-                  In 1893 a group of Black men in Boston pooled their money, bought a stretch of
-                  shoreline on Lake Cobbosseecontee in Maine, and built a dining hall and a lodge.
-                  They were Pullman porters, doctors, ministers, lawyers. They named it the
-                  Cambridge Gun and Rod Club. We have opened it every August since.
+                  In 1893 a group of Black and Jewish men in Boston wanted a hunting and
+                  fishing camp of their own. The Pullman porters among them scouted Lake
+                  Cobbosseecontee on the run between Boston and Maine. They got to know
+                  the Goodwin family, who owned land on the lake. The Goodwins leased it
+                  to them for one hundred years, for one dollar. They built a dining hall
+                  and a lodge, named it the Cambridge Gun and Rod Club, and opened it
+                  that August.
                 </p>
                 <p className="lead reveal d3" style={{ marginTop: 18 }}>
-                  Its best-known member was W.E.B. Du Bois. Not a founder. A member. He came back
-                  summer after summer and called the camp his Walden. The boxer Joe Louis came
-                  as a guest. The men&rsquo;s chapter still takes the first full week of August.
-                  In 2026 a women&rsquo;s chapter joins.
+                  By the 1920s the camp drew lawyers, judges, ministers, and scholars.
+                  W.E.B. Du Bois was a member, not a founder. He came back summer after
+                  summer and treated the camp like his Walden Pond. The boxer Joe Louis
+                  came as a guest. The men&rsquo;s chapter still takes the first full week
+                  of August. In 2026 a women&rsquo;s chapter joins.
                 </p>
               </div>
               <div className="reveal d2">
