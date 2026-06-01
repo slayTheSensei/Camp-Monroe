@@ -246,7 +246,7 @@ body.menu-lock { overflow: hidden; }
 .mm-meta { margin-top: 20px; text-align: center; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream-40); font-weight: 600; }
 
 /* ---------- HERO ------------------------------------------- */
-.hero { position: relative; min-height: 92vh; display: flex; align-items: flex-end; background: var(--color-forest); overflow: hidden; }
+.hero { position: relative; min-height: 92vh; display: flex; align-items: flex-end; background: var(--color-forest-deep); overflow: hidden; }
 .hero.hero-home { min-height: 96vh; }
 .hero .photo { position: absolute; inset: 0; background: linear-gradient(135deg,#1f3a2a 0%,#172a1f 40%,#0f1b14 100%); overflow: hidden; z-index: 0; }
 .hero.hero-home .photo {
@@ -295,6 +295,32 @@ body.menu-lock { overflow: hidden; }
   filter: saturate(1.02) contrast(1.02);
 }
 .photo-modern::after { display: none !important; }
+
+/* Hero photo soft-fade on wide viewports (DL-039).
+   On viewports ≥1500px the photo's left and right edges fade into the
+   section's solid forest-deep color. Removes the "stretched across an
+   ultrawide" feel without touching the photo on smaller screens. The
+   fade zone is min 80px / target 8% of viewport / max 200px. */
+@media (min-width: 1500px) {
+  .hero .photo,
+  .phero .photo {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black clamp(80px, 8%, 200px),
+      black calc(100% - clamp(80px, 8%, 200px)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black clamp(80px, 8%, 200px),
+      black calc(100% - clamp(80px, 8%, 200px)),
+      transparent 100%
+    );
+  }
+}
+
 .hero-shot-meta { position: absolute; right: var(--gutter); bottom: 30px; z-index: 3; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none; }
 .hero-tier { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; padding: 7px 12px; border: 1px solid rgba(245,240,232,0.22); background: rgba(11,22,17,0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-family: var(--font-sans); font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 600; color: var(--color-amber); }
 .hero-tier .dot { width: 4px; height: 4px; background: var(--color-amber); display: inline-block; flex-shrink: 0; }

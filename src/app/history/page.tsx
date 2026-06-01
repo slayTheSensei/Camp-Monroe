@@ -13,32 +13,22 @@ export const metadata = {
 const FALLBACK_TIMELINE = [
   {
     year: "1893",
-    head: "The camp is started",
-    body: "A group of Black and Jewish men in Boston wanted a hunting and fishing camp of their own. The Pullman porters among them scouted Lake Cobbosseecontee on the run between Boston and Maine. The Goodwin family, who owned land on the lake, leased it to them for one hundred years at a dollar. The summer tradition started that August.",
+    head: "Founded",
+    body: "A group of Black and Jewish men in Boston wanted a hunting and fishing camp of their own. The Pullman porters among them scouted Lake Cobbosseecontee on the run between Boston and Maine. The Goodwin family leased the land to them for one hundred years, for one dollar. They built a dining hall and a lodge and opened it that August.",
   },
   {
-    year: "1920s",
-    head: "An intellectual circle takes shape",
-    body: "The camp draws lawyers, judges, ministers, and scholars. W.E.B. Du Bois comes back summer after summer to rest, fish, and talk. The camp becomes one of the country's quiet centers of Black intellectual life.",
+    year: "1920s–1950s",
+    head: "The intellectual era",
+    body: "By the 1920s the camp drew lawyers, judges, ministers, and scholars. W.E.B. Du Bois came back summer after summer and treated the camp like his Walden Pond. Joe Louis came as a guest. Through the first half of the century the club was mixed Black and Jewish. By the late 1940s the Jewish members had assimilated into white American institutions and no longer needed a club of their own. The Cambridge Gun and Rod Club continued, now nearly all-Black.",
   },
   {
-    year: "Around 1950",
-    head: "The club becomes almost exclusively Black",
-    body: "Through the first half of the century the club had been mixed Black and Jewish. By the late 1940s and early 1950s the Jewish members, by then assimilated into white American institutions, no longer needed a club of their own. The CGRC continued, now nearly all-Black.",
-  },
-  {
-    year: "1970s–2000s",
-    head: "An annual social institution",
-    body: "For three decades the club is the August home of a particular Black professional class. Many members take the first week of August at the camp, then join their families on Martha's Vineyard for the rest of the month.",
-  },
-  {
-    year: "2013",
-    head: "The members buy the camp",
-    body: "The hundred-year lease comes up. The Goodwin grandchildren prepare to sell. A handful of members of the club purchase the land from them and bring the camp into member ownership. The grandson of the Goodwin who first leased the land stays on as the caretaker.",
+    year: "1970s–2013",
+    head: "A Black professional summer",
+    body: "For three decades the club was the August home of a particular Black professional class. Many members took the first week at the camp and then joined their families on Martha's Vineyard. In 2013 the hundred-year lease came up; a handful of members purchased the land from the Goodwin grandchildren and brought the camp into member ownership. The grandson of the Goodwin who first leased the land stays on as the caretaker.",
   },
   {
     year: "2026",
-    head: "The first major renovation in sixty years",
+    head: "The next chapter",
     body: "Three of the camp's core buildings — dining hall, dock, lodge — get a top-to-bottom renovation. A women's chapter joins. The club starts looking at a second property.",
   },
 ];
