@@ -9,6 +9,12 @@ export const metadata = {
   title: "Membership — Cambridge Gun & Rod Club",
 };
 
+// CMS-driven page: hero image is read on every request so staff edits
+// in /admin propagate immediately. Without this, Next.js statically
+// optimizes the page at build time and DB changes don't show until
+// the next deploy. (Same bug pattern as /history before DL-039.)
+export const dynamic = "force-dynamic";
+
 export default async function MembershipPage() {
   const c = await getPageContent("membership");
   return (
@@ -17,17 +23,17 @@ export default async function MembershipPage() {
       <main>
         <section className="phero">
           <div
-            className="photo photo-archival"
+            className="photo photo-modern"
             style={{
-              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/group-portrait-modern.jpg")})`,
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/membership-hero.jpg")})`,
             }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Members at the camp, mid-century
+              A member, on the way in
             </span>
-            <span className="hero-shot-note">From the camp&rsquo;s archive</span>
+            <span className="hero-shot-note">Camp Monroe &middot; Maine</span>
           </div>
           <div className="wrap phero-inner">
             <div className="hero-loc reveal">
