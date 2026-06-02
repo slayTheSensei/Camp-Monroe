@@ -7,6 +7,12 @@ export const metadata = {
   title: "History — Cambridge Gun & Rod Club",
 };
 
+// CMS-driven page: timeline_items + page_content are read on every request
+// so staff edits in /admin propagate immediately. Without this, Next.js
+// statically optimizes the page at build time and DB changes don't show
+// until the next deploy.
+export const dynamic = "force-dynamic";
+
 // Fallback used when the DB has no rows (initial deploy, RLS issue, etc.).
 // The seed migration populates these same values into timeline_items;
 // keeping them inline preserves graceful rendering if the table is empty.
@@ -14,22 +20,22 @@ const FALLBACK_TIMELINE = [
   {
     year: "1893",
     head: "Founded",
-    body: "A group of Black and Jewish men in Boston wanted a hunting and fishing camp of their own. The Pullman porters among them scouted Lake Cobbosseecontee on the run between Boston and Maine. The Goodwin family leased the land to them for one hundred years, for one dollar. They built a dining hall and a lodge and opened it that August.",
+    body: "A group of Black and Jewish men in Boston wanted a hunting and fishing camp of their own. They found Lake Cobbosseecontee, leased the land from the Goodwin family for a hundred years, and opened the Cambridge Gun and Rod Club that August.",
   },
   {
     year: "1920s–1950s",
-    head: "The intellectual era",
-    body: "By the 1920s the camp drew lawyers, judges, ministers, and scholars. W.E.B. Du Bois came back summer after summer and treated the camp like his Walden Pond. Joe Louis came as a guest. Through the first half of the century the club was mixed Black and Jewish. By the late 1940s the Jewish members had assimilated into white American institutions and no longer needed a club of their own. The Cambridge Gun and Rod Club continued, now nearly all-Black.",
+    head: "A summer institution",
+    body: "Doctors, lawyers, ministers, scholars — W.E.B. Du Bois among them — come back summer after summer. By the late 1940s the Jewish members no longer need a club of their own; they've been absorbed into white American institutions. The Cambridge Gun and Rod Club continues, primarily Black.",
   },
   {
     year: "1970s–2013",
-    head: "A Black professional summer",
-    body: "For three decades the club was the August home of a particular Black professional class. Many members took the first week at the camp and then joined their families on Martha's Vineyard. In 2013 the hundred-year lease came up; a handful of members purchased the land from the Goodwin grandchildren and brought the camp into member ownership. The grandson of the Goodwin who first leased the land stays on as the caretaker.",
+    head: "Three decades on the lake",
+    body: "Generations come back, year after year. Many take the first week at camp and meet their families on Martha's Vineyard for the rest of August. In 2013 the hundred-year lease ends; a group of members buys the camp from the Goodwin grandchildren. The Goodwin grandson stays on as the caretaker.",
   },
   {
     year: "2026",
     head: "The next chapter",
-    body: "Three of the camp's core buildings — dining hall, dock, lodge — get a top-to-bottom renovation. A women's chapter joins. The club starts looking at a second property.",
+    body: "A women's chapter joins. The camp's core buildings — dining hall, dock, lodge — get a major renovation. The club starts looking at a second property. A place founded by people kept out keeps the door wide.",
   },
 ];
 
