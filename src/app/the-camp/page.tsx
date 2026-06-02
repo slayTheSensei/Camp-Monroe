@@ -48,12 +48,12 @@ export default async function TheCampPage() {
               <div className="txt">
                 <div className="eyebrow reveal">The place</div>
                 <h2 className="sec-h reveal d1" style={{ marginTop: 18 }}>
-                  A lake. A dining hall. A dock.
+                  A lake. A dining hall. A lodge.
                 </h2>
                 <p className="lead reveal d2" style={{ marginTop: 28 }}>
                   Camp Monroe sits on Lake Cobbosseecontee in West Gardiner. Fifteen minutes
                   from Augusta. An hour from Portland. Two and a half from Boston. The dining
-                  hall faces the sunset. The dock is the heart of the place. Outside a few
+                  hall faces the sunset. The lodge holds the long evenings. Outside a few
                   private events each summer, the camp belongs to the members.
                 </p>
                 <div className="facts reveal d3">

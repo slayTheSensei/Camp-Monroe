@@ -77,9 +77,9 @@ export async function submitMembershipRequest(
       subject: "We received your request — Cambridge Gun & Rod Club",
       text: `Hi ${data.name},
 
-Thank you for your interest in the Cambridge Gun & Rod Club. We have received your membership request and will be in touch. The line moves at the line's pace.
+Thank you for writing to the Cambridge Gun and Rod Club. We received your request. We read every note by hand. We'll be in touch.
 
-Cambridge Gun & Rod Club
+Cambridge Gun and Rod Club
 Camp Monroe · Lake Cobbosseecontee, Maine`,
     });
   } catch (err) {

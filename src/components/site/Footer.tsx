@@ -72,6 +72,9 @@ export default async function Footer() {
               `Cambridge Gun and Rod Club — a 501(c)(7) · Camp Monroe operated by ${MANAGEMENT_COMPANY}.`
             )}
           </span>
+          <Link href="/admin/login" className="foot-staff">
+            Staff sign-in
+          </Link>
           <span>&copy; {year} all rights reserved.</span>
         </div>
       </div>

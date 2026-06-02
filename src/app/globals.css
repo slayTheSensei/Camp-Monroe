@@ -406,6 +406,8 @@ footer.site { background: var(--color-forest-deep); color: var(--cream-70); padd
 .foot a { display: block; color: var(--cream-60); font-size: 13.5px; margin-bottom: 11px; transition: color .18s var(--ease); }
 .foot a:hover { color: #fff; }
 .foot-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--cream-10); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-30); }
+.foot-staff { color: var(--cream-30); transition: color .18s var(--ease); border-bottom: 1px solid transparent; padding-bottom: 1px; }
+.foot-staff:hover { color: var(--color-amber); border-bottom-color: var(--color-amber); }
 
 /* ---------- REVEAL ----------------------------------------- */
 .reveal { opacity: 1; transform: none; }
