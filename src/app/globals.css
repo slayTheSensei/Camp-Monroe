@@ -500,6 +500,22 @@ footer.site { background: var(--color-forest-deep); color: var(--cream-70); padd
 .light .tl-bd p { color: var(--ink-70); }
 .archival-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 64px; }
 
+/* ---------- DU BOIS — works list ---------------------------- */
+.dubois-works { display: flex; flex-direction: column; gap: 32px; border-top: 1px solid var(--ink-10); padding-top: 32px; }
+.dubois-works .work { display: grid; grid-template-columns: 120px 1fr; gap: 36px; align-items: baseline; padding-bottom: 32px; border-bottom: 1px solid var(--ink-10); }
+.dubois-works .work:last-child { border-bottom: 0; padding-bottom: 0; }
+.dubois-works .work-yr { font-family: var(--font-fraunces); font-style: italic; font-weight: 300; font-size: 38px; color: var(--color-amber-deep); line-height: 1; letter-spacing: -0.02em; }
+.dubois-works .work-t { font-family: var(--display); font-style: var(--display-style); font-weight: var(--display-weight); text-transform: var(--display-tt); font-size: 22px; line-height: 1.2; margin-bottom: 10px; letter-spacing: var(--display-tracking); color: var(--color-forest); }
+.dubois-works .work-bd p { font-size: 15px; line-height: 1.65; color: var(--ink-70); max-width: 56ch; }
+
+/* ---------- DU BOIS — further reading list ----------------- */
+.dubois-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 22px; }
+.dubois-links li { padding-bottom: 22px; border-bottom: 1px solid var(--cream-10); }
+.dubois-links li:last-child { border-bottom: 0; padding-bottom: 0; }
+.dubois-links a { display: block; font-family: var(--display); font-style: var(--display-style); font-weight: var(--display-weight); text-transform: var(--display-tt); font-size: 18px; letter-spacing: var(--display-tracking); color: var(--color-amber); border-bottom: 1px solid transparent; transition: border-color .18s var(--ease), color .18s var(--ease); padding-bottom: 2px; }
+.dubois-links a:hover { color: var(--color-cream); border-bottom-color: var(--color-amber); }
+.dubois-link-note { display: block; margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--cream-60); }
+
 /* ---------- CAMP details ----------------------------------- */
 .facts { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--cream-10); }
 .light .facts { border-top-color: var(--ink-10); }

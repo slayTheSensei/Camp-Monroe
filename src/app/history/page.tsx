@@ -158,7 +158,17 @@ export default async function HistoryPage() {
               <p className="lead" style={{ marginTop: 28 }}>
                 A few documents from the Du Bois Papers at UMass Amherst. Letters. Envelopes.
                 Vacation schedules. They show what we already knew: Du Bois came back to the
-                camp summer after summer.
+                camp summer after summer.{" "}
+                <a
+                  href="/dubois"
+                  style={{
+                    color: "var(--color-amber-deep)",
+                    borderBottom: "1px solid currentColor",
+                    paddingBottom: 1,
+                  }}
+                >
+                  See the longer account on the Du Bois page.
+                </a>
               </p>
             </div>
             <div className="archival-strip">
