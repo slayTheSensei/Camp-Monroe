@@ -7,19 +7,19 @@ import type { InquiryStatus } from '@/lib/types/retreats'
 import type {
   MembershipRequest,
   PartnerInquiry,
-  FrontDoorKind,
-} from '@/lib/types/front-door'
+  InquiryKind,
+} from '@/lib/types/inquiries'
 import {
   PARTNER_CONTEXT_LABELS,
   MEMBERSHIP_CHAPTER_LABELS,
-} from '@/lib/types/front-door'
+} from '@/lib/types/inquiries'
 import StatusPill from '@/components/admin/retreats/StatusPill'
 import Section from '@/components/admin/ui/Section'
 import Card from '@/components/admin/ui/Card'
 import { Button } from '@/components/admin/ui/Button'
 import { saveMembershipUpdate } from '@/app/admin/(dashboard)/membership/actions'
 import { savePartnerUpdate } from '@/app/admin/(dashboard)/partner-inquiries/actions'
-import type { FrontDoorUpdate } from '@/lib/data/front-door'
+import type { InquiryUpdate } from '@/lib/data/inquiries'
 
 const STATUS_OPTIONS: { value: InquiryStatus; label: string }[] = [
   { value: 'new', label: 'New' },
@@ -33,22 +33,22 @@ type Props =
   | { kind: 'membership'; inquiry: MembershipRequest }
   | { kind: 'partner'; inquiry: PartnerInquiry }
 
-const BACK_PATHS: Record<FrontDoorKind, string> = {
+const BACK_PATHS: Record<InquiryKind, string> = {
   membership: '/admin/membership',
   partner: '/admin/partner-inquiries',
 }
 
-const BACK_LABELS: Record<FrontDoorKind, string> = {
+const BACK_LABELS: Record<InquiryKind, string> = {
   membership: 'Membership requests',
   partner: 'Partner inquiries',
 }
 
-const CONFIRMED_LABELS: Record<FrontDoorKind, string> = {
+const CONFIRMED_LABELS: Record<InquiryKind, string> = {
   membership: 'Admitted',
   partner: 'Engagement formalized',
 }
 
-export default function FrontDoorTriage(props: Props) {
+export default function InquiryTriage(props: Props) {
   const { kind, inquiry } = props
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -67,7 +67,7 @@ export default function FrontDoorTriage(props: Props) {
     (adminNotes || null) !== (inquiry.adminNotes ?? null)
 
   const save = useCallback(
-    (update: FrontDoorUpdate, successMsg: string) => {
+    (update: InquiryUpdate, successMsg: string) => {
       setError(null)
       startTransition(async () => {
         const res =

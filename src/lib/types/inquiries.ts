@@ -1,6 +1,17 @@
 /**
- * Front-door inquiry types — the redesign's two non-retreat inquiry surfaces.
- * Modeled on retreats.ts so the existing StatusPill + triage UX reuses cleanly.
+ * Public inquiry types — membership requests and partner inquiries.
+ *
+ * Naming scope: in this module, "inquiry" means one of the two public-form
+ * channels that are NOT retreats (membership, partner). Retreat inquiries
+ * (host_inquiries, buyout_inquiries) live in ./retreats.ts with their own
+ * `InquiryType = 'host' | 'buyout'` discriminator and their own status /
+ * lifecycle handling. The two modules are intentionally separate because
+ * they have different processing pipelines (server action vs API route,
+ * plain text vs React Email templates, no communications log vs full
+ * communications log).
+ *
+ * The shared `InquiryStatus` enum below is imported from ./retreats so the
+ * StatusPill + triage UX renders the same way across all four channels.
  */
 
 import type { InquiryStatus } from './retreats'
@@ -33,9 +44,9 @@ export type PartnerContext =
 
 export type PartnerInquiry = {
   id: string
+  organization: string | null
   submittedAt: string
   name: string
-  organization: string | null
   email: string
   context: PartnerContext | null
   message: string | null
@@ -47,7 +58,7 @@ export type PartnerInquiry = {
   createdAt: string
 }
 
-export type FrontDoorKind = 'membership' | 'partner'
+export type InquiryKind = 'membership' | 'partner'
 
 /** Labels for admin UI — context enum doesn't read well as a raw key. */
 export const PARTNER_CONTEXT_LABELS: Record<PartnerContext, string> = {

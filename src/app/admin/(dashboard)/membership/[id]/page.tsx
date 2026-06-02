@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import PageBody from '@/components/admin/ui/PageBody'
-import FrontDoorTriage from '@/components/admin/front-door/FrontDoorTriage'
-import { getMembershipRequest } from '@/lib/data/front-door'
+import InquiryTriage from '@/components/admin/inquiries/InquiryTriage'
+import { getMembershipRequest } from '@/lib/data/inquiries'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,7 +30,7 @@ export default async function MembershipDetailPage({
 
   return (
     <PageBody>
-      <FrontDoorTriage kind="membership" inquiry={inquiry} />
+      <InquiryTriage kind="membership" inquiry={inquiry} />
     </PageBody>
   )
 }

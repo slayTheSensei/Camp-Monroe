@@ -1,8 +1,8 @@
 "use server";
 
-import { getResend, getFromAddress } from "@/lib/email/resend";
-import { insertMembershipRequest } from "@/lib/data/front-door";
-import type { MembershipChapter } from "@/lib/types/front-door";
+import { getResend, getFromAddress, getAdminRecipients } from "@/lib/email/resend";
+import { insertMembershipRequest } from "@/lib/data/inquiries";
+import type { MembershipChapter } from "@/lib/types/inquiries";
 
 export interface MembershipRequestData {
   name: string;
@@ -37,7 +37,15 @@ export async function submitMembershipRequest(
 
   // 2. Best-effort email fan-out. Failures here do not block the request
   //    because the row is already captured for triage.
-  const inbox = process.env.MEMBERSHIP_INBOX;
+  //
+  // Recipient resolution: per-channel MEMBERSHIP_INBOX wins if set (single
+  // address override). Otherwise fall back to the shared ADMIN_ALERT_RECIPIENTS
+  // list, which is the same env var the retreats pipeline uses. This means
+  // setting ADMIN_ALERT_RECIPIENTS alone is enough to receive alerts for
+  // every channel (membership, partner, host retreat, buyout retreat). The
+  // per-channel var stays available for later routing decisions.
+  const adminInbox = process.env.MEMBERSHIP_INBOX;
+  const recipients = adminInbox ? [adminInbox] : getAdminRecipients();
 
   try {
     const resend = getResend();
@@ -46,10 +54,10 @@ export async function submitMembershipRequest(
     const sponsorLine =
       data.hasSponsor && data.sponsorName ? `\nSponsor: ${data.sponsorName}` : "";
 
-    if (inbox) {
+    if (recipients.length > 0) {
       await resend.emails.send({
         from,
-        to: [inbox],
+        to: recipients,
         replyTo: data.email,
         subject: `Membership request — ${data.name}${
           data.chapter ? ` (${data.chapter} chapter)` : ""
@@ -67,7 +75,7 @@ export async function submitMembershipRequest(
       });
     } else {
       console.warn(
-        "MEMBERSHIP_INBOX env var not set — admin alert email skipped."
+        "No admin recipients configured (MEMBERSHIP_INBOX and ADMIN_ALERT_RECIPIENTS both unset) — membership alert email skipped."
       );
     }
 

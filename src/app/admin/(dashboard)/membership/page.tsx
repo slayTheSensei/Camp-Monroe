@@ -1,10 +1,10 @@
 import PageHeader from '@/components/admin/ui/PageHeader'
 import PageBody from '@/components/admin/ui/PageBody'
-import FrontDoorInbox from '@/components/admin/front-door/FrontDoorInbox'
+import InquiryInbox from '@/components/admin/inquiries/InquiryInbox'
 import {
   getMembershipRequests,
   getMembershipRequestCounts,
-} from '@/lib/data/front-door'
+} from '@/lib/data/inquiries'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,10 +22,10 @@ export default async function MembershipInboxPage() {
     <>
       <PageHeader
         title="Membership requests"
-        subtitle="Front-door submissions from /request — by sponsorship, by application."
+        subtitle="Submissions from /request — by sponsorship, by application."
       />
       <PageBody>
-        <FrontDoorInbox
+        <InquiryInbox
           kind="membership"
           inquiries={inquiries}
           counts={counts}

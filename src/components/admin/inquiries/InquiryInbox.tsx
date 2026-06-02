@@ -6,12 +6,12 @@ import type { InquiryStatus } from '@/lib/types/retreats'
 import type {
   MembershipRequest,
   PartnerInquiry,
-  FrontDoorKind,
-} from '@/lib/types/front-door'
+  InquiryKind,
+} from '@/lib/types/inquiries'
 import {
   PARTNER_CONTEXT_LABELS,
   MEMBERSHIP_CHAPTER_LABELS,
-} from '@/lib/types/front-door'
+} from '@/lib/types/inquiries'
 import StatusPill from '@/components/admin/retreats/StatusPill'
 import InquiryTabs from '@/components/admin/retreats/InquiryTabs'
 import EmptyState from '@/components/admin/ui/EmptyState'
@@ -23,17 +23,17 @@ function isPartner(i: Inquiry): i is PartnerInquiry {
 }
 
 type Props = {
-  kind: FrontDoorKind
+  kind: InquiryKind
   inquiries: Inquiry[]
   counts: Record<InquiryStatus, number>
 }
 
-const BASE_PATHS: Record<FrontDoorKind, string> = {
+const BASE_PATHS: Record<InquiryKind, string> = {
   membership: '/admin/membership',
   partner: '/admin/partner-inquiries',
 }
 
-export default function FrontDoorInbox({ kind, inquiries, counts }: Props) {
+export default function InquiryInbox({ kind, inquiries, counts }: Props) {
   const [status, setStatus] = useState<InquiryStatus | 'all'>('all')
   const [search, setSearch] = useState('')
 

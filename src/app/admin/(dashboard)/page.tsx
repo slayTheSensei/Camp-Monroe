@@ -11,12 +11,12 @@ import {
   getPartnerInquiryCounts,
   getMembershipRequests,
   getPartnerInquiries,
-} from '@/lib/data/front-door'
+} from '@/lib/data/inquiries'
 import EmptyState from '@/components/admin/ui/EmptyState'
 
 export const dynamic = 'force-dynamic'
 
-type FrontDoorRow = {
+type InquiryRow = {
   id: string
   kind: 'membership' | 'partner'
   name: string
@@ -75,7 +75,7 @@ export default async function AdminDashboard() {
   const totalWaitlist = waitlistRes.count ?? 0
   const monthWaitlist = monthSignupsRes.count ?? 0
 
-  const recentFrontDoor: FrontDoorRow[] = [
+  const recentInquiries: InquiryRow[] = [
     ...recentMembership.map((m) => ({
       id: m.id,
       kind: 'membership' as const,
@@ -234,17 +234,17 @@ export default async function AdminDashboard() {
       {/* Recent activity — two columns */}
       <section className="grid gap-3 lg:grid-cols-2">
         <FeedCard
-          title="Recent front-door submissions"
+          title="Recent inquiries"
           links={[
             { href: '/admin/membership', label: 'Membership' },
             { href: '/admin/partner-inquiries', label: 'Partner' },
           ]}
         >
-          {recentFrontDoor.length === 0 ? (
-            <EmptyState message="No front-door submissions yet." />
+          {recentInquiries.length === 0 ? (
+            <EmptyState message="No inquiries yet." />
           ) : (
             <ul className="divide-y divide-gray-100">
-              {recentFrontDoor.map((r) => (
+              {recentInquiries.map((r) => (
                 <li key={`${r.kind}-${r.id}`}>
                   <Link
                     href={

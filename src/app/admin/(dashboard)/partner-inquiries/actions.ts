@@ -3,12 +3,12 @@
 import { revalidatePath } from 'next/cache'
 import {
   updatePartnerInquiry,
-  type FrontDoorUpdate,
-} from '@/lib/data/front-door'
+  type InquiryUpdate,
+} from '@/lib/data/inquiries'
 
 export async function savePartnerUpdate(
   id: string,
-  update: FrontDoorUpdate
+  update: InquiryUpdate
 ): Promise<{ error?: string }> {
   const res = await updatePartnerInquiry(id, update)
   if (res.error) return res

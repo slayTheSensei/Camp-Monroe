@@ -1,8 +1,8 @@
 "use server";
 
-import { getResend, getFromAddress } from "@/lib/email/resend";
-import { insertPartnerInquiry } from "@/lib/data/front-door";
-import type { PartnerContext } from "@/lib/types/front-door";
+import { getResend, getFromAddress, getAdminRecipients } from "@/lib/email/resend";
+import { insertPartnerInquiry } from "@/lib/data/inquiries";
+import type { PartnerContext } from "@/lib/types/inquiries";
 
 export interface PartnerInquiryData {
   name: string;
@@ -41,16 +41,21 @@ export async function submitPartnerInquiry(
   }
 
   // 2. Best-effort email fan-out.
-  const inbox = process.env.PARTNER_INBOX;
+  //
+  // Recipient resolution mirrors membership.ts: per-channel PARTNER_INBOX
+  // wins if set (single address override). Otherwise fall back to the
+  // shared ADMIN_ALERT_RECIPIENTS list used by the retreats pipeline.
+  const adminInbox = process.env.PARTNER_INBOX;
+  const recipients = adminInbox ? [adminInbox] : getAdminRecipients();
 
   try {
     const resend = getResend();
     const from = getFromAddress();
 
-    if (inbox) {
+    if (recipients.length > 0) {
       await resend.emails.send({
         from,
-        to: [inbox],
+        to: recipients,
         replyTo: data.email,
         subject: `Partner inquiry — ${data.name}${
           data.org ? ` · ${data.org}` : ""
@@ -67,7 +72,9 @@ export async function submitPartnerInquiry(
           .join("\n"),
       });
     } else {
-      console.warn("PARTNER_INBOX env var not set — admin alert email skipped.");
+      console.warn(
+        "No admin recipients configured (PARTNER_INBOX and ADMIN_ALERT_RECIPIENTS both unset) — partner alert email skipped."
+      );
     }
 
     await resend.emails.send({

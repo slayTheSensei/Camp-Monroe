@@ -1,10 +1,10 @@
 import PageHeader from '@/components/admin/ui/PageHeader'
 import PageBody from '@/components/admin/ui/PageBody'
-import FrontDoorInbox from '@/components/admin/front-door/FrontDoorInbox'
+import InquiryInbox from '@/components/admin/inquiries/InquiryInbox'
 import {
   getPartnerInquiries,
   getPartnerInquiryCounts,
-} from '@/lib/data/front-door'
+} from '@/lib/data/inquiries'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,10 +22,10 @@ export default async function PartnerInboxPage() {
     <>
       <PageHeader
         title="Partner inquiries"
-        subtitle="Front-door submissions from /partner — investors, press, policymakers, community."
+        subtitle="Submissions from /partner — investors, press, policymakers, community."
       />
       <PageBody>
-        <FrontDoorInbox kind="partner" inquiries={inquiries} counts={counts} />
+        <InquiryInbox kind="partner" inquiries={inquiries} counts={counts} />
       </PageBody>
     </>
   )

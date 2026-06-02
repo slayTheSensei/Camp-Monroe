@@ -1,3 +1,10 @@
+/**
+ * Public inquiries data layer — membership requests + partner inquiries.
+ *
+ * Scope: these are the two non-retreat public forms. Retreat inquiries
+ * (host_inquiries, buyout_inquiries) live in ./retreats.ts. See
+ * ../types/inquiries.ts for the naming-scope explanation.
+ */
 import { createSupabaseServer } from '@/lib/supabase-server'
 import { createSupabaseAdmin } from '@/lib/supabase-admin'
 import type { InquiryStatus } from '@/lib/types/retreats'
@@ -6,7 +13,7 @@ import type {
   PartnerInquiry,
   MembershipChapter,
   PartnerContext,
-} from '@/lib/types/front-door'
+} from '@/lib/types/inquiries'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -55,7 +62,7 @@ function mapPartnerInquiry(row: any): PartnerInquiry {
 // Filters
 // ============================================================================
 
-export type FrontDoorFilters = {
+export type InquiryFilters = {
   status?: InquiryStatus | 'all'
   search?: string
 }
@@ -73,7 +80,7 @@ const ZERO_COUNTS: Record<InquiryStatus, number> = {
 // ============================================================================
 
 export async function getMembershipRequests(
-  filters: FrontDoorFilters = {}
+  filters: InquiryFilters = {}
 ): Promise<MembershipRequest[]> {
   const supabase = await createSupabaseServer()
   let q = supabase
@@ -127,7 +134,7 @@ export async function getMembershipRequestCounts(): Promise<
 // ============================================================================
 
 export async function getPartnerInquiries(
-  filters: FrontDoorFilters = {}
+  filters: InquiryFilters = {}
 ): Promise<PartnerInquiry[]> {
   const supabase = await createSupabaseServer()
   let q = supabase
@@ -240,14 +247,14 @@ export async function insertPartnerInquiry(input: {
 // Admin-side mutations (used by triage page server actions)
 // ============================================================================
 
-export type FrontDoorUpdate = {
+export type InquiryUpdate = {
   status?: InquiryStatus
   adminNotes?: string | null
   assignedOwner?: string | null
   priorityScore?: number | null
 }
 
-function toDbUpdate(u: FrontDoorUpdate) {
+function toDbUpdate(u: InquiryUpdate) {
   const out: Record<string, unknown> = {}
   if (u.status !== undefined) out.status = u.status
   if (u.adminNotes !== undefined) out.admin_notes = u.adminNotes
@@ -258,7 +265,7 @@ function toDbUpdate(u: FrontDoorUpdate) {
 
 export async function updateMembershipRequest(
   id: string,
-  update: FrontDoorUpdate
+  update: InquiryUpdate
 ): Promise<{ error?: string }> {
   const supabase = createSupabaseAdmin()
   const { error } = await supabase
@@ -274,7 +281,7 @@ export async function updateMembershipRequest(
 
 export async function updatePartnerInquiry(
   id: string,
-  update: FrontDoorUpdate
+  update: InquiryUpdate
 ): Promise<{ error?: string }> {
   const supabase = createSupabaseAdmin()
   const { error } = await supabase
