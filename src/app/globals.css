@@ -684,7 +684,7 @@ body.req-lock { overflow: hidden; }
 .vf-eyebrow { display: inline-block; margin-bottom: 13px; font-family: var(--font-sans); font-weight: 600; font-size: 11px; line-height: 1; letter-spacing: 0.26em; text-transform: uppercase; color: var(--color-amber); }
 .vf-intro h3 { font-size: clamp(26px,3.4vw,40px); line-height: 1.04; color: #fff; }
 .vf-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.vf-field label { display: block; margin-bottom: 9px; font-family: var(--font-sans); font-weight: 600; font-size: 11px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-60); }
+.vf-field > label { display: block; margin-bottom: 9px; font-family: var(--font-sans); font-weight: 600; font-size: 11px; line-height: 1; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-60); }
 .vf-opt { color: var(--cream-40); letter-spacing: 0.1em; font-weight: 500; }
 .vf-field input,.vf-field select,.vf-field textarea { width: 100%; font-family: var(--font-sans); font-weight: 400; font-size: 16px; line-height: 1.5; color: var(--color-cream); background: rgba(245,240,232,0.06); border: 1px solid var(--cream-20); border-radius: 3px; padding: 13px 15px; -webkit-appearance: none; appearance: none; outline: none; transition: border-color .16s var(--ease),box-shadow .16s var(--ease),background .16s var(--ease); }
 .vf-field textarea { resize: vertical; min-height: 96px; }
