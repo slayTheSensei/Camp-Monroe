@@ -515,6 +515,28 @@ footer.site { background: var(--color-forest-deep); color: var(--cream-70); padd
 .dubois-links a { display: block; font-family: var(--display); font-style: var(--display-style); font-weight: var(--display-weight); text-transform: var(--display-tt); font-size: 18px; letter-spacing: var(--display-tracking); color: var(--color-amber); border-bottom: 1px solid transparent; transition: border-color .18s var(--ease), color .18s var(--ease); padding-bottom: 2px; }
 .dubois-links a:hover { color: var(--color-cream); border-bottom-color: var(--color-amber); }
 .dubois-link-note { display: block; margin-top: 6px; font-size: 13px; line-height: 1.55; color: var(--cream-60); }
+/* Light-section overrides for the further-reading list (used on /dubois) */
+.light .dubois-links li { border-bottom-color: var(--ink-10); }
+.light .dubois-links a { color: var(--color-amber-deep); }
+.light .dubois-links a:hover { color: var(--color-forest); border-bottom-color: var(--color-amber-deep); }
+.light .dubois-link-note { color: var(--ink-60); }
+
+/* ---------- DU BOIS — files grid (13 archival documents) -- */
+.dubois-files { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px 36px; }
+.dubois-file { display: flex; flex-direction: column; }
+.dubois-file .archival { padding: 22px; display: block; }
+.dubois-file .archival img { display: block; width: 100%; height: auto; max-height: 280px; object-fit: contain; object-position: center; }
+.dubois-file .archival .archival-cap { margin-top: 16px; font-size: 9.5px; letter-spacing: 0.2em; }
+.dubois-file-meta { margin-top: 20px; padding-left: 2px; }
+.dubois-file-yr { font-family: var(--font-fraunces); font-style: italic; font-weight: 300; font-size: 22px; color: var(--color-amber-deep); line-height: 1; letter-spacing: -0.02em; }
+.dubois-file-t { font-family: var(--display); font-style: var(--display-style); font-weight: var(--display-weight); text-transform: var(--display-tt); font-size: 16px; line-height: 1.25; margin-top: 8px; letter-spacing: var(--display-tracking); color: var(--color-forest); }
+.dubois-file-d { font-size: 13.5px; line-height: 1.6; color: var(--ink-70); margin-top: 8px; max-width: 42ch; }
+@media (max-width: 1100px) {
+  .dubois-files { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .dubois-files { grid-template-columns: 1fr; gap: 48px; }
+}
 
 /* ---------- CAMP details ----------------------------------- */
 .facts { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--cream-10); }

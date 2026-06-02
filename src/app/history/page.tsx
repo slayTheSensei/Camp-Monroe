@@ -147,77 +147,39 @@ export default async function HistoryPage() {
           </div>
         </section>
 
-        {/* THE W.E.B. FILES */}
+        {/* THE W.E.B. FILES — teaser linking to /dubois */}
         <section className="light">
           <div className="wrap">
-            <div className="sec-head reveal">
-              <div className="eyebrow">The W.E.B. Files</div>
-              <h2 className="sec-h" style={{ marginTop: 14, maxWidth: "24ch" }}>
-                What&rsquo;s in the papers.
-              </h2>
-              <p className="lead" style={{ marginTop: 28 }}>
-                A few documents from the Du Bois Papers at UMass Amherst. Letters. Envelopes.
-                Vacation schedules. They show what we already knew: Du Bois came back to the
-                camp summer after summer.{" "}
-                <a
-                  href="/dubois"
-                  style={{
-                    color: "var(--color-amber-deep)",
-                    borderBottom: "1px solid currentColor",
-                    paddingBottom: 1,
-                  }}
-                >
-                  See the longer account on the Du Bois page.
-                </a>
-              </p>
-            </div>
-            <div className="archival-strip">
-              <div className="reveal">
-                <div className="archival">
-                  <img
-                    src="/assets/photos/letter-dorch-1947.png"
-                    alt="Letter from W.E.B. Du Bois to Mr. Dorch, 1947"
-                  />
-                  <div className="archival-cap">
-                    Letter · Du Bois to Mr. Dorch, 21 August 1947
-                  </div>
-                </div>
-              </div>
-              <div className="reveal d1">
-                <div className="archival">
-                  <img
-                    src="/assets/photos/vacation-schedule-1945.png"
-                    alt="NAACP vacation schedule, 1945"
-                  />
-                  <div className="archival-cap">
-                    NAACP Vacation Schedule, 1945 · Du Bois&rsquo;s camp dates circled
-                  </div>
-                </div>
+            <div className="split">
+              <div className="txt">
+                <div className="eyebrow reveal">The W.E.B. Files</div>
+                <h2 className="sec-h reveal d1" style={{ marginTop: 14, maxWidth: "24ch" }}>
+                  The papers, in one place.
+                </h2>
+                <p className="lead reveal d2" style={{ marginTop: 28 }}>
+                  W.E.B. Du Bois was a member of the Cambridge Gun and Rod Club
+                  for more than two decades. The W.E.B. Du Bois Papers at UMass
+                  Amherst hold thirteen documents that touch the camp,
+                  between 1920 and 1947. We have put them in one place.
+                </p>
+                <p className="reveal d3" style={{ marginTop: 32 }}>
+                  <a href="/dubois" className="btn btn-ink">
+                    See the W.E.B. Files <span className="arr" />
+                  </a>
+                </p>
               </div>
               <div className="reveal d2">
                 <div className="archival">
                   <img
-                    src="/assets/photos/maine-state-library-1933.png"
-                    alt="Letter from the Maine State Library to W.E.B. Du Bois, 1933"
+                    src="/assets/photos/group-portrait.png"
+                    alt="W.E.B. Du Bois with members and guests at the camp, c. 1920"
                   />
                   <div className="archival-cap">
-                    Maine State Library to W.E.B. Du Bois, October 1933
+                    Du Bois with members at the camp, c. 1920 &middot; Du Bois Papers, UMass Amherst
                   </div>
                 </div>
               </div>
             </div>
-            <p
-              className="lead reveal"
-              style={{
-                marginTop: 48,
-                fontSize: 13,
-                color: "var(--ink-60)",
-                letterSpacing: "0.04em",
-              }}
-            >
-              All archival imagery courtesy of the W.E.B. Du Bois Papers (MS 312), Special Collections and
-              University Archives, W.E.B. Du Bois Library, University of Massachusetts Amherst.
-            </p>
           </div>
         </section>
 
