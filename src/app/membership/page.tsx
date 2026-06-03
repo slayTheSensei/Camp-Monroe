@@ -43,9 +43,7 @@ export default async function MembershipPage() {
               </span>
             </div>
             <h1 className="reveal d1" style={{ marginTop: 28 }}>
-              Sixty seats.
-              <br />
-              Held for <em>life.</em>
+              The members are the <em>club.</em>
             </h1>
           </div>
         </section>
@@ -79,7 +77,7 @@ export default async function MembershipPage() {
                   </div>
                   <div className="price">
                     <div className="pn">Seats</div>
-                    <div className="pl">Capped &middot; held for life</div>
+                    <div className="pl">Capped</div>
                   </div>
                 </div>
 
