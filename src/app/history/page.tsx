@@ -173,11 +173,11 @@ export default async function HistoryPage() {
               <div className="reveal d2">
                 <div className="archival">
                   <img
-                    src="/assets/photos/group-portrait.png"
-                    alt="W.E.B. Du Bois with members and guests at the camp, c. 1920"
+                    src="/assets/photos/dubois-hammock.png"
+                    alt="W.E.B. Du Bois reading in a hammock at the camp"
                   />
                   <div className="archival-cap">
-                    Du Bois with members at the camp, c. 1920 &middot; Du Bois Papers, UMass Amherst
+                    Du Bois at camp, c. 1940 &middot; Du Bois Papers, UMass Amherst
                   </div>
                 </div>
               </div>
