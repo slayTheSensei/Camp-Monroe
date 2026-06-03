@@ -176,69 +176,93 @@ export default async function HomePage() {
               </h2>
             </div>
 
-            <div className="teasers">
-              <Link className="teaser tlg reveal" href="/the-camp">
-                <Ph
-                  src="/assets/photos/camp-golden-hour.jpg"
-                  alt="The camp shore at golden hour"
-                  cap="The camp shore at golden hour"
-                />
-                <div className="body">
-                  <div className="num">01</div>
-                  <div className="tn">The Camp</div>
-                  <div className="td">
+            <div className="explore-blocks">
+              <Link className="explore-block reveal" href="/the-camp">
+                <div className="explore-photo">
+                  <Ph
+                    src="/assets/photos/camp-golden-hour.jpg"
+                    alt="The camp shore at golden hour"
+                  />
+                </div>
+                <div className="explore-copy">
+                  <div className="explore-num">01</div>
+                  <h3 className="explore-t">The Camp</h3>
+                  <p className="explore-d">
                     Five thousand five hundred acres of water. One of the best bass lakes in the Northeast.
-                  </div>
-                  <div className="ig">
+                  </p>
+                  <span className="explore-cta">
                     Lake Cobbosseecontee <span className="arr" />
-                  </div>
+                  </span>
                 </div>
               </Link>
-              <Link className="teaser tmd reveal d1" href="/membership">
-                <Ph
-                  src="/assets/photos/group-portrait-modern.jpg"
-                  alt="Members at the camp"
-                  cap="Members at the camp"
-                />
-                <div className="body">
-                  <div className="num">02</div>
-                  <div className="tn">Membership</div>
-                  <div className="td">By sponsorship. By application.</div>
-                  <div className="ig">
+
+              <Link className="explore-block reveal d1" href="/membership">
+                <div className="explore-photo">
+                  <Ph
+                    src="/assets/photos/membership-hero.jpg"
+                    alt="A member on the way in"
+                  />
+                </div>
+                <div className="explore-copy">
+                  <div className="explore-num">02</div>
+                  <h3 className="explore-t">Membership</h3>
+                  <p className="explore-d">By sponsorship. By application.</p>
+                  <span className="explore-cta">
                     Request an invitation <span className="arr" />
-                  </div>
+                  </span>
                 </div>
               </Link>
-              <Link className="teaser tlg2 reveal" href="/history">
-                <Ph
-                  cap="Du Bois at the camp"
-                  src="/assets/photos/dubois-hammock.png"
-                  alt="W.E.B. Du Bois at the camp"
-                />
-                <div className="body">
-                  <div className="num">03</div>
-                  <div className="tn">History</div>
-                  <div className="td">A hundred and thirty years on the lake.</div>
-                  <div className="ig">
+
+              <Link className="explore-block reveal" href="/history">
+                <div className="explore-photo">
+                  <Ph
+                    src="/assets/photos/group-portrait.png"
+                    alt="Members and guests at the camp, c. 1920"
+                  />
+                </div>
+                <div className="explore-copy">
+                  <div className="explore-num">03</div>
+                  <h3 className="explore-t">History</h3>
+                  <p className="explore-d">A hundred and thirty years on the lake.</p>
+                  <span className="explore-cta">
                     Read the history <span className="arr" />
-                  </div>
+                  </span>
                 </div>
               </Link>
-              <Link className="teaser tsm reveal d1" href="/locations">
-                <Ph
-                  src="/assets/photos/open-water-dusk.jpg"
-                  alt="Open water at dusk — Maine"
-                  cap="The lake at dusk"
-                />
-                <div className="body">
-                  <div className="num">04</div>
-                  <div className="tn">Locations</div>
-                  <div className="td">
-                    Camp Monroe is the flagship. A sporting property is in the works.
-                  </div>
-                  <div className="ig">
-                    One club, growing <span className="arr" />
-                  </div>
+
+              <Link className="explore-block reveal d1" href="/dubois">
+                <div className="explore-photo">
+                  <Ph
+                    src="/assets/photos/dubois-banner.png"
+                    alt="Archival materials from the W.E.B. Du Bois Papers"
+                  />
+                </div>
+                <div className="explore-copy">
+                  <div className="explore-num">04</div>
+                  <h3 className="explore-t">The W.E.B. Files</h3>
+                  <p className="explore-d">
+                    Du Bois at camp, 1920–1947.
+                  </p>
+                  <span className="explore-cta">
+                    See the Files <span className="arr" />
+                  </span>
+                </div>
+              </Link>
+
+              <Link className="explore-block reveal" href="/visit">
+                <div className="explore-photo">
+                  <Ph
+                    src="/assets/photos/open-water-dusk.jpg"
+                    alt="Open water at dusk — Maine"
+                  />
+                </div>
+                <div className="explore-copy">
+                  <div className="explore-num">05</div>
+                  <h3 className="explore-t">Visit</h3>
+                  <p className="explore-d">Private events. Retreats. Whole-camp buyouts.</p>
+                  <span className="explore-cta">
+                    Plan a stay <span className="arr" />
+                  </span>
                 </div>
               </Link>
             </div>
