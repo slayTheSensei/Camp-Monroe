@@ -25,12 +25,12 @@ const FALLBACK_TIMELINE = [
   {
     year: "1920s–1950s",
     head: "A summer institution",
-    body: "Doctors, lawyers, ministers, scholars — W.E.B. Du Bois among them — come back summer after summer. By the late 1940s the Jewish members no longer need a club of their own; they've been absorbed into white American institutions. The Cambridge Gun and Rod Club continues, primarily Black.",
+    body: "Doctors, lawyers, ministers, scholars — W.E.B. Du Bois among them — come back summer after summer. By the 1950s the membership is almost exclusively Black.",
   },
   {
     year: "1970s–2013",
     head: "Three decades on the lake",
-    body: "Generations come back, year after year. Many take the first week at camp and meet their families on Martha's Vineyard for the rest of August. In 2013 the hundred-year lease ends; a group of members buys the camp from the Goodwin grandchildren. The Goodwin grandson stays on as the caretaker.",
+    body: "Generations come back, year after year. Many split August between camp and the Vineyard. In 2013 the hundred-year lease ends and the members buy the camp.",
   },
   {
     year: "2026",
