@@ -216,8 +216,8 @@ export default async function HomePage() {
               <Link className="explore-block reveal" href="/history">
                 <div className="explore-photo">
                   <Ph
-                    src="/assets/photos/group-portrait.png"
-                    alt="Members and guests at the camp, c. 1920"
+                    src="/assets/photos/group-portrait-modern.jpg"
+                    alt="The membership lined up at the camp for a formal portrait, mid-century"
                   />
                 </div>
                 <div className="explore-copy">

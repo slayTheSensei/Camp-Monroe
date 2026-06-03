@@ -56,15 +56,17 @@ export default async function HistoryPage() {
           <div
             className="photo photo-archival"
             style={{
-              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/dubois-hammock.png")})`,
+              ["--photo" as string]: `url(${t(c, "hero.image_url", "/assets/photos/group-portrait-modern.jpg")})`,
             }}
           />
           <div className="hero-shot-meta">
             <span className="hero-tier">
               <span className="dot" />
-              Du Bois at camp, c. 1935
+              {t(c, "hero.tier_label", "Members at the camp, mid-century")}
             </span>
-            <span className="hero-shot-note">Du Bois Papers · UMass</span>
+            <span className="hero-shot-note">
+              {t(c, "hero.location_label", "From the camp's archive")}
+            </span>
           </div>
           <div className="wrap phero-inner">
             <div className="hero-loc reveal">
