@@ -216,7 +216,7 @@ export default async function MembershipPage() {
               <div className="stat reveal d3">
                 <div className="num">For life</div>
                 <div className="lab">Your seat</div>
-                <div className="det">Transferable per the bylaws.</div>
+                <div className="det">Not transferable per the bylaws.</div>
               </div>
             </div>
           </div>
