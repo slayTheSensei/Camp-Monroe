@@ -291,14 +291,14 @@ export default function DuBoisPage() {
             <div className="sec-head reveal">
               <div className="eyebrow">What he wrote during these years</div>
               <h2 className="sec-h" style={{ marginTop: 14 }}>
-                Six books, and the years they were written.
+                Five books, and the years they were written.
               </h2>
             </div>
             <p
               className="lead reveal"
               style={{ marginTop: 32, maxWidth: "62ch" }}
             >
-              Du Bois published six books during his time as a member of the
+              Du Bois published five books during his time as a member of the
               Cambridge Gun and Rod Club:
             </p>
             <div className="dubois-works reveal d1" style={{ marginTop: 32 }}>
@@ -349,15 +349,6 @@ export default function DuBoisPage() {
                   <p>
                     An argument for the decolonization of Africa and the
                     Caribbean as essential to world peace.
-                  </p>
-                </div>
-              </div>
-              <div className="work">
-                <div className="work-yr">1962</div>
-                <div className="work-bd">
-                  <div className="work-t">The Negro in the French Revolution</div>
-                  <p>
-                    Self-published. His last book. He died the following year.
                   </p>
                 </div>
               </div>
