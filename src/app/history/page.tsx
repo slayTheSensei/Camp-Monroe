@@ -35,7 +35,7 @@ const FALLBACK_TIMELINE = [
   {
     year: "2026",
     head: "The next chapter",
-    body: "A women's chapter joins. The camp's core buildings — dining hall, dock, lodge — get a major renovation. The club starts looking at a second property. A place founded by people kept out keeps the door wide.",
+    body: "A women's chapter joins. The camp's core buildings — dining hall, dock, lodge — get a major restoration. The club starts looking at a second property. A place founded by people kept out keeps the door wide.",
   },
 ];
 
