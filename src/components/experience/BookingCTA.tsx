@@ -105,7 +105,7 @@ export default function BookingCTA({ experience }: Props) {
             <div className="flex flex-col items-start gap-3 max-w-sm">
               <div>
                 <p className="text-forest font-semibold text-base">This trip is sold out.</p>
-                <p className="text-forest/70 text-sm mt-1">Join the waitlist and we&apos;ll reach out if a spot opens.</p>
+                <p className="text-forest/70 text-sm mt-1">Leave your email and we&apos;ll reach out if a spot opens.</p>
               </div>
               <ExperienceSignup experience={experience} />
             </div>

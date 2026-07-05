@@ -136,7 +136,7 @@ export default async function MembershipPage() {
                     <div>
                       <div className="st">Your seat</div>
                       <div className="sd">
-                        Yours for life. If a chapter is full, a waitlist forms.
+                        Held by name. If the chapter is full, we hold your application until it isn&rsquo;t.
                       </div>
                     </div>
                   </div>
