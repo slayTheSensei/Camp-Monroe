@@ -3,6 +3,13 @@ import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import Counter from "@/components/site/Counter";
 import Ph from "@/components/site/Ph";
+
+// CMS-driven page: hero CTAs, headline, sub, and the site-wide CTA band
+// all read page_content on every request so staff edits in /admin
+// propagate immediately. Without this, Next.js statically optimizes
+// the page at build time and DB changes don't show until the next
+// deploy. (Same pattern as /history and /membership.)
+export const dynamic = "force-dynamic";
 import CtaBand from "@/components/site/CtaBand";
 import FollowAlong from "@/components/site/FollowAlong";
 import { getPageContent, t } from "@/lib/data/content";
